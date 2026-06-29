@@ -12,6 +12,7 @@ export default function NewFuelForm({ vehicles }: { vehicles: Vehicle[] }) {
   const [startMileage, setStartMileage] = useState<number | string>("");
   const [liters, setLiters] = useState("");
   const [price, setPrice] = useState("");
+  const [showOptional, setShowOptional] = useState(false);
   const total = (parseFloat(liters) || 0) * (parseFloat(price) || 0);
 
   const [isLiff, setIsLiff] = useState(false);
@@ -56,149 +57,183 @@ export default function NewFuelForm({ vehicles }: { vehicles: Vehicle[] }) {
 
   return (
     <>
-      <div className="page-header">
+      <div className="page-header" style={{ marginBottom: "16px" }}>
         <div>
-          <h1 className="page-title">บันทึกการเติมน้ำมัน</h1>
-          <p className="page-subtitle">กรอกรายละเอียดการเติมน้ำมันของรถยนต์</p>
+          <h1 className="page-title" style={{ fontSize: "20px" }}>⛽ บันทึกการเติมน้ำมัน</h1>
         </div>
-        <Link href="/logs/energy" className="btn btn-ghost">← กลับ</Link>
+        {!isLiff && <Link href="/logs/energy" className="btn btn-ghost btn-sm">← กลับ</Link>}
       </div>
 
-      <div className="card">
+      <div className="card" style={{ padding: "20px" }}>
         <form action={handleSubmit}>
-          {/* Hidden flag to tell Server Action not to redirect if in LIFF */}
+          {/* Hidden Flags */}
           <input type="hidden" name="isLiff" value={isLiff ? "true" : "false"} />
+          <input type="hidden" name="fuelDate" value={lockedDate} />
 
-          <div className="form-section">
-            <div className="form-section-title">ข้อมูลการเติมน้ำมัน</div>
-            <div className="form-grid">
+          <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
+            {/* รถยนต์ */}
+            <div className="form-group">
+              <label className="form-label">รถยนต์ที่เติม *</label>
+              <select 
+                name="vehicleId" 
+                required 
+                className="form-select"
+                style={{ fontSize: "16px", padding: "14px" }}
+                onChange={async (e) => {
+                  const vid = e.target.value;
+                  if (vid) {
+                    const latest = await getLatestMileage(vid);
+                    setStartMileage(latest);
+                  } else {
+                    setStartMileage("");
+                  }
+                }}
+              >
+                <option value="">-- เลือกรถยนต์ --</option>
+                {vehicles.map((v) => (
+                  <option key={v.id} value={v.id}>
+                    {v.licensePlate} — {v.brand}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            {/* เลขไมล์ */}
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px" }}>
               <div className="form-group">
-                <label className="form-label">รถยนต์ *</label>
-                <select 
-                  name="vehicleId" 
-                  required 
-                  className="form-select"
-                  onChange={async (e) => {
-                    const vid = e.target.value;
-                    if (vid) {
-                      const latest = await getLatestMileage(vid);
-                      setStartMileage(latest);
-                    } else {
-                      setStartMileage("");
-                    }
-                  }}
-                >
-                  <option value="">-- เลือกรถยนต์ --</option>
-                  {vehicles.map((v) => (
-                    <option key={v.id} value={v.id}>
-                      {v.licensePlate} — {v.brand} {v.model}
-                    </option>
-                  ))}
-                </select>
-              </div>
-              <div className="form-group">
-                <label className="form-label">วันที่เติม (ล็อกค่าอัตโนมัติ) *</label>
-                <input 
-                  type="date" 
-                  name="fuelDate" 
-                  required 
-                  value={lockedDate}
-                  readOnly
-                  className="form-input bg-slate-100 text-slate-500 cursor-not-allowed" 
-                />
-              </div>
-              <div className="form-group">
-                <label className="form-label">สถานีน้ำมัน</label>
-                <input type="text" name="fuelStation" placeholder="เช่น ปตท. สาขา..." className="form-input" />
-              </div>
-              <div className="form-group">
-                <label className="form-label">เลขไมล์เริ่ม (ครั้งล่าสุด) *</label>
+                <label className="form-label">เลขไมล์เริ่ม</label>
                 <input 
                   type="number" 
                   name="startMileage" 
+                  inputMode="numeric"
+                  pattern="[0-9]*"
                   required 
                   min={0} 
                   className="form-input" 
+                  style={{ fontSize: "16px", padding: "14px" }}
                   value={startMileage}
                   onChange={(e) => setStartMileage(e.target.value)}
                 />
               </div>
               <div className="form-group">
-                <label className="form-label">เลขไมล์ ณ วันเติม (สิ้นสุด) *</label>
-                <input type="number" name="endMileage" required min={0} placeholder="เช่น 45000" className="form-input" />
+                <label className="form-label">ไมล์สิ้นสุด *</label>
+                <input 
+                  type="number" 
+                  name="endMileage" 
+                  inputMode="numeric"
+                  pattern="[0-9]*"
+                  required 
+                  min={0} 
+                  className="form-input" 
+                  style={{ fontSize: "16px", padding: "14px", borderColor: "var(--blue)" }}
+                />
               </div>
             </div>
-          </div>
 
-          <div className="form-section">
-            <div className="form-section-title">ข้อมูลน้ำมัน</div>
-            <div className="form-grid">
+            {/* ค่าน้ำมัน */}
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px" }}>
               <div className="form-group">
                 <label className="form-label">จำนวนลิตร *</label>
                 <input
                   type="number"
                   name="liters"
+                  inputMode="decimal"
                   required
                   min={0}
                   step={0.01}
-                  placeholder="เช่น 50.00"
                   className="form-input"
+                  style={{ fontSize: "16px", padding: "14px" }}
                   value={liters}
                   onChange={(e) => setLiters(e.target.value)}
                 />
               </div>
               <div className="form-group">
-                <label className="form-label">ราคา/ลิตร (บาท) *</label>
+                <label className="form-label">ราคา/ลิตร *</label>
                 <input
                   type="number"
                   name="pricePerLiter"
+                  inputMode="decimal"
                   required
                   min={0}
                   step={0.01}
-                  placeholder="เช่น 35.84"
                   className="form-input"
+                  style={{ fontSize: "16px", padding: "14px" }}
                   value={price}
                   onChange={(e) => setPrice(e.target.value)}
                 />
               </div>
-              {/* Total Cost Preview */}
-              <div className="form-group">
-                <label className="form-label">ราคารวม (คำนวณอัตโนมัติ)</label>
-                <div style={{
-                  background: "var(--bg-surface)",
-                  border: "1px solid var(--border)",
-                  borderRadius: "var(--radius-sm)",
-                  padding: "9px 12px",
-                  color: total > 0 ? "var(--yellow)" : "var(--text-muted)",
-                  fontWeight: 600,
-                  fontSize: 15,
-                }}>
-                  {total > 0 ? `${total.toLocaleString("th-TH", { minimumFractionDigits: 2, maximumFractionDigits: 2 })} บาท` : "—"}
-                </div>
-              </div>
-              <div className="form-group">
-                <label className="form-label">ชี้แจง (กรณีส่วนต่างลิตรติดลบ/ใช้น้ำมันเกิน)</label>
-                <input type="text" name="explanation" placeholder="เช่น รถติดในเมือง, บรรทุกหนัก..." className="form-input" />
-              </div>
-              <div className="form-group" style={{ gridColumn: "1 / -1" }}>
-                <label className="form-label">หมายเหตุทั่วไป</label>
-                <input type="text" name="note" placeholder="หมายเหตุเพิ่มเติม..." className="form-input" />
+            </div>
+
+            {/* รวมเป็นเงิน */}
+            <div className="form-group">
+              <label className="form-label">ยอดชำระรวม (บาท)</label>
+              <div style={{
+                background: "var(--bg-hover)",
+                border: "1px dashed var(--green)",
+                borderRadius: "var(--radius-sm)",
+                padding: "16px",
+                textAlign: "center",
+                color: total > 0 ? "var(--green)" : "var(--text-muted)",
+                fontWeight: 700,
+                fontSize: "24px",
+              }}>
+                {total > 0 ? `${total.toLocaleString("th-TH", { minimumFractionDigits: 2, maximumFractionDigits: 2 })} ฿` : "—"}
               </div>
             </div>
+
+            {/* ส่วนขยาย */}
+            <button 
+              type="button" 
+              onClick={() => setShowOptional(!showOptional)}
+              style={{
+                background: "none", border: "none", color: "var(--blue)", 
+                fontSize: "13px", fontWeight: 600, textAlign: "center",
+                marginTop: "8px", cursor: "pointer", padding: "8px"
+              }}
+            >
+              {showOptional ? "▲ ซ่อนข้อมูลเพิ่มเติม" : "▼ กรอกปั๊มน้ำมัน / หมายเหตุ (ถ้ามี)"}
+            </button>
+
+            {showOptional && (
+              <div style={{ display: "flex", flexDirection: "column", gap: "12px", background: "var(--bg-surface)", padding: "16px", borderRadius: "8px" }}>
+                <div className="form-group">
+                  <label className="form-label">สถานีน้ำมัน</label>
+                  <input type="text" name="fuelStation" placeholder="เช่น ปตท. สาขา..." className="form-input" />
+                </div>
+                <div className="form-group">
+                  <label className="form-label">ชี้แจง (ใช้น้ำมันเกิน)</label>
+                  <input type="text" name="explanation" placeholder="เช่น รถติด, บรรทุกหนัก" className="form-input" />
+                </div>
+                <div className="form-group">
+                  <label className="form-label">หมายเหตุ</label>
+                  <input type="text" name="note" className="form-input" />
+                </div>
+              </div>
+            )}
           </div>
 
-          <div className="form-actions">
-            {isLiff ? (
-              <button type="button" onClick={async () => {
-                const liff = (await import("@line/liff")).default;
-                liff.closeWindow();
-              }} className="btn btn-ghost">ปิดหน้าต่าง</button>
-            ) : (
-              <Link href="/logs/energy" className="btn btn-ghost">ยกเลิก</Link>
-            )}
-            <button type="submit" disabled={isSubmitting || !lockedDate} className="btn btn-primary">
+          <div style={{ marginTop: "24px" }}>
+            <button 
+              type="submit" 
+              disabled={isSubmitting || !lockedDate} 
+              className="btn btn-primary"
+              style={{ width: "100%", padding: "16px", fontSize: "16px", borderRadius: "12px" }}
+            >
               {isSubmitting ? "⏳ กำลังบันทึก..." : "💾 บันทึกการเติมน้ำมัน"}
             </button>
+            {isLiff && (
+              <button 
+                type="button" 
+                onClick={async () => {
+                  const liff = (await import("@line/liff")).default;
+                  liff.closeWindow();
+                }} 
+                className="btn btn-ghost"
+                style={{ width: "100%", marginTop: "12px", padding: "12px", borderRadius: "12px" }}
+              >
+                ยกเลิก (ปิดหน้าต่าง)
+              </button>
+            )}
           </div>
         </form>
       </div>
