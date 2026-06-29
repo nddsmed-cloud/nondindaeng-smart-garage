@@ -49,7 +49,15 @@ export default function GroupTable({ groups }: { groups: Group[] }) {
           </div>
           <div className="form-group">
             <label className="form-label">กอง / สังกัด</label>
-            <input type="text" name="departmentName" required className="form-input" placeholder="เช่น กองช่าง" />
+            <select name="departmentName" required className="form-select" defaultValue="กองช่าง">
+              <option value="สำนักปลัดเทศบาล">สำนักปลัดเทศบาล</option>
+              <option value="กองคลัง">กองคลัง</option>
+              <option value="กองช่าง">กองช่าง</option>
+              <option value="กองสาธารณสุขและสิ่งแวดล้อม">กองสาธารณสุขและสิ่งแวดล้อม</option>
+              <option value="กองการศึกษา">กองการศึกษา</option>
+              <option value="กองสวัสดิการสังคม">กองสวัสดิการสังคม</option>
+              <option value="กองยุทธศาสตร์และงบประมาณ">กองยุทธศาสตร์และงบประมาณ</option>
+            </select>
           </div>
           <div className="form-group">
             <label className="form-label">สิทธิ์การใช้งานเริ่มต้น</label>
