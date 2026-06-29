@@ -22,6 +22,11 @@ for (let line of lines) {
   }
   
   if (!key) continue;
+  if (key === "NEXTAUTH_URL") {
+    console.log("Skipping NEXTAUTH_URL to allow Vercel auto-detection...");
+    continue;
+  }
+
   
   console.log(`Adding ${key} to Vercel...`);
   try {

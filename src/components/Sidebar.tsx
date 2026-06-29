@@ -33,6 +33,7 @@ const navItems: NavSection[] = [
   {
     section: "รายงานและการจัดการ",
     links: [
+      { href: "/reports/mileage", icon: "📖", label: "สมุดบันทึกประวัติรถ", roles: ["ADMIN", "MANAGER", "OFFICER", "DRIVER"] },
       { href: "/reports/oag", icon: "📊", label: "รายงานพัสดุ สตง.", roles: ["ADMIN", "OFFICER"] },
       { href: "/admin/users", icon: "👥", label: "จัดการผู้ใช้งาน", roles: ["ADMIN"] },
       { href: "/admin/groups", icon: "💬", label: "จัดการกลุ่ม LINE", roles: ["ADMIN"] },

@@ -6,6 +6,22 @@ import { redirect } from "next/navigation";
 
 import { auth } from "../../auth";
 
+export async function getLatestMileage(vehicleId: string): Promise<number> {
+  const lastTrip = await prisma.tripLog.findFirst({
+    where: { vehicleId },
+    orderBy: { endMileage: "desc" },
+  });
+  const lastFuel = await prisma.fuelLog.findFirst({
+    where: { vehicleId },
+    orderBy: { endMileage: "desc" },
+  });
+  
+  const tripMileage = lastTrip?.endMileage || 0;
+  const fuelMileage = lastFuel?.endMileage || 0;
+  
+  return Math.max(tripMileage, fuelMileage);
+}
+
 // ====== Trip Logs ======
 export async function createTripLog(formData: FormData) {
   const session = await auth();
@@ -74,12 +90,8 @@ export async function createFuelLog(formData: FormData) {
   const standardRate = vehicle?.standardConsumptionRate || 13.0;
 
   // ดึงไมล์สิ้นสุดครั้งก่อนหน้ามาเป็นไมล์เริ่มต้นครั้งนี้
-  const lastLog = await prisma.fuelLog.findFirst({
-    where: { vehicleId },
-    orderBy: { endMileage: "desc" },
-  });
-
-  const startMileage = lastLog?.endMileage || endMileage;
+  const latestMileage = await getLatestMileage(vehicleId);
+  const startMileage = parseInt(formData.get("startMileage") as string) || latestMileage || endMileage;
   const distance = Math.max(0, endMileage - startMileage);
   const expectedFuel = standardRate > 0 ? distance / standardRate : 0;
   const fuelDifference = liters - expectedFuel;

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { createTripLog } from "../actions";
+import { createTripLog, getLatestMileage } from "../actions";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
@@ -16,6 +16,7 @@ export default function NewTripLogPage({ vehicles }: { vehicles: Vehicle[] }) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isLiff, setIsLiff] = useState(false);
   const [lockedDate, setLockedDate] = useState("");
+  const [startMileage, setStartMileage] = useState<number | string>("");
   const router = useRouter();
 
   useEffect(() => {
@@ -77,7 +78,20 @@ export default function NewTripLogPage({ vehicles }: { vehicles: Vehicle[] }) {
             <div className="form-grid">
               <div className="form-group">
                 <label className="form-label">รถยนต์ *</label>
-                <select name="vehicleId" required className="form-select">
+                <select 
+                  name="vehicleId" 
+                  required 
+                  className="form-select"
+                  onChange={async (e) => {
+                    const vid = e.target.value;
+                    if (vid) {
+                      const latest = await getLatestMileage(vid);
+                      setStartMileage(latest);
+                    } else {
+                      setStartMileage("");
+                    }
+                  }}
+                >
                   <option value="">-- เลือกรถยนต์ --</option>
                   {ready.map((v) => (
                     <option key={v.id} value={v.id}>
@@ -124,7 +138,16 @@ export default function NewTripLogPage({ vehicles }: { vehicles: Vehicle[] }) {
               </div>
               <div className="form-group">
                 <label className="form-label">เลขไมล์ตอนออก *</label>
-                <input type="number" name="startMileage" required min={0} placeholder="เช่น 45000" className="form-input" />
+                <input 
+                  type="number" 
+                  name="startMileage" 
+                  required 
+                  min={0} 
+                  placeholder="เช่น 45000" 
+                  className="form-input" 
+                  value={startMileage}
+                  onChange={(e) => setStartMileage(e.target.value)}
+                />
               </div>
               <div className="form-group span-2">
                 <label className="form-label">วัตถุประสงค์ *</label>

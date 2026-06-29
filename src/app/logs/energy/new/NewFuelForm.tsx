@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { createFuelLog } from "../../actions";
+import { createFuelLog, getLatestMileage } from "../../actions";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
@@ -9,6 +9,7 @@ type Vehicle = { id: string; licensePlate: string; brand: string; model: string 
 
 export default function NewFuelForm({ vehicles }: { vehicles: Vehicle[] }) {
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [startMileage, setStartMileage] = useState<number | string>("");
   const [liters, setLiters] = useState("");
   const [price, setPrice] = useState("");
   const total = (parseFloat(liters) || 0) * (parseFloat(price) || 0);
@@ -73,7 +74,20 @@ export default function NewFuelForm({ vehicles }: { vehicles: Vehicle[] }) {
             <div className="form-grid">
               <div className="form-group">
                 <label className="form-label">รถยนต์ *</label>
-                <select name="vehicleId" required className="form-select">
+                <select 
+                  name="vehicleId" 
+                  required 
+                  className="form-select"
+                  onChange={async (e) => {
+                    const vid = e.target.value;
+                    if (vid) {
+                      const latest = await getLatestMileage(vid);
+                      setStartMileage(latest);
+                    } else {
+                      setStartMileage("");
+                    }
+                  }}
+                >
                   <option value="">-- เลือกรถยนต์ --</option>
                   {vehicles.map((v) => (
                     <option key={v.id} value={v.id}>
@@ -98,11 +112,20 @@ export default function NewFuelForm({ vehicles }: { vehicles: Vehicle[] }) {
                 <input type="text" name="fuelStation" placeholder="เช่น ปตท. สาขา..." className="form-input" />
               </div>
               <div className="form-group">
+                <label className="form-label">เลขไมล์เริ่ม (ครั้งล่าสุด) *</label>
+                <input 
+                  type="number" 
+                  name="startMileage" 
+                  required 
+                  min={0} 
+                  className="form-input" 
+                  value={startMileage}
+                  onChange={(e) => setStartMileage(e.target.value)}
+                />
+              </div>
+              <div className="form-group">
                 <label className="form-label">เลขไมล์ ณ วันเติม (สิ้นสุด) *</label>
                 <input type="number" name="endMileage" required min={0} placeholder="เช่น 45000" className="form-input" />
-                <div style={{ fontSize: "0.75rem", color: "var(--text-muted)", marginTop: "4px" }}>
-                  ระบบจะดึงเลขไมล์ครั้งก่อนหน้ามาเป็น "เลขไมล์เริ่ม" ให้อัตโนมัติ
-                </div>
               </div>
             </div>
           </div>
