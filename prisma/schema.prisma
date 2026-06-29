@@ -1,0 +1,163 @@
+// prisma/schema.prisma
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+// ตารางผู้ใช้งานระบบ
+model User {
+  id         String   @id @default(uuid())
+  name       String
+  username   String   @unique
+  password   String?
+  role       String   @default("OFFICER") // ADMIN | MANAGER | OFFICER | DRIVER
+  department String   @default("")
+  isActive   Boolean  @default(true) @map("is_active")
+  lineUserId String?  @unique @map("line_user_id")
+
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@map("users")
+}
+
+// ตารางรายการจดทะเบียนรถ (คส.1)
+model Vehicle {
+  id              String   @id @default(uuid())
+  registeredDate  DateTime @map("registered_date")
+  licensePlate    String   @map("license_plate")
+  province        String
+  vehicleType     String   @map("vehicle_type")
+  bodyType        String   @map("body_type")
+  brand           String
+  model           String
+  color           String
+  chassisNumber   String   @unique @map("chassis_number")
+  engineNumber    String   @unique @map("engine_number")
+  fuelType        String   @map("fuel_type")
+  engineCapacity  Int      @map("engine_capacity")
+  emptyWeight     Int      @map("empty_weight")
+  payloadWeight   Int      @map("payload_weight")
+  totalWeight     Int      @map("total_weight")
+  status          String   @default("พร้อมใช้งาน")
+  department      String?  @default("")
+  standardConsumptionRate Float @default(13.0) @map("standard_consumption_rate")
+
+  tripLogs        TripLog[]
+  fuelLogs        FuelLog[]
+  maintenanceLogs MaintenanceLog[]
+
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@map("vehicles")
+}
+
+// ตารางคำขออนุญาตใช้รถยนต์ส่วนกลาง
+model VehicleRequest {
+  id            String   @id @default(uuid())
+  requesterName String   @map("requester_name")
+  department    String
+  purpose       String
+  vehicleType   String   @map("vehicle_type")
+  travelDate    String   @map("travel_date")
+  destination   String   @default("")
+  status        String   @default("รออนุมัติ")
+  note          String   @default("")
+
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@map("vehicle_requests")
+}
+
+// ตารางบันทึกการเดินทาง
+model TripLog {
+  id            String   @id @default(uuid())
+  vehicleId     String   @map("vehicle_id")
+  vehicle       Vehicle  @relation(fields: [vehicleId], references: [id])
+  driverName    String   @map("driver_name")
+  department    String
+  destination   String
+  purpose       String
+  travelDate    String   @map("travel_date")
+  startMileage  Int      @map("start_mileage")
+  endMileage    Int      @default(0) @map("end_mileage")
+  distance      Int      @default(0)
+  status        String   @default("กำลังเดินทาง")
+  userId        String?  @map("user_id")
+
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@map("trip_logs")
+}
+
+// ตารางบันทึกการเติมน้ำมัน
+model FuelLog {
+  id            String   @id @default(uuid())
+  vehicleId     String   @map("vehicle_id")
+  vehicle       Vehicle  @relation(fields: [vehicleId], references: [id])
+  fuelDate      String   @map("fuel_date")
+  liters        Float
+  pricePerLiter Float    @map("price_per_liter")
+  totalCost     Float    @map("total_cost")
+  
+  // ข้อมูลไมล์และอัตราสิ้นเปลือง (สตง.)
+  startMileage  Int      @default(0) @map("start_mileage")
+  endMileage    Int      @map("end_mileage")
+  distance      Int      @default(0)
+  standardRate  Float    @default(13.0) @map("standard_rate")
+  expectedFuel  Float    @default(0) @map("expected_fuel")
+  fuelDifference Float   @default(0) @map("fuel_difference")
+  explanation   String   @default("")
+
+  fuelStation   String   @default("") @map("fuel_station")
+  note          String   @default("")
+  userId        String?  @map("user_id")
+  department    String?  @default("")
+
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@map("fuel_logs")
+}
+
+// ตารางแบบ ๖ รายละเอียดการซ่อมบำรุง
+model MaintenanceLog {
+  id              String   @id @default(uuid())
+  vehicleId       String   @map("vehicle_id")
+  vehicle         Vehicle  @relation(fields: [vehicleId], references: [id])
+  maintenanceDate String   @map("maintenance_date")
+  mileage         Int
+  details         String
+  cost            Float
+  garageName      String   @map("garage_name")
+  responsibleName String   @map("responsible_name")
+  department      String   @default("")
+  userId          String?  @map("user_id")
+
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@map("maintenance_logs")
+}
+
+// ตารางจัดการสิทธิ์ LINE กลุ่ม (LIFF)
+model GroupAccess {
+  id             String   @id @default(uuid())
+  lineGroupId    String   @unique @map("line_group_id")
+  departmentName String   @map("department_name")
+  defaultRole    String   @default("DRIVER") @map("default_role")
+  
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  @@map("group_access")
+}
