@@ -46,7 +46,7 @@ export default function LiffLoginPage() {
         });
 
         if (result?.error) {
-          setError("ไม่ได้รับอนุญาตให้ใช้งาน หรือกลุ่มนี้ยังไม่ได้ลงทะเบียนในระบบ (" + result.error + ")");
+          setError(`กลุ่มนี้ยังไม่ได้ลงทะเบียนในระบบ\n\nโปรดแจ้งผู้ดูแลระบบและส่ง Group ID ด้านล่างนี้เพื่อลงทะเบียน:\n\n${context.groupId}`);
           setLoading(false);
         } else {
           // ล็อกอินสำเร็จ ไปหน้าแดชบอร์ด
@@ -102,7 +102,7 @@ export default function LiffLoginPage() {
           </div>
         ) : error ? (
           <div>
-            <p style={{ color: "var(--red)", fontWeight: 500, marginBottom: "16px" }}>{error}</p>
+            <p style={{ color: "var(--red)", fontWeight: 500, marginBottom: "16px", whiteSpace: "pre-wrap", wordBreak: "break-all" }}>{error}</p>
             <button 
               onClick={() => liff.closeWindow()}
               className="btn btn-secondary"
