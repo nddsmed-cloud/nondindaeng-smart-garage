@@ -45,7 +45,8 @@ export default async function EditUserPage(props: { params: Promise<{ id: string
 
           <div className="form-group">
             <label className="form-label">สังกัด/แผนก</label>
-            <select name="department" className="form-select" required defaultValue={user.department}>
+            <select name="department" className="form-select" defaultValue={user.department}>
+              <option value="">ไม่มีสังกัด (ผู้ดูแลระบบกลาง)</option>
               <option value="สำนักปลัดเทศบาล">สำนักปลัดเทศบาล</option>
               <option value="กองคลัง">กองคลัง</option>
               <option value="กองช่าง">กองช่าง</option>

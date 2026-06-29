@@ -8,13 +8,15 @@ async function main() {
 
   const admin = await prisma.user.upsert({
     where: { username: "admin" },
-    update: {},
+    update: {
+      department: "",
+    },
     create: {
       name: "Administrator",
       username: "admin",
       password: hashedPassword,
       role: "ADMIN",
-      department: "ผู้ดูแลระบบ",
+      department: "",
     },
   });
 

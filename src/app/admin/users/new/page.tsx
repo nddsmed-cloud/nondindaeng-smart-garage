@@ -34,7 +34,8 @@ export default function NewUserPage() {
 
           <div className="form-group">
             <label className="form-label">สังกัด/แผนก</label>
-            <select name="department" className="form-select" required defaultValue="กองช่าง">
+            <select name="department" className="form-select" defaultValue="กองช่าง">
+              <option value="">ไม่มีสังกัด (ผู้ดูแลระบบกลาง)</option>
               <option value="สำนักปลัดเทศบาล">สำนักปลัดเทศบาล</option>
               <option value="กองคลัง">กองคลัง</option>
               <option value="กองช่าง">กองช่าง</option>
