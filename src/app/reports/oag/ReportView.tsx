@@ -536,14 +536,6 @@ export default function ReportView({
         {/* -------------------- SUMMARY PART (NEW FORM) -------------------- */}
         {(activeTab === 'all' || activeTab === 'summary') && (
           <div className={`bg-white p-6 rounded-2xl border border-slate-100 shadow-sm print:shadow-none print:border-none print:p-0 mb-8 print:mb-0 ${activeTab === 'all' ? 'print-section-break' : ''}`}>
-            {/* Header */}
-            <div className="text-center mb-8 flex flex-col items-center">
-              <h2 className="text-2xl font-bold text-teal-900 print:text-black">รายงานรายละเอียดค่าใช้จ่ายและซ่อมบำรุงรักษารถยนต์ส่วนกลาง (พัสดุ)</h2>
-              <p className="text-slate-600 text-lg mt-2 print:text-black">
-                ประจำปีงบประมาณ {selectedYear} - {role !== "ADMIN" ? (department || "กอง") : selectedDept === "ALL" ? "รวมทุกหน่วยงาน" : selectedDept}
-              </p>
-            </div>
-
             {/* Table */}
             <div className="overflow-x-auto print:overflow-visible">
               <table className="w-full text-sm border-collapse border border-slate-300">
