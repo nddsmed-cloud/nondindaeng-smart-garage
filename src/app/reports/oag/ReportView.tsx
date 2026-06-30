@@ -507,44 +507,28 @@ export default function ReportView({
           </div>
         </div>
 
-        {/* Tab Selection Bar (Screen Only) */}
-        <div className="tab-bar no-print flex gap-2 mb-6 bg-slate-100 p-1.5 rounded-xl self-start w-fit">
-          <button 
-            className={`px-4 py-2 rounded-lg text-sm font-semibold transition-all ${activeTab === 'summary' ? 'bg-white text-teal-800 shadow-sm' : 'text-slate-600 hover:text-slate-900'}`}
-            onClick={() => setActiveTab('summary')}
-          >
-            📊 หน้าสรุป (ฟอร์มพัสดุ)
-          </button>
-          <button 
-            className={`px-4 py-2 rounded-lg text-sm font-semibold transition-all ${activeTab === 'all' ? 'bg-white text-teal-800 shadow-sm' : 'text-slate-600 hover:text-slate-900'}`}
-            onClick={() => setActiveTab('all')}
-          >
-            🗂 แสดงทั้งหมด (สำหรับจัดชุดพิมพ์)
-          </button>
-          <button 
-            className={`px-4 py-2 rounded-lg text-sm font-semibold transition-all ${activeTab === 'part1' ? 'bg-white text-teal-800 shadow-sm' : 'text-slate-600 hover:text-slate-900'}`}
-            onClick={() => setActiveTab('part1')}
-          >
-            ส่วนที่ 1: ทรัพย์สินและค่าเสื่อม
-          </button>
-          <button 
-            className={`px-4 py-2 rounded-lg text-sm font-semibold transition-all ${activeTab === 'part2' ? 'bg-white text-teal-800 shadow-sm' : 'text-slate-600 hover:text-slate-900'}`}
-            onClick={() => setActiveTab('part2')}
-          >
-            ส่วนที่ 2: สิ้นเปลืองเชื้อเพลิง
-          </button>
-          <button 
-            className={`px-4 py-2 rounded-lg text-sm font-semibold transition-all ${activeTab === 'part3' ? 'bg-white text-teal-800 shadow-sm' : 'text-slate-600 hover:text-slate-900'}`}
-            onClick={() => setActiveTab('part3')}
-          >
-            ส่วนที่ 3: ประวัติซ่อมบำรุง
-          </button>
-          <button 
-            className={`px-4 py-2 rounded-lg text-sm font-semibold transition-all ${activeTab === 'part4' ? 'bg-white text-teal-800 shadow-sm' : 'text-slate-600 hover:text-slate-900'}`}
-            onClick={() => setActiveTab('part4')}
-          >
-            ส่วนที่ 4: ประวัติการเดินทาง
-          </button>
+        {/* Report Section Selection (Screen Only) */}
+        <div className="tab-bar no-print mb-8">
+          <div className="max-w-md">
+            <label className="form-label text-slate-600 text-xs font-semibold mb-2 block">📑 เลือกส่วนของรายงานที่ต้องการแสดง</label>
+            <div className="relative">
+              <select 
+                value={activeTab} 
+                onChange={(e) => setActiveTab(e.target.value as any)} 
+                className="form-select w-full rounded-xl border-emerald-200 focus:border-teal-500 focus:ring-teal-500 text-teal-800 font-semibold bg-white shadow-sm cursor-pointer appearance-none py-3 px-4"
+              >
+                <option value="summary">📊 หน้าสรุป (ฟอร์มพัสดุ)</option>
+                <option value="all">🗂 แสดงทั้งหมด (สำหรับจัดชุดพิมพ์)</option>
+                <option value="part1">ส่วนที่ 1: ทรัพย์สินและค่าเสื่อม</option>
+                <option value="part2">ส่วนที่ 2: สิ้นเปลืองเชื้อเพลิง</option>
+                <option value="part3">ส่วนที่ 3: ประวัติซ่อมบำรุง</option>
+                <option value="part4">ส่วนที่ 4: ประวัติการเดินทาง</option>
+              </select>
+              <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-teal-600">
+                <svg className="fill-current h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
+              </div>
+            </div>
+          </div>
         </div>
 
         {/* Dashboard Cards (Only Visible on Screen) */}
