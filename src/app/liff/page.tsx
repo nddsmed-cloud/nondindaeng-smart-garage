@@ -49,8 +49,10 @@ export default function LiffLoginPage() {
           setError(`กลุ่มนี้ยังไม่ได้ลงทะเบียนในระบบ\n\nโปรดแจ้งผู้ดูแลระบบและส่ง Group ID ด้านล่างนี้เพื่อลงทะเบียน:\n\n${context.groupId}`);
           setLoading(false);
         } else {
-          // ล็อกอินสำเร็จ ไปหน้าแดชบอร์ด
-          window.location.href = "/dashboard";
+          // ล็อกอินสำเร็จ เช็คว่ามี ?path= ต่อท้ายหรือไม่ ถ้ามีให้ไปหน้านั้น ถ้าไม่มีไป /dashboard
+          const urlParams = new URLSearchParams(window.location.search);
+          const targetPath = urlParams.get("path") || "/dashboard";
+          window.location.href = targetPath;
         }
 
       } catch (err: any) {
