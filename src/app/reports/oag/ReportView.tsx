@@ -437,135 +437,98 @@ export default function ReportView({
           <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
           </svg>
-          พิมพ์รายงานราชการ (A4 Landscape)
+          พิมพ์รายงานราชการ (A4)
         </button>
       </div>
 
       <div className="print-area">
-        {/* Filters (No Print) */}
-        <div className="card no-print mb-6 bg-white/80 backdrop-blur-md p-6 rounded-2xl border border-emerald-50 shadow-sm">
-          <h3 className="text-base font-bold text-teal-800 mb-4 pb-2 border-b border-teal-100/50 flex items-center gap-2">
-            <span className="text-lg">🔍</span> คัดกรองข้อมูลตรวจสอบ
-          </h3>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-            <div className="form-group">
-              <label className="form-label text-slate-600 text-xs font-semibold mb-1.5 block">ปีงบประมาณ</label>
-              <select value={selectedYear} onChange={e => setSelectedYear(e.target.value)} className="form-select w-full rounded-xl border-emerald-200 focus:border-teal-500 focus:ring-teal-500">
-                {years.map(y => <option key={y} value={y}>{y}</option>)}
-              </select>
-            </div>
-            <div className="form-group">
-              <label className="form-label text-slate-600 text-xs font-semibold mb-1.5 block">ไตรมาส</label>
-              <select value={selectedQuarter} onChange={e => setSelectedQuarter(e.target.value)} className="form-select w-full rounded-xl border-emerald-200 focus:border-teal-500 focus:ring-teal-500">
-                <option value="ALL">รวมทั้งปีงบประมาณ</option>
-                <option value="Q1">ไตรมาส 1 (ต.ค. - ธ.ค.)</option>
-                <option value="Q2">ไตรมาส 2 (ม.ค. - มี.ค.)</option>
-                <option value="Q3">ไตรมาส 3 (เม.ย. - มิ.ย.)</option>
-                <option value="Q4">ไตรมาส 4 (ก.ค. - ก.ย.)</option>
-              </select>
-            </div>
-            {role === "ADMIN" && (
+        {/* Filters and Selection (No Print) */}
+        <div className="card max-w-5xl no-print mb-8">
+          <div className="form-section">
+            <h3 className="form-section-title flex items-center gap-2">
+              <span className="text-base">🔍</span> คัดกรองข้อมูลตรวจสอบ
+            </h3>
+            <div className="form-grid">
               <div className="form-group">
-                <label className="form-label text-slate-600 text-xs font-semibold mb-1.5 block">กอง / หน่วยงาน</label>
-                <select value={selectedDept} onChange={e => { setSelectedDept(e.target.value); setSelectedVehicle("ALL"); }} className="form-select w-full rounded-xl border-emerald-200 focus:border-teal-500 focus:ring-teal-500">
-                  <option value="ALL">ทั้งหมด (ทุกกอง/หน่วยงาน)</option>
-                  {departments.map(d => <option key={d} value={d!}>{d}</option>)}
+                <label className="form-label">ปีงบประมาณ</label>
+                <select value={selectedYear} onChange={e => setSelectedYear(e.target.value)} className="form-select">
+                  {years.map(y => <option key={y} value={y}>{y}</option>)}
                 </select>
               </div>
-            )}
-            <div className="form-group">
-              <label className="form-label text-slate-600 text-xs font-semibold mb-1.5 block">ยานพาหนะเฉพาะคัน</label>
-              <select value={selectedVehicle} onChange={e => setSelectedVehicle(e.target.value)} className="form-select w-full border-teal-300 bg-teal-50/50 rounded-xl focus:border-teal-500 focus:ring-teal-500">
-                <option value="ALL">รวมรถทุกคัน</option>
-                {availableVehicles.map(v => (
-                  <option key={v.id} value={v.id}>{v.licensePlate} ({v.vehicleType})</option>
-                ))}
-              </select>
-            </div>
-          </div>
-
-          <h3 className="text-base font-bold text-teal-800 mb-4 pb-2 border-b border-teal-100/50 flex items-center gap-2">
-            <span className="text-lg">✍️</span> ข้อมูลผู้ลงนามในเอกสารควบคุม
-          </h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-             <div className="form-group">
-              <label className="form-label text-slate-600 text-xs font-semibold mb-1.5 block">ชื่อผู้จัดทำรายงาน</label>
-              <input type="text" value={reporterName} onChange={e => setReporterName(e.target.value)} className="form-input w-full rounded-xl border-emerald-200 focus:border-teal-500 focus:ring-teal-500" placeholder="นาย/นาง..." />
-            </div>
-             <div className="form-group">
-              <label className="form-label text-slate-600 text-xs font-semibold mb-1.5 block">ตำแหน่งผู้จัดทำ</label>
-              <input type="text" value={reporterPos} onChange={e => setReporterPos(e.target.value)} className="form-input w-full rounded-xl border-emerald-200 focus:border-teal-500 focus:ring-teal-500" placeholder="เจ้าพนักงาน..." />
-            </div>
-             <div className="form-group">
-              <label className="form-label text-slate-600 text-xs font-semibold mb-1.5 block">ชื่อผู้ตรวจสอบ</label>
-              <input type="text" value={reviewerName} onChange={e => setReviewerName(e.target.value)} className="form-input w-full rounded-xl border-emerald-200 focus:border-teal-500 focus:ring-teal-500" placeholder="นาย/นาง..." />
-            </div>
-             <div className="form-group">
-              <label className="form-label text-slate-600 text-xs font-semibold mb-1.5 block">ตำแหน่งผู้ตรวจสอบ</label>
-              <input type="text" value={reviewerPos} onChange={e => setReviewerPos(e.target.value)} className="form-input w-full rounded-xl border-emerald-200 focus:border-teal-500 focus:ring-teal-500" placeholder="ผู้อำนวยการ..." />
-            </div>
-          </div>
-        </div>
-
-        {/* Report Section Selection (Screen Only) */}
-        <div className="tab-bar no-print mb-8">
-          <div className="max-w-md">
-            <label className="form-label text-slate-600 text-xs font-semibold mb-2 block">📑 เลือกส่วนของรายงานที่ต้องการแสดง</label>
-            <div className="relative">
-              <select 
-                value={activeTab} 
-                onChange={(e) => setActiveTab(e.target.value as any)} 
-                className="form-select w-full rounded-xl border-emerald-200 focus:border-teal-500 focus:ring-teal-500 text-teal-800 font-semibold bg-white shadow-sm cursor-pointer appearance-none py-3 px-4"
-              >
-                <option value="summary">📊 หน้าสรุป (ฟอร์มพัสดุ)</option>
-                <option value="all">🗂 แสดงทั้งหมด (สำหรับจัดชุดพิมพ์)</option>
-                <option value="part1">ส่วนที่ 1: ทรัพย์สินและค่าเสื่อม</option>
-                <option value="part2">ส่วนที่ 2: สิ้นเปลืองเชื้อเพลิง</option>
-                <option value="part3">ส่วนที่ 3: ประวัติซ่อมบำรุง</option>
-                <option value="part4">ส่วนที่ 4: ประวัติการเดินทาง</option>
-              </select>
-              <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-teal-600">
-                <svg className="fill-current h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
+              <div className="form-group">
+                <label className="form-label">ไตรมาส</label>
+                <select value={selectedQuarter} onChange={e => setSelectedQuarter(e.target.value)} className="form-select">
+                  <option value="ALL">รวมทั้งปีงบประมาณ</option>
+                  <option value="Q1">ไตรมาส 1 (ต.ค. - ธ.ค.)</option>
+                  <option value="Q2">ไตรมาส 2 (ม.ค. - มี.ค.)</option>
+                  <option value="Q3">ไตรมาส 3 (เม.ย. - มิ.ย.)</option>
+                  <option value="Q4">ไตรมาส 4 (ก.ค. - ก.ย.)</option>
+                </select>
+              </div>
+              {role === "ADMIN" && (
+                <div className="form-group">
+                  <label className="form-label">กอง / หน่วยงาน</label>
+                  <select value={selectedDept} onChange={e => { setSelectedDept(e.target.value); setSelectedVehicle("ALL"); }} className="form-select">
+                    <option value="ALL">ทั้งหมด (ทุกกอง/หน่วยงาน)</option>
+                    {departments.map(d => <option key={d} value={d!}>{d}</option>)}
+                  </select>
+                </div>
+              )}
+              <div className="form-group">
+                <label className="form-label">ยานพาหนะเฉพาะคัน</label>
+                <select value={selectedVehicle} onChange={e => setSelectedVehicle(e.target.value)} className="form-select">
+                  <option value="ALL">รวมรถทุกคัน</option>
+                  {availableVehicles.map(v => (
+                    <option key={v.id} value={v.id}>{v.licensePlate} ({v.vehicleType})</option>
+                  ))}
+                </select>
               </div>
             </div>
           </div>
-        </div>
 
-        {/* Dashboard Cards (Only Visible on Screen) */}
-        <div className="grid grid-cols-2 lg:grid-cols-5 gap-6 dashboard-cards mb-8">
-          <div className="bg-white p-5 rounded-2xl border border-emerald-100 shadow-sm flex items-center gap-4 transition-all duration-300 hover:shadow-md hover:-translate-y-0.5">
-            <div className="w-12 h-12 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center text-xl font-bold">🚗</div>
-            <div>
-              <div className="text-xs text-slate-500 font-semibold uppercase tracking-wider">รถที่แสดงผล</div>
-              <div className="text-xl font-bold text-slate-800 mt-0.5">{summary.vehiclesCount} คัน</div>
+          <div className="form-section mt-8">
+            <h3 className="form-section-title flex items-center gap-2">
+              <span className="text-base">✍️</span> ข้อมูลผู้ลงนามในเอกสารควบคุม
+            </h3>
+            <div className="form-grid">
+               <div className="form-group">
+                <label className="form-label">ชื่อผู้จัดทำรายงาน</label>
+                <input type="text" value={reporterName} onChange={e => setReporterName(e.target.value)} className="form-input" placeholder="นาย/นาง..." />
+              </div>
+               <div className="form-group">
+                <label className="form-label">ตำแหน่งผู้จัดทำ</label>
+                <input type="text" value={reporterPos} onChange={e => setReporterPos(e.target.value)} className="form-input" placeholder="เจ้าพนักงาน..." />
+              </div>
+               <div className="form-group">
+                <label className="form-label">ชื่อผู้ตรวจสอบ</label>
+                <input type="text" value={reviewerName} onChange={e => setReviewerName(e.target.value)} className="form-input" placeholder="นาย/นาง..." />
+              </div>
+               <div className="form-group">
+                <label className="form-label">ตำแหน่งผู้ตรวจสอบ</label>
+                <input type="text" value={reviewerPos} onChange={e => setReviewerPos(e.target.value)} className="form-input" placeholder="ผู้อำนวยการ..." />
+              </div>
             </div>
           </div>
-          <div className="bg-white p-5 rounded-2xl border border-emerald-100 shadow-sm flex items-center gap-4 transition-all duration-300 hover:shadow-md hover:-translate-y-0.5">
-            <div className="w-12 h-12 rounded-xl bg-teal-50 text-teal-600 flex items-center justify-center text-xl font-bold">📍</div>
-            <div>
-              <div className="text-xs text-slate-500 font-semibold uppercase tracking-wider">ระยะทางวิ่งรวม</div>
-              <div className="text-xl font-bold text-teal-600 mt-0.5">{summary.distance.toLocaleString()} กม.</div>
-            </div>
-          </div>
-          <div className="bg-white p-5 rounded-2xl border border-emerald-100 shadow-sm flex items-center gap-4 transition-all duration-300 hover:shadow-md hover:-translate-y-0.5">
-            <div className="w-12 h-12 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center text-xl font-bold">⛽</div>
-            <div>
-              <div className="text-xs text-slate-500 font-semibold uppercase tracking-wider">รวมค่าน้ำมัน</div>
-              <div className="text-xl font-bold text-emerald-600 mt-0.5">{summary.fuelCost.toLocaleString("th-TH", { minimumFractionDigits: 2 })} ฿</div>
-            </div>
-          </div>
-          <div className="bg-white p-5 rounded-2xl border border-emerald-100 shadow-sm flex items-center gap-4 transition-all duration-300 hover:shadow-md hover:-translate-y-0.5">
-            <div className="w-12 h-12 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center text-xl font-bold">🔧</div>
-            <div>
-              <div className="text-xs text-slate-500 font-semibold uppercase tracking-wider">รวมค่าซ่อมบำรุง</div>
-              <div className="text-xl font-bold text-amber-600 mt-0.5">{summary.maintCost.toLocaleString("th-TH", { minimumFractionDigits: 2 })} ฿</div>
-            </div>
-          </div>
-          <div className="bg-gradient-to-br from-red-50 to-orange-50 p-5 rounded-2xl border border-red-100 shadow-sm flex items-center gap-4 transition-all duration-300 hover:shadow-md hover:-translate-y-0.5 col-span-2 lg:col-span-1">
-            <div className="w-12 h-12 rounded-xl bg-red-100 text-red-600 flex items-center justify-center text-xl font-bold">💰</div>
-            <div>
-              <div className="text-xs text-red-700 font-bold uppercase tracking-wider">ค่าใช้จ่ายสุทธิ</div>
-              <div className="text-xl font-black text-red-600 mt-0.5">{summary.totalCost.toLocaleString("th-TH", { minimumFractionDigits: 2 })} ฿</div>
+
+          <div className="form-section mt-8">
+            <h3 className="form-section-title flex items-center gap-2">
+              <span className="text-base">📑</span> เลือกส่วนของรายงานที่ต้องการแสดง
+            </h3>
+            <div className="form-grid">
+              <div className="form-group span-2">
+                <select 
+                  value={activeTab} 
+                  onChange={(e) => setActiveTab(e.target.value as any)} 
+                  className="form-select text-teal-800 font-bold bg-teal-50/30"
+                >
+                  <option value="summary">📊 หน้าสรุป (ฟอร์มพัสดุ)</option>
+                  <option value="all">🗂 แสดงทั้งหมด (สำหรับจัดชุดพิมพ์)</option>
+                  <option value="part1">ส่วนที่ 1: ทรัพย์สินและค่าเสื่อม</option>
+                  <option value="part2">ส่วนที่ 2: สิ้นเปลืองเชื้อเพลิง</option>
+                  <option value="part3">ส่วนที่ 3: ประวัติซ่อมบำรุง</option>
+                  <option value="part4">ส่วนที่ 4: ประวัติการเดินทาง</option>
+                </select>
+              </div>
             </div>
           </div>
         </div>
