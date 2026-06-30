@@ -52,6 +52,7 @@ model Vehicle {
   tripLogs        TripLog[]
   fuelLogs        FuelLog[]
   maintenanceLogs MaintenanceLog[]
+  vehicleRequests VehicleRequest[]
 
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
@@ -70,6 +71,11 @@ model VehicleRequest {
   destination   String   @default("")
   status        String   @default("รออนุมัติ")
   note          String   @default("")
+
+  // การเชื่อมโยงรถยนต์และเลขไมล์เริ่มต้น
+  vehicleId     String?  @map("vehicle_id")
+  vehicle       Vehicle? @relation(fields: [vehicleId], references: [id])
+  startMileage  Int?     @map("start_mileage")
 
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt

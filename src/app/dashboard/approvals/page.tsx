@@ -8,6 +8,15 @@ export default async function ApprovalsPage() {
   const role = session?.user?.role;
   const department = session?.user?.department;
 
+  if (role === "OFFICER" || role === "DRIVER") {
+    return (
+      <div className="max-w-md mx-auto mt-16 p-6 bg-white rounded-xl shadow-md border text-center">
+        <h2 className="text-xl font-bold text-red-600">ไม่มีสิทธิ์เข้าถึง</h2>
+        <p className="text-slate-500 mt-2">เฉพาะผู้ดูแลระบบและผู้อำนวยการเท่านั้นที่สามารถพิจารณาอนุมัติคำขอได้</p>
+      </div>
+    );
+  }
+
   // คัดกรองคำขอตามหน่วยงาน (ยกเว้น ADMIN ที่เห็นทั้งหมด)
   const whereClause = role === "ADMIN" ? {} : { department };
 
@@ -20,6 +29,12 @@ export default async function ApprovalsPage() {
   // ฟังก์ชัน Server Action สำหรับอัปเดตสถานะ (ทำงานฝั่งเซิร์ฟเวอร์ทันที)
   async function updateStatus(formData: FormData) {
     "use server";
+    const session = await auth();
+    const role = session?.user?.role;
+    if (role === "OFFICER" || role === "DRIVER") {
+      throw new Error("Unauthorized");
+    }
+
     const id = formData.get("id") as string;
     const status = formData.get("status") as string;
     

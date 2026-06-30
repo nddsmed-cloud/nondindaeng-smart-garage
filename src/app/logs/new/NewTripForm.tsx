@@ -12,13 +12,27 @@ const departments = [
   "กองสาธารณสุข", "กองสวัสดิการสังคม",
 ];
 
-export default function NewTripLogPage({ vehicles }: { vehicles: Vehicle[] }) {
+export default function NewTripLogPage({ 
+  vehicles,
+  searchParams
+}: { 
+  vehicles: Vehicle[],
+  searchParams?: { [key: string]: string | undefined }
+}) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isLiff, setIsLiff] = useState(false);
   const [lockedDate, setLockedDate] = useState("");
-  const [startMileage, setStartMileage] = useState<number | string>("");
+  
+  // Controlled form states pre-filled from searchParams
+  const [selectedVehicleId, setSelectedVehicleId] = useState(searchParams?.vehicleId || "");
+  const [driverName, setDriverName] = useState(searchParams?.driver || "");
+  const [selectedDept, setSelectedDept] = useState(searchParams?.dept || "");
+  const [destination, setDestination] = useState(searchParams?.dest || "");
+  const [purpose, setPurpose] = useState(searchParams?.purpose || "");
+  const [startMileage, setStartMileage] = useState<number | string>(searchParams?.startMileage || "");
+  
   const router = useRouter();
-
+ 
   useEffect(() => {
     // 1. Initialize LIFF check
     const checkLiff = async () => {
@@ -33,7 +47,7 @@ export default function NewTripLogPage({ vehicles }: { vehicles: Vehicle[] }) {
       }
     };
     checkLiff();
-
+ 
     // 2. Lock current date to Server/Device Time (Anti-fraud for OAG)
     const today = new Date();
     // Offset for local timezone correctly
@@ -41,9 +55,9 @@ export default function NewTripLogPage({ vehicles }: { vehicles: Vehicle[] }) {
       .toISOString().split("T")[0];
     setLockedDate(localDateString);
   }, []);
-
+ 
   const ready = vehicles.filter((v) => v.status === "พร้อมใช้งาน");
-
+ 
   const handleSubmit = async (formData: FormData) => {
     setIsSubmitting(true);
     try {
@@ -57,7 +71,7 @@ export default function NewTripLogPage({ vehicles }: { vehicles: Vehicle[] }) {
       setIsSubmitting(false);
     }
   };
-
+ 
   return (
     <>
       <div className="page-header">
@@ -67,12 +81,13 @@ export default function NewTripLogPage({ vehicles }: { vehicles: Vehicle[] }) {
         </div>
         <Link href="/logs" className="btn btn-ghost">← กลับ</Link>
       </div>
-
+ 
       <div className="card">
         <form action={handleSubmit}>
           {/* Hidden flag to tell Server Action not to redirect if in LIFF */}
           <input type="hidden" name="isLiff" value={isLiff ? "true" : "false"} />
-
+          <input type="hidden" name="requestId" value={searchParams?.requestId || ""} />
+ 
           <div className="form-section">
             <div className="form-section-title">ข้อมูลรถและคนขับ</div>
             <div className="form-grid">
@@ -82,8 +97,10 @@ export default function NewTripLogPage({ vehicles }: { vehicles: Vehicle[] }) {
                   name="vehicleId" 
                   required 
                   className="form-select"
+                  value={selectedVehicleId}
                   onChange={async (e) => {
                     const vid = e.target.value;
+                    setSelectedVehicleId(vid);
                     if (vid) {
                       const latest = await getLatestMileage(vid);
                       setStartMileage(latest);
@@ -107,11 +124,24 @@ export default function NewTripLogPage({ vehicles }: { vehicles: Vehicle[] }) {
               </div>
               <div className="form-group">
                 <label className="form-label">ชื่อคนขับ *</label>
-                <input type="text" name="driverName" required placeholder="ระบุชื่อ-สกุลคนขับ" className="form-input" />
+                <input 
+                  type="text" 
+                  name="driverName" 
+                  required 
+                  placeholder="ระบุชื่อ-สกุลคนขับ" 
+                  className="form-input" 
+                  value={driverName}
+                  onChange={e => setDriverName(e.target.value)}
+                />
               </div>
               <div className="form-group">
                 <label className="form-label">สังกัด *</label>
-                <select name="department" className="form-select">
+                <select 
+                  name="department" 
+                  className="form-select"
+                  value={selectedDept}
+                  onChange={e => setSelectedDept(e.target.value)}
+                >
                   {departments.map((d) => <option key={d} value={d}>{d}</option>)}
                 </select>
               </div>
@@ -128,13 +158,21 @@ export default function NewTripLogPage({ vehicles }: { vehicles: Vehicle[] }) {
               </div>
             </div>
           </div>
-
+ 
           <div className="form-section">
             <div className="form-section-title">รายละเอียดการเดินทาง</div>
             <div className="form-grid">
               <div className="form-group">
                 <label className="form-label">ปลายทาง *</label>
-                <input type="text" name="destination" required placeholder="เช่น ที่ว่าการอำเภอ" className="form-input" />
+                <input 
+                  type="text" 
+                  name="destination" 
+                  required 
+                  placeholder="เช่น ที่ว่าการอำเภอ" 
+                  className="form-input" 
+                  value={destination}
+                  onChange={e => setDestination(e.target.value)}
+                />
               </div>
               <div className="form-group">
                 <label className="form-label">เลขไมล์ตอนออก *</label>
@@ -151,7 +189,15 @@ export default function NewTripLogPage({ vehicles }: { vehicles: Vehicle[] }) {
               </div>
               <div className="form-group span-2">
                 <label className="form-label">วัตถุประสงค์ *</label>
-                <textarea name="purpose" required rows={3} placeholder="ระบุวัตถุประสงค์การเดินทาง..." className="form-textarea" />
+                <textarea 
+                  name="purpose" 
+                  required 
+                  rows={3} 
+                  placeholder="ระบุวัตถุประสงค์การเดินทาง..." 
+                  className="form-textarea" 
+                  value={purpose}
+                  onChange={e => setPurpose(e.target.value)}
+                />
               </div>
             </div>
           </div>

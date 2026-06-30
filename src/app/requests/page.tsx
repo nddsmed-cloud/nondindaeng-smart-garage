@@ -34,7 +34,7 @@ export default async function RequestsPage() {
         </Link>
       </div>
 
-      <RequestsTable requests={requests} />
+      <RequestsTable requests={requests} role={role} />
     </>
   );
 }

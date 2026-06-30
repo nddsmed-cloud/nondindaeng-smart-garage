@@ -26,9 +26,19 @@ export async function getLatestMileage(vehicleId: string): Promise<number> {
 export async function createTripLog(formData: FormData) {
   const session = await auth();
   const userId = session?.user?.id;
+  const requestId = formData.get("requestId") as string;
+
+  if (requestId) {
+    await prisma.vehicleRequest.update({
+      where: { id: requestId },
+      data: { status: "กำลังเดินทาง" },
+    });
+  }
+
+  const vehicleId = formData.get("vehicleId") as string;
   await prisma.tripLog.create({
     data: {
-      vehicleId: formData.get("vehicleId") as string,
+      vehicleId,
       driverName: formData.get("driverName") as string,
       department: formData.get("department") as string,
       destination: formData.get("destination") as string,
@@ -38,6 +48,13 @@ export async function createTripLog(formData: FormData) {
       userId,
     },
   });
+
+  // อัปเดตสถานะรถยนต์เป็น อยู่ระหว่างเดินทาง
+  await prisma.vehicle.update({
+    where: { id: vehicleId },
+    data: { status: "อยู่ระหว่างเดินทาง" },
+  });
+
   revalidatePath("/logs");
   revalidatePath("/dashboard");
   
@@ -58,6 +75,27 @@ export async function completeTripLog(id: string, endMileage: number) {
       status: "เสร็จสิ้น",
     },
   });
+
+  // อัปเดตสถานะรถยนต์กลับเป็น พร้อมใช้งาน
+  await prisma.vehicle.update({
+    where: { id: trip.vehicleId },
+    data: { status: "พร้อมใช้งาน" },
+  });
+
+  // ค้นหาใบขอใช้รถที่กำลังเดินทางอยู่ของรถคันนี้ แล้วเปลี่ยนสถานะเป็น เสร็จสิ้น
+  const activeReq = await prisma.vehicleRequest.findFirst({
+    where: {
+      vehicleId: trip.vehicleId,
+      status: "กำลังเดินทาง",
+    },
+  });
+  if (activeReq) {
+    await prisma.vehicleRequest.update({
+      where: { id: activeReq.id },
+      data: { status: "เสร็จสิ้น" },
+    });
+  }
+
   revalidatePath("/logs");
 }
 
@@ -72,6 +110,15 @@ export async function deleteTripLog(id: string) {
   if (role !== "ADMIN" && log.department !== dept) throw new Error("Unauthorized");
 
   await prisma.tripLog.delete({ where: { id } });
+
+  // คืนสถานะรถเป็น พร้อมใช้งาน หากทริปนี้ยังไม่เสร็จแล้วถูกลบ
+  if (log.status === "กำลังเดินทาง") {
+    await prisma.vehicle.update({
+      where: { id: log.vehicleId },
+      data: { status: "พร้อมใช้งาน" },
+    });
+  }
+
   revalidatePath("/logs");
   revalidatePath("/dashboard");
 }

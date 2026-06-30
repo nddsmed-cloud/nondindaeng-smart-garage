@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { approveRequest, rejectRequest, deleteRequest } from "./actions";
+import Link from "next/link";
 
 type Request = {
   id: string;
@@ -12,10 +13,12 @@ type Request = {
   travelDate: string;
   destination: string;
   status: string;
+  vehicleId: string | null;
+  startMileage: number | null;
   createdAt: Date;
 };
 
-export default function RequestsTable({ requests }: { requests: Request[] }) {
+export default function RequestsTable({ requests, role }: { requests: Request[]; role?: string }) {
   const [loadingId, setLoadingId] = useState<string | null>(null);
   const [search, setSearch] = useState("");
 
@@ -29,6 +32,7 @@ export default function RequestsTable({ requests }: { requests: Request[] }) {
       "รออนุมัติ": "badge-yellow",
       "อนุมัติแล้ว": "badge-green",
       "ไม่อนุมัติ": "badge-red",
+      "เสร็จสิ้น": "badge-green",
     };
     return map[status] || "badge-blue";
   };
@@ -112,7 +116,16 @@ export default function RequestsTable({ requests }: { requests: Request[] }) {
                   </td>
                   <td style={{ textAlign: "right" }}>
                     <div style={{ display: "flex", gap: 6, justifyContent: "flex-end" }}>
-                      {req.status === "รออนุมัติ" && (
+                      {req.status === "อนุมัติแล้ว" && (
+                        <Link
+                          href={`/logs/new?requestId=${req.id}&vehicleId=${req.vehicleId || ""}&startMileage=${req.startMileage || ""}&dept=${encodeURIComponent(req.department)}&dest=${encodeURIComponent(req.destination)}&purpose=${encodeURIComponent(req.purpose)}&driver=${encodeURIComponent(req.requesterName)}`}
+                          className="btn btn-success btn-sm"
+                          style={{ textDecoration: "none", fontSize: "11px", whiteSpace: "nowrap" }}
+                        >
+                          🚀 บันทึกเดินทาง
+                        </Link>
+                      )}
+                      {req.status === "รออนุมัติ" && (role === "ADMIN" || role === "MANAGER") && (
                         <>
                           <button
                             onClick={() => handleApprove(req.id)}

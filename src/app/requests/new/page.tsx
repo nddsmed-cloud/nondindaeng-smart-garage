@@ -1,7 +1,7 @@
 "use client";
 
-import { useState } from "react";
-import { createRequest } from "../actions";
+import { useState, useEffect } from "react";
+import { createRequest, getVehiclesByDepartment } from "../actions";
 import Link from "next/link";
 
 const departments = [
@@ -9,10 +9,49 @@ const departments = [
   "กองสาธารณสุข", "กองสวัสดิการสังคม",
 ];
 
-const vehicleTypes = ["รถกระบะ", "รถตู้", "รถเก๋ง", "รถบรรทุกน้ำ", "รถบรรทุก"];
-
 export default function NewRequestPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [selectedDept, setSelectedDept] = useState(departments[0]);
+  const [availableVehicles, setAvailableVehicles] = useState<any[]>([]);
+  const [selectedVehicleId, setSelectedVehicleId] = useState("");
+  const [startMileage, setStartMileage] = useState<number | string>("");
+  const [isLoadingVehicles, setIsLoadingVehicles] = useState(false);
+
+  useEffect(() => {
+    let active = true;
+    async function loadVehicles() {
+      setIsLoadingVehicles(true);
+      try {
+        const list = await getVehiclesByDepartment(selectedDept);
+        if (active) {
+          setAvailableVehicles(list);
+          if (list.length > 0) {
+            setSelectedVehicleId(list[0].id);
+            setStartMileage(list[0].latestMileage);
+          } else {
+            setSelectedVehicleId("");
+            setStartMileage("");
+          }
+        }
+      } catch (err) {
+        console.error(err);
+      } finally {
+        if (active) setIsLoadingVehicles(false);
+      }
+    }
+    loadVehicles();
+    return () => { active = false; };
+  }, [selectedDept]);
+
+  const handleVehicleChange = (vid: string) => {
+    setSelectedVehicleId(vid);
+    const vehicle = availableVehicles.find(v => v.id === vid);
+    if (vehicle) {
+      setStartMileage(vehicle.latestMileage);
+    } else {
+      setStartMileage("");
+    }
+  };
 
   return (
     <>
@@ -36,7 +75,12 @@ export default function NewRequestPage() {
               </div>
               <div className="form-group">
                 <label className="form-label">สังกัด (กอง/สำนัก) *</label>
-                <select name="department" className="form-select">
+                <select 
+                  name="department" 
+                  value={selectedDept}
+                  onChange={(e) => setSelectedDept(e.target.value)}
+                  className="form-select"
+                >
                   {departments.map((d) => (
                     <option key={d} value={d}>{d}</option>
                   ))}
@@ -49,12 +93,38 @@ export default function NewRequestPage() {
             <div className="form-section-title">รายละเอียดการเดินทาง</div>
             <div className="form-grid">
               <div className="form-group">
-                <label className="form-label">ประเภทรถที่ต้องการ *</label>
-                <select name="vehicleType" className="form-select">
-                  {vehicleTypes.map((t) => (
-                    <option key={t} value={t}>{t}</option>
-                  ))}
+                <label className="form-label">รถยนต์ที่ต้องการใช้ *</label>
+                <select 
+                  name="vehicleId" 
+                  className="form-select" 
+                  required
+                  value={selectedVehicleId}
+                  onChange={(e) => handleVehicleChange(e.target.value)}
+                >
+                  {isLoadingVehicles ? (
+                    <option value="">⏳ กำลังโหลดข้อมูลรถ...</option>
+                  ) : availableVehicles.length === 0 ? (
+                    <option value="">❌ ไม่มีรถลงทะเบียนในสังกัดนี้</option>
+                  ) : (
+                    availableVehicles.map((v) => (
+                      <option key={v.id} value={v.id}>
+                        {v.licensePlate} — {v.brand} {v.model} ({v.vehicleType})
+                      </option>
+                    ))
+                  )}
                 </select>
+              </div>
+              <div className="form-group">
+                <label className="form-label">เลขไมล์เริ่มต้นสะสม (กม.) *</label>
+                <input 
+                  type="number" 
+                  name="startMileage" 
+                  required 
+                  value={startMileage} 
+                  onChange={(e) => setStartMileage(e.target.value)} 
+                  className="form-input" 
+                  placeholder="ตัวเลขไมล์สะสม"
+                />
               </div>
               <div className="form-group">
                 <label className="form-label">วันที่เดินทาง *</label>

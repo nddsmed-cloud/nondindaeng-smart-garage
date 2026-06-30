@@ -30,10 +30,8 @@ for (let line of lines) {
   
   console.log(`Adding ${key} to Vercel...`);
   try {
-    // Add to production
+    // Add to production only
     execSync(`npx vercel env add ${key} production --value "${val}" --yes --force`, { stdio: 'inherit' });
-    // Add to preview
-    execSync(`npx vercel env add ${key} preview --value "${val}" --yes --force`, { stdio: 'inherit' });
   } catch (err) {
     console.error(`Failed to add ${key}:`, err.message);
   }

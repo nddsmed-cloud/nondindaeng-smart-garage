@@ -8,7 +8,14 @@ export default async function LogsPage() {
   const role = session?.user?.role;
   const userId = session?.user?.id;
 
-  const whereClause = role === "DRIVER" ? { userId } : {};
+  const whereClause = role === "DRIVER" 
+    ? {
+        OR: [
+          { userId },
+          { driverName: session?.user?.name || "" }
+        ]
+      }
+    : {};
 
   const trips = await prisma.tripLog.findMany({
     where: whereClause,

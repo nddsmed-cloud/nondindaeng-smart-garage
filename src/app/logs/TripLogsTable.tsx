@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { deleteTripLog } from "./actions";
+import { deleteTripLog, completeTripLog } from "./actions";
 
 type TripLog = {
   id: string;
@@ -38,6 +38,19 @@ export default function TripLogsTable({ trips, role }: { trips: TripLog[], role:
     if (!confirm("ยืนยันการลบบันทึกนี้?")) return;
     setLoadingId(id);
     await deleteTripLog(id);
+    setLoadingId(null);
+  };
+
+  const handleComplete = async (id: string, startMileage: number) => {
+    const end = prompt(`กรุณากรอกเลขไมล์ขากลับ (เลขไมล์เริ่ม: ${startMileage.toLocaleString()}):`);
+    if (end === null) return; // Cancelled
+    const endMileage = parseInt(end);
+    if (isNaN(endMileage) || endMileage <= startMileage) {
+      alert("กรุณากรอกเลขไมล์ขากลับที่มากกว่าเลขไมล์เริ่ม!");
+      return;
+    }
+    setLoadingId(id);
+    await completeTripLog(id, endMileage);
     setLoadingId(null);
   };
 
@@ -100,15 +113,26 @@ export default function TripLogsTable({ trips, role }: { trips: TripLog[], role:
                   <td>{trip.distance > 0 ? trip.distance.toLocaleString() : "—"}</td>
                   <td><span className={`badge ${statusBadge(trip.status)}`}>{trip.status}</span></td>
                   <td style={{ textAlign: "right" }}>
-                    {role !== "DRIVER" && (
-                      <button
-                        onClick={() => handleDelete(trip.id)}
-                        disabled={loadingId === trip.id}
-                        className="btn btn-danger btn-sm"
-                      >
-                        🗑 ลบ
-                      </button>
-                    )}
+                    <div style={{ display: "flex", gap: 6, justifyContent: "flex-end" }}>
+                      {trip.status === "กำลังเดินทาง" && (
+                        <button
+                          onClick={() => handleComplete(trip.id, trip.startMileage)}
+                          disabled={loadingId === trip.id}
+                          className="btn btn-success btn-sm"
+                        >
+                          🏁 จบการเดินทาง
+                        </button>
+                      )}
+                      {role !== "DRIVER" && (
+                        <button
+                          onClick={() => handleDelete(trip.id)}
+                          disabled={loadingId === trip.id}
+                          className="btn btn-danger btn-sm"
+                        >
+                          🗑 ลบ
+                        </button>
+                      )}
+                    </div>
                   </td>
                 </tr>
               ))
