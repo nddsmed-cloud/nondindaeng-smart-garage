@@ -88,8 +88,8 @@ export default function ReportView({
   const [selectedDept, setSelectedDept] = useState(role === "ADMIN" ? "ALL" : (department || "กอง"));
   const [selectedVehicle, setSelectedVehicle] = useState("ALL");
 
-  // Tab State: 'all' | 'part1' | 'part2' | 'part3' | 'part4'
-  const [activeTab, setActiveTab] = useState<"all" | "part1" | "part2" | "part3" | "part4">("all");
+  // Tab State: 'summary' | 'all' | 'part1' | 'part2' | 'part3' | 'part4'
+  const [activeTab, setActiveTab] = useState<"summary" | "all" | "part1" | "part2" | "part3" | "part4">("summary");
 
   // Defaults for Signature Inputs based on logged-in user
   const defaultReporterPos = currentUser?.role === "OFFICER" ? `เจ้าหน้าที่${currentUser.department ? " " + currentUser.department : "กอง"}` : 
@@ -510,6 +510,12 @@ export default function ReportView({
         {/* Tab Selection Bar (Screen Only) */}
         <div className="tab-bar no-print flex gap-2 mb-6 bg-slate-100 p-1.5 rounded-xl self-start w-fit">
           <button 
+            className={`px-4 py-2 rounded-lg text-sm font-semibold transition-all ${activeTab === 'summary' ? 'bg-white text-teal-800 shadow-sm' : 'text-slate-600 hover:text-slate-900'}`}
+            onClick={() => setActiveTab('summary')}
+          >
+            📊 หน้าสรุป (ฟอร์มพัสดุ)
+          </button>
+          <button 
             className={`px-4 py-2 rounded-lg text-sm font-semibold transition-all ${activeTab === 'all' ? 'bg-white text-teal-800 shadow-sm' : 'text-slate-600 hover:text-slate-900'}`}
             onClick={() => setActiveTab('all')}
           >
@@ -579,6 +585,85 @@ export default function ReportView({
             </div>
           </div>
         </div>
+
+        {/* -------------------- SUMMARY PART (NEW FORM) -------------------- */}
+        {(activeTab === 'all' || activeTab === 'summary') && (
+          <div className={`bg-white p-6 rounded-2xl border border-slate-100 shadow-sm print:shadow-none print:border-none print:p-0 mb-8 print:mb-0 ${activeTab === 'all' ? 'print-section-break' : ''}`}>
+            {/* Header */}
+            <div className="text-center mb-8 flex flex-col items-center">
+              <h2 className="text-2xl font-bold text-teal-900 print:text-black">รายงานรายละเอียดค่าใช้จ่ายและซ่อมบำรุงรักษารถยนต์ส่วนกลาง (พัสดุ)</h2>
+              <p className="text-slate-600 text-lg mt-2 print:text-black">
+                ประจำปีงบประมาณ {selectedYear} - {role !== "ADMIN" ? (department || "กอง") : selectedDept === "ALL" ? "รวมทุกหน่วยงาน" : selectedDept}
+              </p>
+            </div>
+
+            {/* Table */}
+            <div className="overflow-x-auto print:overflow-visible">
+              <table className="w-full text-sm border-collapse border border-slate-300">
+                <thead>
+                  <tr className="bg-slate-50 text-slate-800">
+                    <th className="border border-slate-300 text-center py-3 px-2 w-12">ลำดับ</th>
+                    <th className="border border-slate-300 text-center py-3 px-2">ทะเบียนรถ</th>
+                    <th className="border border-slate-300 text-center py-3 px-2">ประเภทรถ</th>
+                    <th className="border border-slate-300 text-center py-3 px-2">กอง/หน่วยงาน</th>
+                    <th className="border border-slate-300 text-center py-3 px-2">ระยะทางวิ่ง (กม.)</th>
+                    <th className="border border-slate-300 text-center py-3 px-2">น้ำมันที่ใช้ (ลิตร)</th>
+                    <th className="border border-slate-300 text-center py-3 px-2">ค่าน้ำมัน (บาท)</th>
+                    <th className="border border-slate-300 text-center py-3 px-2">ค่าซ่อมบำรุง (บาท)</th>
+                    <th className="border border-slate-300 text-center py-3 px-2">รวมค่าใช้จ่าย (บาท)</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-slate-100">
+                  {reportData.length === 0 ? (
+                    <tr>
+                      <td colSpan={9} className="border border-slate-300 text-center py-10 text-slate-400">ไม่พบข้อมูล</td>
+                    </tr>
+                  ) : (
+                    reportData.map((v, i) => (
+                      <tr key={v.id} className="hover:bg-slate-50/50">
+                        <td className="border border-slate-300 text-center py-3">{i + 1}</td>
+                        <td className="border border-slate-300 text-center font-bold text-slate-800">{v.licensePlate}</td>
+                        <td className="border border-slate-300 text-center">{v.vehicleType}</td>
+                        <td className="border border-slate-300 text-center">{v.department || "-"}</td>
+                        <td className="border border-slate-300 text-right">{v.totalTripDist.toLocaleString()}</td>
+                        <td className="border border-slate-300 text-right">{v.totalFuelLiters > 0 ? v.totalFuelLiters.toLocaleString("th-TH", { minimumFractionDigits: 2 }) : "0.00"}</td>
+                        <td className="border border-slate-300 text-right">{v.totalFuelCost > 0 ? v.totalFuelCost.toLocaleString("th-TH", { minimumFractionDigits: 2 }) : "0.00"}</td>
+                        <td className="border border-slate-300 text-right">{v.totalMaintCost > 0 ? v.totalMaintCost.toLocaleString("th-TH", { minimumFractionDigits: 2 }) : "0.00"}</td>
+                        <td className="border border-slate-300 text-right font-bold text-teal-700">{v.totalCost > 0 ? v.totalCost.toLocaleString("th-TH", { minimumFractionDigits: 2 }) : "0.00"}</td>
+                      </tr>
+                    ))
+                  )}
+                </tbody>
+                {reportData.length > 0 && (
+                  <tfoot>
+                    <tr className="bg-slate-50/50 font-bold border-t border-slate-300 print-total-row">
+                      <td colSpan={4} className="border border-slate-300 text-center py-3 text-slate-800">รวมทั้งสิ้น</td>
+                      <td className="border border-slate-300 text-right py-3">{reportData.reduce((sum, v) => sum + v.totalTripDist, 0).toLocaleString()}</td>
+                      <td className="border border-slate-300 text-right py-3">{reportData.reduce((sum, v) => sum + v.totalFuelLiters, 0) > 0 ? reportData.reduce((sum, v) => sum + v.totalFuelLiters, 0).toLocaleString("th-TH", { minimumFractionDigits: 2 }) : "-"}</td>
+                      <td className="border border-slate-300 text-right py-3">{reportData.reduce((sum, v) => sum + v.totalFuelCost, 0).toLocaleString("th-TH", { minimumFractionDigits: 2 })}</td>
+                      <td className="border border-slate-300 text-right py-3">{reportData.reduce((sum, v) => sum + v.totalMaintCost, 0).toLocaleString("th-TH", { minimumFractionDigits: 2 })}</td>
+                      <td className="border border-slate-300 text-right py-3 font-extrabold text-teal-800">{reportData.reduce((sum, v) => sum + v.totalCost, 0).toLocaleString("th-TH", { minimumFractionDigits: 2 })}</td>
+                    </tr>
+                  </tfoot>
+                )}
+              </table>
+            </div>
+
+            {/* Signatures */}
+            <div className="mt-16 px-10 flex justify-between text-sm print:flex print-signature-area">
+              <div className="text-center w-72">
+                <p>ลงชื่อ..........................................................ผู้จัดทำรายงาน</p>
+                <p className="mt-4">( {reporterName || "เรวัฒน์ แพนพัฒน์"} )</p>
+                <p className="mt-2">ตำแหน่ง {reporterPos || "เจ้าหน้าที่ กองช่าง"}</p>
+              </div>
+              <div className="text-center w-72">
+                <p>ลงชื่อ..........................................................ผู้ตรวจสอบ</p>
+                <p className="mt-4">( {reviewerName || "สรพงษ์ พัฒนะแสง"} )</p>
+                <p className="mt-2">ตำแหน่ง {reviewerPos || "ผู้อำนวยการกองช่าง"}</p>
+              </div>
+            </div>
+          </div>
+        )}
 
         {/* -------------------- PART 1 -------------------- */}
         {(activeTab === 'all' || activeTab === 'part1') && (

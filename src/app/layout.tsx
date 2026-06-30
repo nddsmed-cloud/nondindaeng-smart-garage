@@ -2,7 +2,6 @@ import "./globals.css";
 import { auth } from "../auth";
 import AuthProvider from "../components/AuthProvider";
 import Sidebar from "../components/Sidebar";
-import ThreeBackground from "../components/ThreeBackground";
 
 export const metadata = {
   title: "NDD Smart Garage",
@@ -23,9 +22,6 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         />
       </head>
       <body>
-        {/* Global 3D Background (All Pages) */}
-        <ThreeBackground />
-        
         <AuthProvider session={session}>
           {session ? (
             /* Authenticated layout — with Sidebar */
