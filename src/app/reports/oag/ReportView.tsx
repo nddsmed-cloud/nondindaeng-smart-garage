@@ -512,7 +512,7 @@ export default function ReportView({
 
           <div className="form-section mt-8">
             <h3 className="form-section-title flex items-center gap-2">
-              <span className="text-base">📑</span> เลือกส่วนของรายงานที่ต้องการแสดง
+              <span className="text-base">📑</span> เลือกส่วนของรายงานที่ต้องการพิมพ์
             </h3>
             <div className="form-grid">
               <div className="form-group span-2">
@@ -536,6 +536,14 @@ export default function ReportView({
         {/* -------------------- SUMMARY PART (NEW FORM) -------------------- */}
         {(activeTab === 'all' || activeTab === 'summary') && (
           <div className={`bg-white p-6 rounded-2xl border border-slate-100 shadow-sm print:shadow-none print:border-none print:p-0 mb-8 print:mb-0 ${activeTab === 'all' ? 'print-section-break' : ''}`}>
+            {/* Header */}
+            <div className="text-center mb-8 flex flex-col items-center">
+              <h2 className="text-2xl font-bold text-teal-900 print:text-black">รายงานรายละเอียดค่าใช้จ่ายและซ่อมบำรุงรักษารถยนต์ส่วนกลาง (พัสดุ)</h2>
+              <p className="text-slate-600 text-lg mt-2 print:text-black">
+                ประจำปีงบประมาณ {selectedYear} - {role !== "ADMIN" ? (department || "กอง") : selectedDept === "ALL" ? "รวมทุกหน่วยงาน" : selectedDept}
+              </p>
+            </div>
+
             {/* Table */}
             <div className="overflow-x-auto print:overflow-visible">
               <table className="w-full text-sm border-collapse border border-slate-300">
@@ -590,14 +598,16 @@ export default function ReportView({
 
             {/* Signatures */}
             <div className="mt-16 px-10 flex justify-between text-sm print:flex print-signature-area">
-              <div className="text-center w-72">
-                <p>ลงชื่อ..........................................................ผู้จัดทำรายงาน</p>
-                <p className="mt-4">( {reporterName || "เรวัฒน์ แพนพัฒน์"} )</p>
+              <div className="text-center w-[320px]">
+                <p>ลงชื่อ..........................................................ผู้จัดทำ</p>
+                <p>รายงาน</p>
+                <p className="mt-2">( {reporterName || "เรวัฒน์ แพนพัฒน์"} )</p>
                 <p className="mt-2">ตำแหน่ง {reporterPos || "เจ้าหน้าที่ กองช่าง"}</p>
               </div>
-              <div className="text-center w-72">
+              <div className="text-center w-[320px]">
                 <p>ลงชื่อ..........................................................ผู้ตรวจสอบ</p>
-                <p className="mt-4">( {reviewerName || "สรพงษ์ พัฒนะแสง"} )</p>
+                <p className="invisible">รายงาน</p>
+                <p className="mt-2">( {reviewerName || "สรพงษ์ พัฒนะแสง"} )</p>
                 <p className="mt-2">ตำแหน่ง {reviewerPos || "ผู้อำนวยการกองช่าง"}</p>
               </div>
             </div>
@@ -616,7 +626,7 @@ export default function ReportView({
               </svg>
               <h2 className="text-xl font-bold text-teal-900 print:text-black">ส่วนที่ 1: รายงานคุมยอดบัญชีทรัพย์สินยานพาหนะและการคำนวณค่าเสื่อมราคา</h2>
               <p className="text-slate-500 text-sm mt-1 print:text-black">
-                ประจำปีงบประมาณ พ.ศ. {selectedYear} | ส่วนราชการ: {role !== "ADMIN" ? (department || "กอง") : selectedDept === "ALL" ? "สรุปรวมทุกหน่วยงาน" : selectedDept}
+                ประจำปีงบประมาณ {selectedYear} - {role !== "ADMIN" ? (department || "กอง") : selectedDept === "ALL" ? "รวมทุกหน่วยงาน" : selectedDept}
               </p>
             </div>
 
@@ -709,7 +719,7 @@ export default function ReportView({
               </svg>
               <h2 className="text-xl font-bold text-teal-900 print:text-black">ส่วนที่ 2: รายงานรายละเอียดค่าน้ำมันเชื้อเพลิงและการตรวจสอบอัตราสิ้นเปลือง</h2>
               <p className="text-slate-500 text-sm mt-1 print:text-black">
-                ประจำปีงบประมาณ พ.ศ. {selectedYear} | ส่วนราชการ: {role !== "ADMIN" ? (department || "กอง") : selectedDept === "ALL" ? "สรุปรวมทุกหน่วยงาน" : selectedDept}
+                ประจำปีงบประมาณ {selectedYear} - {role !== "ADMIN" ? (department || "กอง") : selectedDept === "ALL" ? "รวมทุกหน่วยงาน" : selectedDept}
               </p>
             </div>
 
@@ -820,7 +830,7 @@ export default function ReportView({
               </svg>
               <h2 className="text-xl font-bold text-teal-900 print:text-black">ส่วนที่ 3: รายงานคุมรายละเอียดการซ่อมบำรุงรักษา พัสดุ และอะไหล่ยานพาหนะ</h2>
               <p className="text-slate-500 text-sm mt-1 print:text-black">
-                ประจำปีงบประมาณ พ.ศ. {selectedYear} | ส่วนราชการ: {role !== "ADMIN" ? (department || "กอง") : selectedDept === "ALL" ? "สรุปรวมทุกหน่วยงาน" : selectedDept}
+                ประจำปีงบประมาณ {selectedYear} - {role !== "ADMIN" ? (department || "กอง") : selectedDept === "ALL" ? "รวมทุกหน่วยงาน" : selectedDept}
               </p>
             </div>
 
@@ -906,7 +916,7 @@ export default function ReportView({
               </svg>
               <h2 className="text-xl font-bold text-teal-900 print:text-black">ส่วนที่ 4: รายงานประวัติการใช้ยานพาหนะและบันทึกระยะทางการเดินทางราชการ</h2>
               <p className="text-slate-500 text-sm mt-1 print:text-black">
-                ประจำปีงบประมาณ พ.ศ. {selectedYear} | ส่วนราชการ: {role !== "ADMIN" ? (department || "กอง") : selectedDept === "ALL" ? "สรุปรวมทุกหน่วยงาน" : selectedDept}
+                ประจำปีงบประมาณ {selectedYear} - {role !== "ADMIN" ? (department || "กอง") : selectedDept === "ALL" ? "รวมทุกหน่วยงาน" : selectedDept}
               </p>
             </div>
 
