@@ -273,9 +273,16 @@ export default function ReportView({
       <style dangerouslySetInnerHTML={{__html: `
         @import url('https://fonts.googleapis.com/css2?family=Sarabun:wght@400;600;700&display=swap');
         
+        /* Screen preview A4 paper simulation (HIDDEN ON SCREEN) */
+        @media screen {
+          .a4-paper-preview {
+            display: none !important;
+          }
+        }
+
         @media print {
           /* Hide non-print elements */
-          .no-print, .sidebar, header, .page-header, .navbar, .tab-bar { 
+          .no-print, .sidebar, header, .page-header, .navbar, .tab-bar, .app-layout > *:not(.main-content) { 
             display: none !important; 
           }
           
@@ -298,10 +305,10 @@ export default function ReportView({
             width: 100% !important;
           }
           
-          /* Page size configuration with 5mm top margin to align details at the top */
+          /* Page size configuration A4 Landscape */
           @page { 
             size: A4 landscape; 
-            margin: 5mm 15mm 15mm 15mm; 
+            margin: 0; 
           }
           
           body, html { 
@@ -310,7 +317,7 @@ export default function ReportView({
             padding: 0 !important; 
             margin: 0 !important;
             color: black !important;
-            font-family: "Sarabun", "TH Sarabun New", sans-serif !important;
+            font-family: "TH Sarabun New", "TH Sarabun PSK", "Sarabun", sans-serif !important;
             -webkit-print-color-adjust: exact;
             print-color-adjust: exact;
           }
@@ -322,63 +329,47 @@ export default function ReportView({
             box-shadow: none !important; 
             border: none !important; 
             background: transparent !important; 
-            backdrop-filter: none !important; 
-          }
-          
-          /* Remove background colors and shadows from cards */
-          .bg-white, .bg-slate-50, .bg-red-50\/50, .bg-emerald-50\/30, .shadow-sm, .border {
-            background-color: transparent !important;
-            background: transparent !important;
-            box-shadow: none !important;
-            border-color: black !important;
-          }
-          
-          .dashboard-cards { 
-            display: none !important; 
-          }
-          
-          .print-title {
-            font-size: 16pt !important;
-            font-weight: bold !important;
-            text-align: center !important;
-            margin-bottom: 2px !important;
-            color: black !important;
-          }
-          
-          .print-subtitle {
-            font-size: 13pt !important;
-            text-align: center !important;
-            margin-bottom: 12px !important;
-            color: black !important;
           }
 
-          table { 
+          .a4-paper-preview {
+            width: 297mm !important;
+            height: 210mm !important;
+            padding: 2.5cm 2cm 2cm 3cm !important;
+            margin: 0 !important;
+            box-shadow: none !important;
+            border: none !important;
+            background: white !important;
+            page-break-after: always !important;
+            break-after: page !important;
+            box-sizing: border-box !important;
+            font-family: "TH Sarabun New", "TH Sarabun PSK", "Sarabun", sans-serif !important;
+            font-size: 16pt !important;
+            color: black !important;
+          }
+          
+          .a4-paper-preview table { 
             width: 100% !important; 
             border-collapse: collapse !important; 
             margin-top: 10px !important; 
-            font-size: 10pt !important; 
+            font-size: 14pt !important; 
             color: black !important; 
           }
           
-          tr { 
-            background: transparent !important; 
-            page-break-inside: avoid !important;
-          }
-          
-          th, td { 
+          .a4-paper-preview th, 
+          .a4-paper-preview td { 
             border: 1px solid black !important; 
             padding: 4px 6px !important; 
             color: black !important; 
             background: transparent !important; 
           }
           
-          th { 
+          .a4-paper-preview th { 
             font-weight: bold !important; 
             text-align: center !important; 
             background-color: #f3f4f6 !important;
           }
           
-          td { 
+          .a4-paper-preview td { 
             vertical-align: middle; 
           }
           
@@ -411,7 +402,7 @@ export default function ReportView({
             margin-top: 30px !important;
             padding: 0 40px !important;
             page-break-inside: avoid !important;
-            font-size: 11pt !important;
+            font-size: 14pt !important;
             color: black !important;
           }
           
@@ -423,119 +414,119 @@ export default function ReportView({
       `}} />
 
       {/* Screen Header */}
-      <div className="page-header no-print flex justify-between items-center bg-white p-6 rounded-2xl shadow-sm border border-emerald-100 mb-6">
+      <div className="page-header no-print bg-white p-6 rounded-2xl shadow-sm border border-emerald-100 mb-6">
         <div>
           <h1 className="page-title text-2xl font-bold text-teal-800 flex items-center gap-2">
             <span>📋</span> รายงานพัสดุ สตง. (ประเมินค่าใช้จ่ายยานพาหนะ)
           </h1>
           <p className="page-subtitle text-slate-500 text-sm mt-1">แสดงรายละเอียดรายงานควบคุมการใช้งานทรัพย์สินและการใช้เชื้อเพลิงตามระเบียบ</p>
         </div>
-        <button 
-          className="btn bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white font-semibold py-2.5 px-5 rounded-xl shadow-md hover:shadow-lg flex items-center gap-2 transition-all duration-300 hover:-translate-y-0.5 active:translate-y-0" 
-          onClick={handlePrint}
-        >
-          <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
-          </svg>
-          พิมพ์รายงานราชการ (A4)
-        </button>
       </div>
 
       <div className="print-area">
-        {/* Filters and Selection (No Print) */}
-        <div className="card max-w-5xl no-print mb-8">
-          <div className="form-section">
-            <h3 className="form-section-title flex items-center gap-2">
-              <span className="text-base">🔍</span> คัดกรองข้อมูลตรวจสอบ
-            </h3>
-            <div className="form-grid">
-              <div className="form-group">
-                <label className="form-label">ปีงบประมาณ</label>
-                <select value={selectedYear} onChange={e => setSelectedYear(e.target.value)} className="form-select">
-                  {years.map(y => <option key={y} value={y}>{y}</option>)}
-                </select>
-              </div>
-              <div className="form-group">
-                <label className="form-label">ไตรมาส</label>
-                <select value={selectedQuarter} onChange={e => setSelectedQuarter(e.target.value)} className="form-select">
-                  <option value="ALL">รวมทั้งปีงบประมาณ</option>
-                  <option value="Q1">ไตรมาส 1 (ต.ค. - ธ.ค.)</option>
-                  <option value="Q2">ไตรมาส 2 (ม.ค. - มี.ค.)</option>
-                  <option value="Q3">ไตรมาส 3 (เม.ย. - มิ.ย.)</option>
-                  <option value="Q4">ไตรมาส 4 (ก.ค. - ก.ย.)</option>
-                </select>
-              </div>
-              {role === "ADMIN" && (
+        {/* Unified Report Configuration Card (No Print) */}
+        <div className="card max-w-5xl no-print mb-8 bg-[var(--bg-card)] border border-[var(--border)] p-6 rounded-xl shadow-sm">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            {/* Left Side: Report Filters */}
+            <div className="space-y-4">
+              <h3 className="text-sm font-bold text-slate-700 border-b pb-2 border-slate-200">คัดกรองข้อมูลรายงาน</h3>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="form-group">
-                  <label className="form-label">กอง / หน่วยงาน</label>
-                  <select value={selectedDept} onChange={e => { setSelectedDept(e.target.value); setSelectedVehicle("ALL"); }} className="form-select">
-                    <option value="ALL">ทั้งหมด (ทุกกอง/หน่วยงาน)</option>
-                    {departments.map(d => <option key={d} value={d!}>{d}</option>)}
+                  <label className="form-label">ปีงบประมาณ</label>
+                  <select value={selectedYear} onChange={e => setSelectedYear(e.target.value)} className="form-select">
+                    {years.map(y => <option key={y} value={y}>{y}</option>)}
                   </select>
                 </div>
-              )}
-              <div className="form-group">
-                <label className="form-label">ยานพาหนะเฉพาะคัน</label>
-                <select value={selectedVehicle} onChange={e => setSelectedVehicle(e.target.value)} className="form-select">
-                  <option value="ALL">รวมรถทุกคัน</option>
-                  {availableVehicles.map(v => (
-                    <option key={v.id} value={v.id}>{v.licensePlate} ({v.vehicleType})</option>
-                  ))}
-                </select>
+                <div className="form-group">
+                  <label className="form-label">ไตรมาส</label>
+                  <select value={selectedQuarter} onChange={e => setSelectedQuarter(e.target.value)} className="form-select">
+                    <option value="ALL">รวมทั้งปีงบประมาณ</option>
+                    <option value="Q1">ไตรมาส 1 (ต.ค. - ธ.ค.)</option>
+                    <option value="Q2">ไตรมาส 2 (ม.ค. - มี.ค.)</option>
+                    <option value="Q3">ไตรมาส 3 (เม.ย. - มิ.ย.)</option>
+                    <option value="Q4">ไตรมาส 4 (ก.ค. - ก.ย.)</option>
+                  </select>
+                </div>
+                {role === "ADMIN" && (
+                  <div className="form-group">
+                    <label className="form-label">กอง / หน่วยงาน</label>
+                    <select value={selectedDept} onChange={e => { setSelectedDept(e.target.value); setSelectedVehicle("ALL"); }} className="form-select">
+                      <option value="ALL">ทั้งหมด (ทุกกอง/หน่วยงาน)</option>
+                      {departments.map(d => <option key={d} value={d!}>{d}</option>)}
+                    </select>
+                  </div>
+                )}
+                <div className="form-group">
+                  <label className="form-label">ยานพาหนะเฉพาะคัน</label>
+                  <select value={selectedVehicle} onChange={e => setSelectedVehicle(e.target.value)} className="form-select">
+                    <option value="ALL">รวมรถทุกคัน</option>
+                    {availableVehicles.map(v => (
+                      <option key={v.id} value={v.id}>{v.licensePlate} ({v.vehicleType})</option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            {/* Right Side: Signatures */}
+            <div className="space-y-4">
+              <h3 className="text-sm font-bold text-slate-700 border-b pb-2 border-slate-200">ข้อมูลผู้ลงนามในเอกสารควบคุม</h3>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div className="form-group">
+                  <label className="form-label">ชื่อผู้จัดทำรายงาน</label>
+                  <input type="text" value={reporterName} onChange={e => setReporterName(e.target.value)} className="form-input" placeholder="นาย/นาง..." />
+                </div>
+                <div className="form-group">
+                  <label className="form-label">ตำแหน่งผู้จัดทำ</label>
+                  <input type="text" value={reporterPos} onChange={e => setReporterPos(e.target.value)} className="form-input" placeholder="เจ้าพนักงาน..." />
+                </div>
+                <div className="form-group">
+                  <label className="form-label">ชื่อผู้ตรวจสอบ</label>
+                  <input type="text" value={reviewerName} onChange={e => setReviewerName(e.target.value)} className="form-input" placeholder="นาย/นาง..." />
+                </div>
+                <div className="form-group">
+                  <label className="form-label">ตำแหน่งผู้ตรวจสอบ</label>
+                  <input type="text" value={reviewerPos} onChange={e => setReviewerPos(e.target.value)} className="form-input" placeholder="ผู้อำนวยการ..." />
+                </div>
               </div>
             </div>
           </div>
 
-          <div className="form-section mt-8">
-            <h3 className="form-section-title flex items-center gap-2">
-              <span className="text-base">✍️</span> ข้อมูลผู้ลงนามในเอกสารควบคุม
-            </h3>
-            <div className="form-grid">
-               <div className="form-group">
-                <label className="form-label">ชื่อผู้จัดทำรายงาน</label>
-                <input type="text" value={reporterName} onChange={e => setReporterName(e.target.value)} className="form-input" placeholder="นาย/นาง..." />
-              </div>
-               <div className="form-group">
-                <label className="form-label">ตำแหน่งผู้จัดทำ</label>
-                <input type="text" value={reporterPos} onChange={e => setReporterPos(e.target.value)} className="form-input" placeholder="เจ้าพนักงาน..." />
-              </div>
-               <div className="form-group">
-                <label className="form-label">ชื่อผู้ตรวจสอบ</label>
-                <input type="text" value={reviewerName} onChange={e => setReviewerName(e.target.value)} className="form-input" placeholder="นาย/นาง..." />
-              </div>
-               <div className="form-group">
-                <label className="form-label">ตำแหน่งผู้ตรวจสอบ</label>
-                <input type="text" value={reviewerPos} onChange={e => setReviewerPos(e.target.value)} className="form-input" placeholder="ผู้อำนวยการ..." />
-              </div>
+          {/* Bottom Actions */}
+          <div className="mt-6 pt-6 border-t border-slate-200 space-y-6">
+            <div className="form-group max-w-md mx-auto">
+              <label className="form-label text-center block mb-2 font-semibold text-slate-600">เลือกส่วนของรายงานที่ต้องการพิมพ์</label>
+              <select 
+                value={activeTab} 
+                onChange={(e) => setActiveTab(e.target.value as any)} 
+                className="form-select font-bold text-center"
+              >
+                <option value="summary">📊 หน้าสรุป (ฟอร์มพัสดุ)</option>
+                <option value="all">🗂 แสดงทั้งหมด (สำหรับจัดชุดพิมพ์)</option>
+                <option value="part1">ส่วนที่ 1: ทรัพย์สินและค่าเสื่อม</option>
+                <option value="part2">ส่วนที่ 2: สิ้นเปลืองเชื้อเพลิง</option>
+                <option value="part3">ส่วนที่ 3: ประวัติซ่อมบำรุง</option>
+                <option value="part4">ส่วนที่ 4: ประวัติการเดินทาง</option>
+              </select>
             </div>
-          </div>
 
-          <div className="form-section mt-8">
-            <h3 className="form-section-title flex items-center gap-2">
-              <span className="text-base">📑</span> เลือกส่วนของรายงานที่ต้องการพิมพ์
-            </h3>
-            <div className="form-grid">
-              <div className="form-group span-2">
-                <select 
-                  value={activeTab} 
-                  onChange={(e) => setActiveTab(e.target.value as any)} 
-                  className="form-select text-teal-800 font-bold bg-teal-50/30"
-                >
-                  <option value="summary">📊 หน้าสรุป (ฟอร์มพัสดุ)</option>
-                  <option value="all">🗂 แสดงทั้งหมด (สำหรับจัดชุดพิมพ์)</option>
-                  <option value="part1">ส่วนที่ 1: ทรัพย์สินและค่าเสื่อม</option>
-                  <option value="part2">ส่วนที่ 2: สิ้นเปลืองเชื้อเพลิง</option>
-                  <option value="part3">ส่วนที่ 3: ประวัติซ่อมบำรุง</option>
-                  <option value="part4">ส่วนที่ 4: ประวัติการเดินทาง</option>
-                </select>
-              </div>
+            <div className="flex justify-center pt-2">
+              <button
+                onClick={handlePrint}
+                className="bg-[#1E3A8A] hover:bg-[#0F172A] text-white font-black text-xl py-4 px-12 rounded-2xl shadow-[0_10px_25px_-5px_rgba(30,58,138,0.3)] hover:shadow-[0_15px_30px_-5px_rgba(15,23,42,0.4)] hover:-translate-y-1 active:translate-y-0 active:scale-95 transition-all duration-300 flex items-center justify-center gap-3 w-full max-w-lg cursor-pointer"
+              >
+                <span className="text-2xl">🖨️</span> สั่งพิมพ์รายงาน สตง. (A4)
+              </button>
             </div>
           </div>
         </div>
 
+        {/* Report Content (Hidden on screen, always shown on print) */}
+        <div className="hidden print:block">
+
         {/* -------------------- SUMMARY PART (NEW FORM) -------------------- */}
         {(activeTab === 'all' || activeTab === 'summary') && (
-          <div className={`bg-white p-6 rounded-2xl border border-slate-100 shadow-sm print:shadow-none print:border-none print:p-0 mb-8 print:mb-0 ${activeTab === 'all' ? 'print-section-break' : ''}`}>
+          <div className={`a4-paper-preview ${activeTab === 'all' ? 'print-section-break' : ''}`}>
             {/* Header */}
             <div className="text-center mb-8 flex flex-col items-center">
               <h2 className="text-2xl font-bold text-teal-900 print:text-black">รายงานรายละเอียดค่าใช้จ่ายและซ่อมบำรุงรักษารถยนต์ส่วนกลาง (พัสดุ)</h2>
@@ -616,7 +607,7 @@ export default function ReportView({
 
         {/* -------------------- PART 1 -------------------- */}
         {(activeTab === 'all' || activeTab === 'part1') && (
-          <div className="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm print:shadow-none print:border-none print:p-0 mb-8 print:mb-0">
+          <div className="a4-paper-preview">
             {/* Header */}
             <div className="text-center mb-6 flex flex-col items-center">
 
@@ -705,7 +696,7 @@ export default function ReportView({
 
         {/* -------------------- PART 2 -------------------- */}
         {(activeTab === 'all' || activeTab === 'part2') && (
-          <div className={`bg-white p-6 rounded-2xl border border-slate-100 shadow-sm print:shadow-none print:border-none print:p-0 mb-8 print:mb-0 ${activeTab === 'all' ? 'print-section-break' : ''}`}>
+          <div className={`a4-paper-preview ${activeTab === 'all' ? 'print-section-break' : ''}`}>
             {/* Header */}
             <div className="text-center mb-6 flex flex-col items-center">
 
@@ -812,7 +803,7 @@ export default function ReportView({
 
         {/* -------------------- PART 3 -------------------- */}
         {(activeTab === 'all' || activeTab === 'part3') && (
-          <div className={`bg-white p-6 rounded-2xl border border-slate-100 shadow-sm print:shadow-none print:border-none print:p-0 mb-8 print:mb-0 ${activeTab === 'all' ? 'print-section-break' : ''}`}>
+          <div className={`a4-paper-preview ${activeTab === 'all' ? 'print-section-break' : ''}`}>
             {/* Header */}
             <div className="text-center mb-6 flex flex-col items-center">
 
@@ -894,7 +885,7 @@ export default function ReportView({
 
         {/* -------------------- PART 4 -------------------- */}
         {(activeTab === 'all' || activeTab === 'part4') && (
-          <div className={`bg-white p-6 rounded-2xl border border-slate-100 shadow-sm print:shadow-none print:border-none print:p-0 mb-8 print:mb-0 ${activeTab === 'all' ? 'print-section-break' : ''}`}>
+          <div className={`a4-paper-preview ${activeTab === 'all' ? 'print-section-break' : ''}`}>
             {/* Header */}
             <div className="text-center mb-6 flex flex-col items-center">
 
@@ -979,7 +970,7 @@ export default function ReportView({
             </div>
           </div>
         )}
-
+        </div>
       </div>
     </>
   );

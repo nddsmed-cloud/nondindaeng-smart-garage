@@ -7,7 +7,7 @@ import { useRouter } from "next/navigation";
 
 type Vehicle = { id: string; licensePlate: string; brand: string; model: string };
 
-export default function NewFuelForm({ vehicles }: { vehicles: Vehicle[] }) {
+export default function NewFuelForm({ vehicles, redirectUri }: { vehicles: Vehicle[], redirectUri?: string }) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [startMileage, setStartMileage] = useState<number | string>("");
   const [liters, setLiters] = useState("");
@@ -69,6 +69,7 @@ export default function NewFuelForm({ vehicles }: { vehicles: Vehicle[] }) {
           {/* Hidden Flags */}
           <input type="hidden" name="isLiff" value={isLiff ? "true" : "false"} />
           <input type="hidden" name="fuelDate" value={lockedDate} />
+          {redirectUri && <input type="hidden" name="redirectUri" value={redirectUri} />}
 
           <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
             {/* รถยนต์ */}

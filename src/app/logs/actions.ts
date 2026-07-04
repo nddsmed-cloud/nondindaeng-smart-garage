@@ -5,6 +5,7 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
 import { auth } from "../../auth";
+import { sendLineNotifyToDepartment } from "../../lib/line-notify";
 
 export async function getLatestMileage(vehicleId: string): Promise<number> {
   const lastTrip = await prisma.tripLog.findFirst({
@@ -36,6 +37,7 @@ export async function createTripLog(formData: FormData) {
   }
 
   const vehicleId = formData.get("vehicleId") as string;
+  const roadId = formData.get("roadId") as string;
   await prisma.tripLog.create({
     data: {
       vehicleId,
@@ -46,6 +48,7 @@ export async function createTripLog(formData: FormData) {
       travelDate: formData.get("travelDate") as string,
       startMileage: parseInt(formData.get("startMileage") as string) || 0,
       userId,
+      roadId: roadId ? roadId : null,
     },
   });
 
@@ -127,10 +130,13 @@ export async function deleteTripLog(id: string) {
 export async function createFuelLog(formData: FormData) {
   const session = await auth();
   const userId = session?.user?.id;
+  const userRole = session?.user?.role || "OFFICER";
+  const userDept = session?.user?.department || "";
   const vehicleId = formData.get("vehicleId") as string;
   const endMileage = parseInt(formData.get("endMileage") as string) || 0;
   const liters = parseFloat(formData.get("liters") as string) || 0;
   const pricePerLiter = parseFloat(formData.get("pricePerLiter") as string) || 0;
+  const redirectUri = formData.get("redirectUri") as string;
 
   // ดึงเกณฑ์ อปท. จากรถยนต์
   const vehicle = await prisma.vehicle.findUnique({ where: { id: vehicleId } });
@@ -142,6 +148,9 @@ export async function createFuelLog(formData: FormData) {
   const distance = Math.max(0, endMileage - startMileage);
   const expectedFuel = standardRate > 0 ? distance / standardRate : 0;
   const fuelDifference = liters - expectedFuel;
+
+  // สิทธิ์ในการอนุมัติเติมน้ำมัน: ADMIN และ MANAGER ได้รับการอนุมัติทันที
+  const status = (userRole === "ADMIN" || userRole === "MANAGER") ? "อนุมัติแล้ว" : "รออนุมัติ";
 
   await prisma.fuelLog.create({
     data: {
@@ -160,16 +169,61 @@ export async function createFuelLog(formData: FormData) {
       fuelStation: formData.get("fuelStation") as string || "",
       note: formData.get("note") as string || "",
       userId,
-      department: session?.user?.department || "",
+      department: userDept,
+      status,
     },
   });
+
+  // ส่ง LINE Notify ไปยังกลุ่ม LINE ประจำแผนก หากเป็นกรณีรออนุมัติ
+  if (status === "รออนุมัติ" && userDept && vehicle) {
+    const totalCostFormatted = (liters * pricePerLiter).toLocaleString("th-TH", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    const lineMessage = `📢 [คำขออนุมัติเติมน้ำมัน]\nกอง: ${userDept}\nผู้ขอ: ${session?.user?.name || "พนักงานขับรถ"}\nรถทะเบียน: ${vehicle.licensePlate}\nปริมาณ: ${liters} ลิตร\nยอดรวม: ${totalCostFormatted} บาท\nกรุณาเข้าสู่ระบบเพื่อตรวจสอบและอนุมัติ: https://6-ndd-smart-garage.vercel.app/dashboard/approvals`;
+    await sendLineNotifyToDepartment(userDept, lineMessage);
+  }
+
   revalidatePath("/logs/energy");
   revalidatePath("/dashboard");
+  revalidatePath("/dashboard/approvals");
   
   if (formData.get("isLiff") === "true") {
     return { success: true };
   }
-  redirect("/logs/energy");
+
+  if (redirectUri) {
+    redirect(redirectUri);
+  } else {
+    redirect("/logs/energy");
+  }
+}
+
+export async function updateFuelLogStatus(id: string, status: string) {
+  const session = await auth();
+  const role = session?.user?.role;
+  const department = session?.user?.department;
+
+  if (role !== "ADMIN" && role !== "MANAGER") {
+    throw new Error("Unauthorized");
+  }
+
+  const fuelLog = await prisma.fuelLog.findUnique({
+    where: { id },
+  });
+
+  if (!fuelLog) throw new Error("Fuel log not found");
+
+  // ผอ.กอง (MANAGER) อนุมัติได้เฉพาะกองของตัวเอง
+  if (role === "MANAGER" && fuelLog.department !== department) {
+    throw new Error("Unauthorized to approve other department's fuel requests");
+  }
+
+  await prisma.fuelLog.update({
+    where: { id },
+    data: { status },
+  });
+
+  revalidatePath("/logs/energy");
+  revalidatePath("/dashboard");
+  revalidatePath("/dashboard/approvals");
 }
 
 export async function deleteFuelLog(id: string) {
@@ -185,4 +239,5 @@ export async function deleteFuelLog(id: string) {
   await prisma.fuelLog.delete({ where: { id } });
   revalidatePath("/logs/energy");
   revalidatePath("/dashboard");
+  revalidatePath("/dashboard/approvals");
 }

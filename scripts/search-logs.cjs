@@ -18,8 +18,8 @@ async function main() {
 
   console.log("Searching logs...");
   for await (const line of rl) {
-    if (line.includes("USER_INPUT") && (line.includes("supabase.co") || line.includes("wszmgkzdhgzksrifvhmf") || line.includes("uoodvtpybtfxlfuduxwq") || line.includes("gwntflzhkuokibzohdzx"))) {
-      console.log("MATCHING USER INPUT:", line);
+    if (line.includes("wszmgkzdhgzksrifvhmf") && !line.includes("node scripts/search-logs")) {
+      console.log("MATCHING LINE:", line);
     }
   }
 }

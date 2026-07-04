@@ -23,11 +23,18 @@ export default async function VehiclesPage() {
           <h1 className="page-title">ทะเบียนรถยนต์ {role !== "ADMIN" && department ? `- ${department}` : ""}</h1>
           <p className="page-subtitle">รายการรถยนต์ในระบบ</p>
         </div>
-        {role === "ADMIN" && (
-          <Link href="/vehicles/create" className="btn btn-primary">
-            + เพิ่มรถคันใหม่
-          </Link>
-        )}
+        <div style={{ display: "flex", gap: "10px", alignItems: "center" }}>
+          {(role === "ADMIN" || role === "MANAGER" || role === "OFFICER") && (
+            <Link href="/requests" className="btn btn-secondary">
+              📝 คำขอใช้รถยนต์
+            </Link>
+          )}
+          {role === "ADMIN" && (
+            <Link href="/vehicles/create" className="btn btn-primary">
+              + เพิ่มรถคันใหม่
+            </Link>
+          )}
+        </div>
       </div>
 
       <VehiclesTable vehicles={vehicles} role={role || "DRIVER"} />

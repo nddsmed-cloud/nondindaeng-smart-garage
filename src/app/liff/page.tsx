@@ -84,8 +84,11 @@ export default function LiffLoginPage() {
         maxWidth: "400px",
         width: "100%"
       }}>
-        <div style={{ fontSize: "48px", marginBottom: "16px" }}>💬</div>
-        <h2 style={{ marginBottom: "8px", color: "var(--text-primary)" }}>NDD Smart Garage</h2>
+        <div style={{ padding: "40px 20px", textAlign: "center" }}>
+          <div style={{ fontSize: "48px", marginBottom: "16px" }}>🏛️</div>
+          <h2 style={{ marginBottom: "8px", color: "var(--text-primary)" }}>ระบบจัดการงานกองช่างเทศบาล</h2>
+          <p style={{ color: "var(--text-muted)", fontSize: "14px" }}>กรุณารอสักครู่...</p>
+        </div>
         
         {loading ? (
           <div>

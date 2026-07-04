@@ -1,11 +1,12 @@
 // src/lib/auth-helpers.ts — Helper functions สำหรับตรวจสอบสิทธิ์
 
-export type UserRole = "ADMIN" | "MANAGER" | "OFFICER" | "DRIVER";
+export type UserRole = "ADMIN" | "MANAGER" | "OFFICER" | "OFFICER_GIS" | "DRIVER";
 
 export const ROLE_LABELS: Record<UserRole, string> = {
   ADMIN: "ผู้ดูแลระบบ",
   MANAGER: "ผู้บริหาร/อนุมัติ",
-  OFFICER: "เจ้าหน้าที่",
+  OFFICER: "เจ้าหน้าที่ยานพาหนะ",
+  OFFICER_GIS: "เจ้าหน้าที่กองช่าง",
   DRIVER: "พนักงานขับรถ",
 };
 
@@ -13,6 +14,7 @@ export const ROLE_COLORS: Record<UserRole, string> = {
   ADMIN: "badge-red",
   MANAGER: "badge-purple",
   OFFICER: "badge-blue",
+  OFFICER_GIS: "badge-teal",
   DRIVER: "badge-green",
 };
 
@@ -21,6 +23,7 @@ const ROLE_HIERARCHY: Record<UserRole, number> = {
   ADMIN: 4,
   MANAGER: 3,
   OFFICER: 2,
+  OFFICER_GIS: 2,
   DRIVER: 1,
 };
 

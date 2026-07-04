@@ -20,7 +20,7 @@ export default function LoginPage() {
       <div style={{
         position: "fixed",
         top: 0, left: 0, right: 0, bottom: 0,
-        background: "radial-gradient(ellipse at 20% 50%, rgba(79,123,255,0.08) 0%, transparent 60%), radial-gradient(ellipse at 80% 20%, rgba(168,85,247,0.06) 0%, transparent 50%)",
+        background: "radial-gradient(ellipse at 20% 50%, rgba(30,58,138,0.05) 0%, transparent 60%), radial-gradient(ellipse at 80% 20%, rgba(16,185,129,0.03) 0%, transparent 50%)",
         pointerEvents: "none",
       }} />
 
@@ -29,17 +29,17 @@ export default function LoginPage() {
         <div style={{ textAlign: "center", marginBottom: 32 }}>
           <div style={{
             width: 64, height: 64,
-            background: "linear-gradient(135deg, var(--blue) 0%, #7c3aed 100%)",
+            background: "linear-gradient(135deg, var(--blue) 0%, #3b82f6 100%)",
             borderRadius: 16,
             display: "flex", alignItems: "center", justifyContent: "center",
-            fontSize: 30, margin: "0 auto 16px",
-            boxShadow: "0 8px 32px rgba(79,123,255,0.3)",
-          }}>🚘</div>
+            fontSize: 35, margin: "0 auto 16px",
+            boxShadow: "0 8px 24px rgba(30,58,138,0.15)",
+          }}>⚡</div>
           <h1 style={{ fontSize: 22, fontWeight: 800, color: "var(--text-primary)", marginBottom: 4 }}>
-            NDD Smart Garage
+            ระบบจัดการงานกองช่างเทศบาล
           </h1>
           <p style={{ fontSize: 13, color: "var(--text-muted)" }}>
-            ระบบบริหารจัดการรถยนต์ส่วนกลาง
+            เทศบาลตำบลโนนดินแดง — ยานพาหนะ & GIS กองช่าง
           </p>
         </div>
 
@@ -49,7 +49,7 @@ export default function LoginPage() {
           border: "1px solid var(--border)",
           borderRadius: 16,
           padding: 32,
-          boxShadow: "0 20px 60px rgba(0,0,0,0.4)",
+          boxShadow: "0 20px 60px rgba(0,0,0,0.05)",
         }}>
           <h2 style={{ fontSize: 16, fontWeight: 700, color: "var(--text-primary)", marginBottom: 6 }}>
             เข้าสู่ระบบ
@@ -153,7 +153,7 @@ export default function LoginPage() {
                 marginTop: 4,
                 background: isPending
                   ? "var(--text-muted)"
-                  : "linear-gradient(135deg, var(--green) 0%, var(--blue) 100%)",
+                  : "linear-gradient(135deg, var(--blue) 0%, #3b82f6 100%)",
                 color: "#fff",
                 border: "none",
                 borderRadius: 8,
@@ -164,7 +164,7 @@ export default function LoginPage() {
                 transition: "opacity 0.2s",
                 width: "100%",
                 letterSpacing: "0.02em",
-                boxShadow: isPending ? "none" : "0 8px 16px var(--green-soft)",
+                boxShadow: isPending ? "none" : "0 8px 16px rgba(30, 58, 138, 0.15)",
               }}
             >
               {isPending ? "⏳ กำลังเข้าสู่ระบบ..." : "🚀 เข้าสู่ระบบ"}
@@ -173,7 +173,7 @@ export default function LoginPage() {
         </div>
 
         <p style={{ textAlign: "center", marginTop: 24, fontSize: 13, color: "var(--text-muted)", lineHeight: 1.6 }}>
-          &copy; NDD Smart Garage v1.0<br/>
+          &copy; ระบบจัดการงานกองช่างเทศบาล v1.0<br/>
           เครดิต โดย ผอ.สรพงษ์
         </p>
       </div>

@@ -7,9 +7,10 @@ export default async function NewTripPage({
   searchParams: Promise<{ [key: string]: string | undefined }> 
 }) {
   const params = await searchParams;
-  const vehicles = await prisma.vehicle.findMany({
-    orderBy: { licensePlate: "asc" },
-  });
+  const [vehicles, roads] = await Promise.all([
+    prisma.vehicle.findMany({ orderBy: { licensePlate: "asc" } }),
+    prisma.infraAsset.findMany({ select: { id: true, name: true }, orderBy: { name: "asc" } })
+  ]);
 
-  return <NewTripForm vehicles={vehicles} searchParams={params} />;
+  return <NewTripForm vehicles={vehicles} roads={roads} searchParams={params} />;
 }

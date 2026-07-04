@@ -18,6 +18,8 @@ type FuelLog = {
   explanation: string;
   fuelStation: string;
   note: string;
+  status: string;
+  department?: string | null;
   vehicle: { licensePlate: string; brand: string; model: string };
 };
 
@@ -57,7 +59,7 @@ export default function FuelLogsTable({ logs, role }: { logs: FuelLog[], role: s
         <table style={{ minWidth: "1200px" }}>
           <thead>
             <tr>
-              <th>รถยนต์</th>
+              <th>รถยนต์ / กอง</th>
               <th>วันที่</th>
               <th style={{ textAlign: "center" }}>ไมล์เริ่ม<br/><span style={{fontSize: 10, fontWeight: "normal"}}>เลขไมล์สิ้นสุด</span></th>
               <th style={{ textAlign: "center" }}>ระยะทาง<br/><span style={{fontSize: 10, fontWeight: "normal"}}>[A]</span></th>
@@ -66,6 +68,7 @@ export default function FuelLogsTable({ logs, role }: { logs: FuelLog[], role: s
               <th style={{ textAlign: "center" }}>ควรใช้<br/><span style={{fontSize: 10, fontWeight: "normal"}}>[D=A/C]</span></th>
               <th style={{ textAlign: "center" }}>ส่วนต่าง<br/><span style={{fontSize: 10, fontWeight: "normal"}}>[E=B-D]</span></th>
               <th>หมายเหตุ / ชี้แจง</th>
+              <th style={{ textAlign: "center" }}>สถานะ</th>
               <th style={{ textAlign: "right" }}>จัดการ</th>
             </tr>
           </thead>
@@ -87,7 +90,9 @@ export default function FuelLogsTable({ logs, role }: { logs: FuelLog[], role: s
                   <tr key={log.id}>
                     <td>
                       <div className="td-primary">{log.vehicle.licensePlate}</div>
-                      <div style={{ fontSize: 11, color: "var(--text-muted)", marginTop: 2 }}>{log.vehicle.brand}</div>
+                      <div style={{ fontSize: 11, color: "var(--text-muted)", marginTop: 2 }}>
+                        {log.vehicle.brand} {log.department ? `(${log.department})` : ""}
+                      </div>
                     </td>
                     <td>{log.fuelDate}</td>
                     <td style={{ textAlign: "center", fontSize: 13 }}>
@@ -103,6 +108,15 @@ export default function FuelLogsTable({ logs, role }: { logs: FuelLog[], role: s
                     </td>
                     <td>
                       <div style={{ fontSize: 13 }}>{log.explanation || log.note || "ปกติ"}</div>
+                    </td>
+                    <td style={{ textAlign: "center" }}>
+                      <span className={`badge ${
+                        log.status === "รออนุมัติ" ? "badge-yellow" :
+                        log.status === "อนุมัติแล้ว" ? "badge-green" :
+                        "badge-red"
+                      }`}>
+                        {log.status}
+                      </span>
                     </td>
                     <td style={{ textAlign: "right" }}>
                       {role !== "DRIVER" && (

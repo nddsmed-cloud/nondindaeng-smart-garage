@@ -51,4 +51,54 @@ export async function sendLineNotify(message: string) {
     console.error("❌ เกิดข้อผิดพลาดในการส่ง LINE Message:", error);
     return { success: false, error };
   }
+}
+
+export async function sendLineNotifyToDepartment(departmentName: string, message: string) {
+  const token = process.env.LINE_CHANNEL_ACCESS_TOKEN || process.env.LINE_NOTIFY_TOKEN;
+  
+  if (!token) {
+    console.error("❌ ไม่พบ LINE_CHANNEL_ACCESS_TOKEN/LINE_NOTIFY_TOKEN");
+    return { success: false, error: "Missing Token" };
+  }
+
+  if (!departmentName) return { success: false, error: "Missing Department" };
+
+  try {
+    const group = await prisma.groupAccess.findFirst({
+      where: { departmentName }
+    });
+
+    if (!group?.lineGroupId) {
+      console.log(`⚠️ ไม่มีกลุ่ม LINE ที่ลงทะเบียนไว้สำหรับกอง: ${departmentName}`);
+      return { success: true };
+    }
+
+    const response = await fetch("https://api.line.me/v2/bot/message/multicast", {
+      method: "POST",
+      headers: {
+        "Authorization": `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        to: [group.lineGroupId],
+        messages: [
+          {
+            type: "text",
+            text: message
+          }
+        ]
+      }),
+    });
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error(`❌ LINE Notify Department [${departmentName}] Error:`, errorText);
+      return { success: false, error: errorText };
+    }
+
+    return { success: true };
+  } catch (error) {
+    console.error("❌ เกิดข้อผิดพลาดในการส่ง LINE Message ไปยังแผนก:", error);
+    return { success: false, error };
+  }
 }

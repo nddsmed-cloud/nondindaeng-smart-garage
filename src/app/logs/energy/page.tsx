@@ -21,8 +21,9 @@ export default async function EnergyPage() {
     include: { vehicle: true },
   });
 
-  const totalCost = logs.reduce((sum, l) => sum + l.totalCost, 0);
-  const totalLiters = logs.reduce((sum, l) => sum + l.liters, 0);
+  const approvedLogs = logs.filter(l => l.status === "อนุมัติแล้ว");
+  const totalCost = approvedLogs.reduce((sum, l) => sum + l.totalCost, 0);
+  const totalLiters = approvedLogs.reduce((sum, l) => sum + l.liters, 0);
 
   return (
     <>

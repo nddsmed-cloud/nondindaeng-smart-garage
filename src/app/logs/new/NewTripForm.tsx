@@ -14,9 +14,11 @@ const departments = [
 
 export default function NewTripLogPage({ 
   vehicles,
+  roads,
   searchParams
 }: { 
   vehicles: Vehicle[],
+  roads: { id: string; name: string }[],
   searchParams?: { [key: string]: string | undefined }
 }) {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -162,17 +164,29 @@ export default function NewTripLogPage({
           <div className="form-section">
             <div className="form-section-title">รายละเอียดการเดินทาง</div>
             <div className="form-grid">
-              <div className="form-group">
+              <div className="form-group span-2">
                 <label className="form-label">ปลายทาง *</label>
                 <input 
                   type="text" 
                   name="destination" 
                   required 
-                  placeholder="เช่น ที่ว่าการอำเภอ" 
+                  placeholder="เช่น ที่ว่าการอำเภอ หรือ ชื่อหมู่บ้าน" 
                   className="form-input" 
                   value={destination}
                   onChange={e => setDestination(e.target.value)}
                 />
+              </div>
+              <div className="form-group span-2">
+                <label className="form-label">ถนนที่เกี่ยวข้อง (GIS) <span style={{ color: "var(--text-muted)", fontWeight: "normal" }}>(ไม่บังคับ)</span></label>
+                <select name="roadId" className="form-select">
+                  <option value="">-- ไม่ระบุถนน --</option>
+                  {roads.map(r => (
+                    <option key={r.id} value={r.id}>{r.name}</option>
+                  ))}
+                </select>
+                <div style={{ fontSize: 11, color: "var(--text-muted)", marginTop: 4 }}>
+                  เลือกถนนกรณีที่เดินทางไปปฏิบัติงานซ่อมบำรุงหรือตรวจสอบถนนสายนั้นๆ
+                </div>
               </div>
               <div className="form-group">
                 <label className="form-label">เลขไมล์ตอนออก *</label>

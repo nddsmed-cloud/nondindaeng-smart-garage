@@ -1,0 +1,1132 @@
+[
+  {
+    "seq": 1,
+    "routeCode": "บร ถ. 21-001",
+    "name": "ถนนหลังศูนย์ราชการ",
+    "lengthKm": 0.51,
+    "surfaceType": "ASPHALT",
+    "pavementWidth": 6,
+    "rightOfWayWidth": 10,
+    "villageNo": null
+  },
+  {
+    "seq": 2,
+    "routeCode": "บร ถ. 21-002",
+    "name": "ถนนหลังโรงเรียนอนุบาลโนน",
+    "lengthKm": 0.73,
+    "surfaceType": "CONCRETE",
+    "pavementWidth": 5,
+    "rightOfWayWidth": 10,
+    "villageNo": null
+  },
+  {
+    "seq": 3,
+    "routeCode": "บร ถ. 21-003",
+    "name": "ถนนบ้านหนอง  1",
+    "lengthKm": 0.865,
+    "surfaceType": "CONCRETE",
+    "pavementWidth": 5,
+    "rightOfWayWidth": 7,
+    "villageNo": null
+  },
+  {
+    "seq": 4,
+    "routeCode": "บร ถ. 21-004",
+    "name": "ถนนบ้านหนอง  2",
+    "lengthKm": 0.48,
+    "surfaceType": "CONCRETE",
+    "pavementWidth": 5,
+    "rightOfWayWidth": 7,
+    "villageNo": null
+  },
+  {
+    "seq": 5,
+    "routeCode": "บร ถ. 21-005",
+    "name": "ถนนบ้านหนอง  3",
+    "lengthKm": 0.32,
+    "surfaceType": "CONCRETE",
+    "pavementWidth": 5,
+    "rightOfWayWidth": 7,
+    "villageNo": null
+  },
+  {
+    "seq": 6,
+    "routeCode": "บร ถ. 21-006",
+    "name": "ถนนบ้านหนอง  4",
+    "lengthKm": 0.605,
+    "surfaceType": "CONCRETE",
+    "pavementWidth": 5,
+    "rightOfWayWidth": 7,
+    "villageNo": null
+  },
+  {
+    "seq": 7,
+    "routeCode": "บร ถ. 21-007",
+    "name": "ถนนบ้านน้อย  101",
+    "lengthKm": 0.55,
+    "surfaceType": "CONCRETE",
+    "pavementWidth": 5,
+    "rightOfWayWidth": 7,
+    "villageNo": null
+  },
+  {
+    "seq": 8,
+    "routeCode": "บร ถ. 21-008",
+    "name": "ถนนบ้านน้อย  301",
+    "lengthKm": 0.08,
+    "surfaceType": "CONCRETE",
+    "pavementWidth": 6,
+    "rightOfWayWidth": 6,
+    "villageNo": null
+  },
+  {
+    "seq": 9,
+    "routeCode": "บร ถ. 21-009",
+    "name": "ถนนบ้านน้อย  1",
+    "lengthKm": 0.47,
+    "surfaceType": "CONCRETE",
+    "pavementWidth": 5,
+    "rightOfWayWidth": 7,
+    "villageNo": null
+  },
+  {
+    "seq": 10,
+    "routeCode": "บร ถ. 21-010",
+    "name": "ถนนบ้านน้อย  2",
+    "lengthKm": 0.146,
+    "surfaceType": "CONCRETE",
+    "pavementWidth": 5,
+    "rightOfWayWidth": 7,
+    "villageNo": null
+  },
+  {
+    "seq": 11,
+    "routeCode": "บร ถ. 21-011",
+    "name": "ถนนบ้านน้อย  3",
+    "lengthKm": 0.254,
+    "surfaceType": "CONCRETE",
+    "pavementWidth": 5,
+    "rightOfWayWidth": 6,
+    "villageNo": null
+  },
+  {
+    "seq": 12,
+    "routeCode": "บร ถ. 21-012",
+    "name": "ถนนบ้านน้อย  4",
+    "lengthKm": 0.19,
+    "surfaceType": "CONCRETE",
+    "pavementWidth": 5,
+    "rightOfWayWidth": 6,
+    "villageNo": null
+  },
+  {
+    "seq": 13,
+    "routeCode": "บร ถ. 21-013",
+    "name": "ถนนบ้านน้อย  5",
+    "lengthKm": 0.485,
+    "surfaceType": "CONCRETE",
+    "pavementWidth": 5,
+    "rightOfWayWidth": 7,
+    "villageNo": null
+  },
+  {
+    "seq": 14,
+    "routeCode": "บร ถ. 21-014",
+    "name": "ถนนบ้านน้อย  6",
+    "lengthKm": 0.38,
+    "surfaceType": "CONCRETE",
+    "pavementWidth": 6,
+    "rightOfWayWidth": 8,
+    "villageNo": null
+  },
+  {
+    "seq": 15,
+    "routeCode": "บร ถ. 21-015",
+    "name": "ถนนบ้านน้อย  6  เชื่อมทางหลวงหมายเลข 348",
+    "lengthKm": 0.598,
+    "surfaceType": "CONCRETE",
+    "pavementWidth": 5,
+    "rightOfWayWidth": 6,
+    "villageNo": null
+  },
+  {
+    "seq": 16,
+    "routeCode": "บร ถ. 21-016",
+    "name": "ถนนบ้านน้อย  7  เชื่อมทางหลวงหมายเลข 348",
+    "lengthKm": 1.15,
+    "surfaceType": "CONCRETE",
+    "pavementWidth": 5,
+    "rightOfWayWidth": 7,
+    "villageNo": null
+  },
+  {
+    "seq": 17,
+    "routeCode": "บร ถ. 21-017",
+    "name": "ถนนราชดำเนิน  101",
+    "lengthKm": 0.201,
+    "surfaceType": "CONCRETE",
+    "pavementWidth": 4,
+    "rightOfWayWidth": 5,
+    "villageNo": null
+  },
+  {
+    "seq": 18,
+    "routeCode": "บร ถ. 21-018",
+    "name": "ถนนเชื่อมคลองชลประทาน  101",
+    "lengthKm": 0.19,
+    "surfaceType": "LATERITE",
+    "pavementWidth": 5,
+    "rightOfWayWidth": 6,
+    "villageNo": null
+  },
+  {
+    "seq": 19,
+    "routeCode": "บร ถ. 21-019",
+    "name": "ถนนเชื่อมคลองชลประทาน  1",
+    "lengthKm": 0.555,
+    "surfaceType": "CONCRETE",
+    "pavementWidth": 5,
+    "rightOfWayWidth": 6,
+    "villageNo": null
+  },
+  {
+    "seq": 20,
+    "routeCode": "บร ถ. 21-020",
+    "name": "ถนนเชื่อมคลองชลประทาน  2",
+    "lengthKm": 0.267,
+    "surfaceType": "CONCRETE",
+    "pavementWidth": 5,
+    "rightOfWayWidth": 6,
+    "villageNo": null
+  },
+  {
+    "seq": 21,
+    "routeCode": "บร ถ. 21-021",
+    "name": "ถนนเชื่อมคลองชลประทาน  3",
+    "lengthKm": 0.743,
+    "surfaceType": "CONCRETE",
+    "pavementWidth": 5,
+    "rightOfWayWidth": 6,
+    "villageNo": null
+  },
+  {
+    "seq": 22,
+    "routeCode": "บร ถ. 21-022",
+    "name": "ถนนเชื่อมคลองชลประทาน  4",
+    "lengthKm": 0.335,
+    "surfaceType": "CONCRETE",
+    "pavementWidth": 4,
+    "rightOfWayWidth": 5,
+    "villageNo": null
+  },
+  {
+    "seq": 23,
+    "routeCode": "บร ถ. 21-023",
+    "name": "ถนนเชื่อมคลองชลประทาน  5",
+    "lengthKm": 0.77,
+    "surfaceType": "CONCRETE",
+    "pavementWidth": 5,
+    "rightOfWayWidth": 7,
+    "villageNo": null
+  },
+  {
+    "seq": 24,
+    "routeCode": "บร ถ. 21-024",
+    "name": "ถนนหน้าวัดเหนือเชื่อมทางหลวง 348",
+    "lengthKm": 0.638,
+    "surfaceType": "ASPHALT",
+    "pavementWidth": 5,
+    "rightOfWayWidth": 7,
+    "villageNo": null
+  },
+  {
+    "seq": 25,
+    "routeCode": "บร ถ. 21-025",
+    "name": "ถนนสุขาภิบาล  26",
+    "lengthKm": 0.747,
+    "surfaceType": "CONCRETE",
+    "pavementWidth": 5,
+    "rightOfWayWidth": 7,
+    "villageNo": null
+  },
+  {
+    "seq": 26,
+    "routeCode": "บร ถ. 21-026",
+    "name": "ถนนราชดำเนิน  3",
+    "lengthKm": 0.262,
+    "surfaceType": "ASPHALT",
+    "pavementWidth": 5,
+    "rightOfWayWidth": 9,
+    "villageNo": null
+  },
+  {
+    "seq": 27,
+    "routeCode": "บร ถ. 21-027",
+    "name": "ถนนราชดำเนิน  1",
+    "lengthKm": 0.225,
+    "surfaceType": "ASPHALT",
+    "pavementWidth": 5,
+    "rightOfWayWidth": 9,
+    "villageNo": null
+  },
+  {
+    "seq": 28,
+    "routeCode": "บร ถ. 21-028",
+    "name": "ถนนสุขาภิบาล  4",
+    "lengthKm": 1.111,
+    "surfaceType": "ASPHALT",
+    "pavementWidth": 6,
+    "rightOfWayWidth": 9,
+    "villageNo": null
+  },
+  {
+    "seq": 29,
+    "routeCode": "บร ถ. 21-029",
+    "name": "ถนนสุขาภิบาล  6",
+    "lengthKm": 0.578,
+    "surfaceType": "ASPHALT",
+    "pavementWidth": 5,
+    "rightOfWayWidth": 9,
+    "villageNo": null
+  },
+  {
+    "seq": 30,
+    "routeCode": "บร ถ. 21-030",
+    "name": "ถนนสุขาภิบาล  8",
+    "lengthKm": 0.522,
+    "surfaceType": "ASPHALT",
+    "pavementWidth": 6,
+    "rightOfWayWidth": 10,
+    "villageNo": null
+  },
+  {
+    "seq": 31,
+    "routeCode": "บร ถ. 21-031",
+    "name": "ถนนสุขาภิบาล  10",
+    "lengthKm": 0.728,
+    "surfaceType": "ASPHALT",
+    "pavementWidth": 5,
+    "rightOfWayWidth": 7,
+    "villageNo": null
+  },
+  {
+    "seq": 32,
+    "routeCode": "บร ถ. 21-032",
+    "name": "ถนนสุขาภิบาล  12",
+    "lengthKm": 0.491,
+    "surfaceType": "ASPHALT",
+    "pavementWidth": 6,
+    "rightOfWayWidth": 8,
+    "villageNo": null
+  },
+  {
+    "seq": 33,
+    "routeCode": "บร ถ. 21-033",
+    "name": "ถนนสุขาภิบาล  14",
+    "lengthKm": 0.434,
+    "surfaceType": "ASPHALT",
+    "pavementWidth": 5,
+    "rightOfWayWidth": 9,
+    "villageNo": null
+  },
+  {
+    "seq": 34,
+    "routeCode": "บร ถ. 21-034",
+    "name": "ถนนสุขาภิบาล  16",
+    "lengthKm": 0.402,
+    "surfaceType": "CONCRETE",
+    "pavementWidth": 5,
+    "rightOfWayWidth": 9,
+    "villageNo": null
+  },
+  {
+    "seq": 35,
+    "routeCode": "บร ถ. 21-035",
+    "name": "ถนนสุขาภิบาล  18",
+    "lengthKm": 0.242,
+    "surfaceType": "ASPHALT",
+    "pavementWidth": 6,
+    "rightOfWayWidth": 8,
+    "villageNo": null
+  },
+  {
+    "seq": 36,
+    "routeCode": "บร ถ. 21-036",
+    "name": "ถนนสุขาภิบาล  20",
+    "lengthKm": 0.296,
+    "surfaceType": "ASPHALT",
+    "pavementWidth": 4,
+    "rightOfWayWidth": 7,
+    "villageNo": null
+  },
+  {
+    "seq": 37,
+    "routeCode": "บร ถ. 21-037",
+    "name": "ถนนสุขาภิบาล  22",
+    "lengthKm": 0.285,
+    "surfaceType": "ASPHALT",
+    "pavementWidth": 6,
+    "rightOfWayWidth": 9,
+    "villageNo": null
+  },
+  {
+    "seq": 38,
+    "routeCode": "บร ถ. 21-038",
+    "name": "ถนนสุขาภิบาล  24",
+    "lengthKm": 0.916,
+    "surfaceType": "ASPHALT",
+    "pavementWidth": 6,
+    "rightOfWayWidth": 9,
+    "villageNo": null
+  },
+  {
+    "seq": 39,
+    "routeCode": "บร ถ. 21-039",
+    "name": "ถนนราชดำเนิน  5",
+    "lengthKm": 0.178,
+    "surfaceType": "ASPHALT",
+    "pavementWidth": 5,
+    "rightOfWayWidth": 7,
+    "villageNo": null
+  },
+  {
+    "seq": 40,
+    "routeCode": "บร ถ. 21-040",
+    "name": "ถนนสุขาภิบาล  2",
+    "lengthKm": 0.318,
+    "surfaceType": "ASPHALT",
+    "pavementWidth": 5,
+    "rightOfWayWidth": 7,
+    "villageNo": null
+  },
+  {
+    "seq": 41,
+    "routeCode": "บร ถ. 21-041",
+    "name": "ถนนสุขาภิบาล 1",
+    "lengthKm": 0.555,
+    "surfaceType": "ASPHALT",
+    "pavementWidth": 5,
+    "rightOfWayWidth": 7,
+    "villageNo": null
+  },
+  {
+    "seq": 42,
+    "routeCode": "บร ถ. 21-042",
+    "name": "ถนนสุขาภิบาล 3",
+    "lengthKm": 0.575,
+    "surfaceType": "ASPHALT",
+    "pavementWidth": 5,
+    "rightOfWayWidth": 7,
+    "villageNo": null
+  },
+  {
+    "seq": 43,
+    "routeCode": "บร ถ. 21-043",
+    "name": "ถนนสุขาภิบาล 5",
+    "lengthKm": 0.363,
+    "surfaceType": "ASPHALT",
+    "pavementWidth": 6,
+    "rightOfWayWidth": 9,
+    "villageNo": null
+  },
+  {
+    "seq": 44,
+    "routeCode": "บร ถ. 21-044",
+    "name": "ถนนสุขาภิบาล 7",
+    "lengthKm": 0.678,
+    "surfaceType": "ASPHALT",
+    "pavementWidth": 6,
+    "rightOfWayWidth": 9,
+    "villageNo": null
+  },
+  {
+    "seq": 45,
+    "routeCode": "บร ถ. 21-045",
+    "name": "ถนนสุขาภิบาล 9",
+    "lengthKm": 0.69,
+    "surfaceType": "ASPHALT",
+    "pavementWidth": 5,
+    "rightOfWayWidth": 7,
+    "villageNo": null
+  },
+  {
+    "seq": 46,
+    "routeCode": "บร ถ. 21-046",
+    "name": "ถนนสุขาภิบาล 11",
+    "lengthKm": 0.691,
+    "surfaceType": "ASPHALT",
+    "pavementWidth": 5,
+    "rightOfWayWidth": 7,
+    "villageNo": null
+  },
+  {
+    "seq": 47,
+    "routeCode": "บร ถ. 21-047",
+    "name": "ถนนสุขาภิบาล 13",
+    "lengthKm": 0.694,
+    "surfaceType": "ASPHALT",
+    "pavementWidth": 6,
+    "rightOfWayWidth": 9,
+    "villageNo": null
+  },
+  {
+    "seq": 48,
+    "routeCode": "บร ถ. 21-048",
+    "name": "ถนนสุขาภิบาล 15",
+    "lengthKm": 0.367,
+    "surfaceType": "ASPHALT",
+    "pavementWidth": 5,
+    "rightOfWayWidth": 7,
+    "villageNo": null
+  },
+  {
+    "seq": 49,
+    "routeCode": "บร ถ. 21-049",
+    "name": "ถนนสุขาภิบาล 17",
+    "lengthKm": 0.665,
+    "surfaceType": "ASPHALT",
+    "pavementWidth": 6,
+    "rightOfWayWidth": 9,
+    "villageNo": null
+  },
+  {
+    "seq": 50,
+    "routeCode": "บร ถ. 21-050",
+    "name": "ถนนสุขาภิบาล 19",
+    "lengthKm": 0.283,
+    "surfaceType": "ASPHALT",
+    "pavementWidth": 5,
+    "rightOfWayWidth": 7,
+    "villageNo": null
+  },
+  {
+    "seq": 51,
+    "routeCode": "บร ถ. 21-051",
+    "name": "ถนนสุขาภิบาล 21",
+    "lengthKm": 0.278,
+    "surfaceType": "ASPHALT",
+    "pavementWidth": 5,
+    "rightOfWayWidth": 7,
+    "villageNo": null
+  },
+  {
+    "seq": 52,
+    "routeCode": "บร ถ. 21-052",
+    "name": "ถนนสุขาภิบาล 23",
+    "lengthKm": 0.313,
+    "surfaceType": "ASPHALT",
+    "pavementWidth": 5,
+    "rightOfWayWidth": 7,
+    "villageNo": null
+  },
+  {
+    "seq": 53,
+    "routeCode": "บร ถ. 21-053",
+    "name": "ถนนสุขาภิบาล 25",
+    "lengthKm": 0.268,
+    "surfaceType": "CONCRETE",
+    "pavementWidth": 4,
+    "rightOfWayWidth": 4,
+    "villageNo": null
+  },
+  {
+    "seq": 54,
+    "routeCode": "บร ถ. 21-054",
+    "name": "ถนนสุขาภิบาล 402",
+    "lengthKm": 0.532,
+    "surfaceType": "ASPHALT",
+    "pavementWidth": 6,
+    "rightOfWayWidth": 8,
+    "villageNo": null
+  },
+  {
+    "seq": 55,
+    "routeCode": "บร ถ. 21-055",
+    "name": "ถนนสุขาภิบาล 401",
+    "lengthKm": 0.079,
+    "surfaceType": "ASPHALT",
+    "pavementWidth": 7,
+    "rightOfWayWidth": 8,
+    "villageNo": null
+  },
+  {
+    "seq": 56,
+    "routeCode": "บร ถ. 21-056",
+    "name": "ถนนสุขาภิบาล 601",
+    "lengthKm": 0.08,
+    "surfaceType": "ASPHALT",
+    "pavementWidth": 7,
+    "rightOfWayWidth": 9,
+    "villageNo": null
+  },
+  {
+    "seq": 57,
+    "routeCode": "บร ถ. 21-057",
+    "name": "ถนนสุขาภิบาล 801",
+    "lengthKm": 0.081,
+    "surfaceType": "ASPHALT",
+    "pavementWidth": 7,
+    "rightOfWayWidth": 9,
+    "villageNo": null
+  },
+  {
+    "seq": 58,
+    "routeCode": "บร ถ. 21-058",
+    "name": "ถนนสุขาภิบาล 1001",
+    "lengthKm": 0.077,
+    "surfaceType": "ASPHALT",
+    "pavementWidth": 7,
+    "rightOfWayWidth": 8,
+    "villageNo": null
+  },
+  {
+    "seq": 59,
+    "routeCode": "บร ถ. 21-059",
+    "name": "ถนนสุขาภิบาล  1201",
+    "lengthKm": 0.168,
+    "surfaceType": "ASPHALT",
+    "pavementWidth": 7,
+    "rightOfWayWidth": 7,
+    "villageNo": null
+  },
+  {
+    "seq": 60,
+    "routeCode": "บร ถ. 21-060",
+    "name": "ถนนสุขาภิบาล  1401",
+    "lengthKm": 0.166,
+    "surfaceType": "ASPHALT",
+    "pavementWidth": 5,
+    "rightOfWayWidth": 8,
+    "villageNo": null
+  },
+  {
+    "seq": 61,
+    "routeCode": "บร ถ. 21-061",
+    "name": "ถนนสุขาภิบาล 1601",
+    "lengthKm": 0.136,
+    "surfaceType": "ASPHALT",
+    "pavementWidth": 5,
+    "rightOfWayWidth": 7,
+    "villageNo": null
+  },
+  {
+    "seq": 62,
+    "routeCode": "บร ถ. 21-062",
+    "name": "ถนนสุขาภิบาล 1801",
+    "lengthKm": 0.096,
+    "surfaceType": "ASPHALT",
+    "pavementWidth": 5,
+    "rightOfWayWidth": 7,
+    "villageNo": null
+  },
+  {
+    "seq": 63,
+    "routeCode": "บร ถ. 21-063",
+    "name": "ถนนสุขาภิบาล 2001",
+    "lengthKm": 0.07,
+    "surfaceType": "ASPHALT",
+    "pavementWidth": 5,
+    "rightOfWayWidth": 7,
+    "villageNo": null
+  },
+  {
+    "seq": 64,
+    "routeCode": "บร ถ. 21-064",
+    "name": "ถนนสุขาภิบาล 403",
+    "lengthKm": 0.078,
+    "surfaceType": "ASPHALT",
+    "pavementWidth": 6,
+    "rightOfWayWidth": 6,
+    "villageNo": null
+  },
+  {
+    "seq": 65,
+    "routeCode": "บร ถ. 21-065",
+    "name": "ถนนสุขาภิบาล 602",
+    "lengthKm": 0.072,
+    "surfaceType": "ASPHALT",
+    "pavementWidth": 6,
+    "rightOfWayWidth": 7,
+    "villageNo": null
+  },
+  {
+    "seq": 66,
+    "routeCode": "บร ถ. 21-066",
+    "name": "ถนนสุขาภิบาล 802",
+    "lengthKm": 0.074,
+    "surfaceType": "ASPHALT",
+    "pavementWidth": 6,
+    "rightOfWayWidth": 8,
+    "villageNo": null
+  },
+  {
+    "seq": 67,
+    "routeCode": "บร ถ. 21-067",
+    "name": "ถนนสุขาภิบาล 1002",
+    "lengthKm": 0.078,
+    "surfaceType": "ASPHALT",
+    "pavementWidth": 6,
+    "rightOfWayWidth": 8,
+    "villageNo": null
+  },
+  {
+    "seq": 68,
+    "routeCode": "บร ถ. 21-068",
+    "name": "ถนนสุขาภิบาล 1202",
+    "lengthKm": 0.117,
+    "surfaceType": "ASPHALT",
+    "pavementWidth": 5,
+    "rightOfWayWidth": 8,
+    "villageNo": null
+  },
+  {
+    "seq": 69,
+    "routeCode": "บร ถ. 21-069",
+    "name": "ถนนสุขาภิบาล 1403",
+    "lengthKm": 0.149,
+    "surfaceType": "ASPHALT",
+    "pavementWidth": 6,
+    "rightOfWayWidth": 8,
+    "villageNo": null
+  },
+  {
+    "seq": 70,
+    "routeCode": "บร ถ. 21-070",
+    "name": "ถนนสุขาภิบาล 1602",
+    "lengthKm": 0.195,
+    "surfaceType": "ASPHALT",
+    "pavementWidth": 6,
+    "rightOfWayWidth": 8,
+    "villageNo": null
+  },
+  {
+    "seq": 71,
+    "routeCode": "บร ถ. 21-071",
+    "name": "ถนนสุขาภิบาล 1802",
+    "lengthKm": 0.099,
+    "surfaceType": "ASPHALT",
+    "pavementWidth": 6,
+    "rightOfWayWidth": 7,
+    "villageNo": null
+  },
+  {
+    "seq": 72,
+    "routeCode": "บร ถ. 21-072",
+    "name": "ถนนสุขาภิบาล 1404",
+    "lengthKm": 0.45,
+    "surfaceType": "ASPHALT",
+    "pavementWidth": 4,
+    "rightOfWayWidth": 5.5,
+    "villageNo": null
+  },
+  {
+    "seq": 73,
+    "routeCode": "บร ถ. 21-073",
+    "name": "ถนนสุขาภิบาล 1402",
+    "lengthKm": 0.382,
+    "surfaceType": "ASPHALT",
+    "pavementWidth": 5,
+    "rightOfWayWidth": 8,
+    "villageNo": null
+  },
+  {
+    "seq": 74,
+    "routeCode": "บร ถ. 21-074",
+    "name": "ถนนราชดำเนิน",
+    "lengthKm": 1.999,
+    "surfaceType": "ASPHALT",
+    "pavementWidth": 7,
+    "rightOfWayWidth": 10,
+    "villageNo": null
+  },
+  {
+    "seq": 75,
+    "routeCode": "บร ถ. 21-075",
+    "name": "ถนนสุขาภิบาล 24 ไปโรงเรียนร่มเกล้า",
+    "lengthKm": 0.386,
+    "surfaceType": "ASPHALT",
+    "pavementWidth": 5,
+    "rightOfWayWidth": 12,
+    "villageNo": null
+  },
+  {
+    "seq": 76,
+    "routeCode": "บร ถ. 21-076",
+    "name": "ถนนเชื่อมคลองชลปทาน ม.1",
+    "lengthKm": 0.101,
+    "surfaceType": "ASPHALT",
+    "pavementWidth": 5,
+    "rightOfWayWidth": 8,
+    "villageNo": null
+  },
+  {
+    "seq": 77,
+    "routeCode": "บร ถ. 21-077",
+    "name": "ถนนสุขาภิบาล 301",
+    "lengthKm": 0.091,
+    "surfaceType": "ASPHALT",
+    "pavementWidth": 5,
+    "rightOfWayWidth": 7,
+    "villageNo": null
+  },
+  {
+    "seq": 78,
+    "routeCode": "บร ถ. 21-078",
+    "name": "ถนนสุขาภิบาล 501",
+    "lengthKm": 0.136,
+    "surfaceType": "ASPHALT",
+    "pavementWidth": 5,
+    "rightOfWayWidth": 8,
+    "villageNo": null
+  },
+  {
+    "seq": 79,
+    "routeCode": "บร ถ. 21-079",
+    "name": "ถนนสุขาภิบาล 701",
+    "lengthKm": 0.106,
+    "surfaceType": "ASPHALT",
+    "pavementWidth": 5,
+    "rightOfWayWidth": 8,
+    "villageNo": null
+  },
+  {
+    "seq": 80,
+    "routeCode": "บร ถ. 21-080",
+    "name": "ถนนสุขาภิบาล 901",
+    "lengthKm": 0.063,
+    "surfaceType": "ASPHALT",
+    "pavementWidth": 5,
+    "rightOfWayWidth": 8,
+    "villageNo": null
+  },
+  {
+    "seq": 81,
+    "routeCode": "บร ถ. 21-081",
+    "name": "ถนนสุขาภิบาล 1101",
+    "lengthKm": 0.081,
+    "surfaceType": "ASPHALT",
+    "pavementWidth": 5,
+    "rightOfWayWidth": 8,
+    "villageNo": null
+  },
+  {
+    "seq": 82,
+    "routeCode": "บร ถ. 21-082",
+    "name": "ถนนสุขาภิบาล 1301",
+    "lengthKm": 0.151,
+    "surfaceType": "ASPHALT",
+    "pavementWidth": 5,
+    "rightOfWayWidth": 8,
+    "villageNo": null
+  },
+  {
+    "seq": 83,
+    "routeCode": "บร ถ. 21-083",
+    "name": "ถนนสุขาภิบาล 1501",
+    "lengthKm": 0.121,
+    "surfaceType": "ASPHALT",
+    "pavementWidth": 4,
+    "rightOfWayWidth": 5,
+    "villageNo": null
+  },
+  {
+    "seq": 84,
+    "routeCode": "บร ถ. 21-084",
+    "name": "ถนนสุขาภิบาล 1701",
+    "lengthKm": 0.121,
+    "surfaceType": "ASPHALT",
+    "pavementWidth": 5,
+    "rightOfWayWidth": 7,
+    "villageNo": null
+  },
+  {
+    "seq": 85,
+    "routeCode": "บร ถ. 21-085",
+    "name": "ถนนสุขาภิบาล 23/1",
+    "lengthKm": 0.378,
+    "surfaceType": "CONCRETE",
+    "pavementWidth": 5,
+    "rightOfWayWidth": 7,
+    "villageNo": null
+  },
+  {
+    "seq": 86,
+    "routeCode": "บร ถ. 21-086",
+    "name": "ถนนสุขาภิบาล 101",
+    "lengthKm": 0.343,
+    "surfaceType": "ASPHALT",
+    "pavementWidth": 5,
+    "rightOfWayWidth": 7,
+    "villageNo": null
+  },
+  {
+    "seq": 87,
+    "routeCode": "บร ถ. 21-087",
+    "name": "ถนนสุขาภิบาล 302",
+    "lengthKm": 0.092,
+    "surfaceType": "ASPHALT",
+    "pavementWidth": 5,
+    "rightOfWayWidth": 7,
+    "villageNo": null
+  },
+  {
+    "seq": 88,
+    "routeCode": "บร ถ. 21-088",
+    "name": "ถนนสุขาภิบาล 502",
+    "lengthKm": 0.155,
+    "surfaceType": "ASPHALT",
+    "pavementWidth": 5,
+    "rightOfWayWidth": 7,
+    "villageNo": null
+  },
+  {
+    "seq": 89,
+    "routeCode": "บร ถ. 21-089",
+    "name": "ถนนสุขาภิบาล 503",
+    "lengthKm": 0.14,
+    "surfaceType": "ASPHALT",
+    "pavementWidth": 5,
+    "rightOfWayWidth": 6,
+    "villageNo": null
+  },
+  {
+    "seq": 90,
+    "routeCode": "บร ถ. 21-090",
+    "name": "ถนนสุขาภิบาล 702",
+    "lengthKm": 0.093,
+    "surfaceType": "ASPHALT",
+    "pavementWidth": 5,
+    "rightOfWayWidth": 6,
+    "villageNo": null
+  },
+  {
+    "seq": 91,
+    "routeCode": "บร ถ. 21-091",
+    "name": "ถนนสุขาภิบาล 703",
+    "lengthKm": 0.099,
+    "surfaceType": "ASPHALT",
+    "pavementWidth": 7,
+    "rightOfWayWidth": 8,
+    "villageNo": null
+  },
+  {
+    "seq": 92,
+    "routeCode": "บร ถ. 21-092",
+    "name": "ถนนสุขาภิบาล 902",
+    "lengthKm": 0.065,
+    "surfaceType": "ASPHALT",
+    "pavementWidth": 6,
+    "rightOfWayWidth": 6,
+    "villageNo": null
+  },
+  {
+    "seq": 93,
+    "routeCode": "บร ถ. 21-093",
+    "name": "ถนนสุขาภิบาล 903",
+    "lengthKm": 0.057,
+    "surfaceType": "ASPHALT",
+    "pavementWidth": 7,
+    "rightOfWayWidth": 8,
+    "villageNo": null
+  },
+  {
+    "seq": 94,
+    "routeCode": "บร ถ. 21-094",
+    "name": "ถนนสุขาภิบาล 1102",
+    "lengthKm": 0.097,
+    "surfaceType": "ASPHALT",
+    "pavementWidth": 5,
+    "rightOfWayWidth": 7,
+    "villageNo": null
+  },
+  {
+    "seq": 95,
+    "routeCode": "บร ถ. 21-095",
+    "name": "ถนนสุขาภิบาล 1103",
+    "lengthKm": 0.145,
+    "surfaceType": "ASPHALT",
+    "pavementWidth": 4,
+    "rightOfWayWidth": 5,
+    "villageNo": null
+  },
+  {
+    "seq": 96,
+    "routeCode": "บร ถ. 21-096",
+    "name": "ถนนสุขาภิบาล 1302",
+    "lengthKm": 0.172,
+    "surfaceType": "ASPHALT",
+    "pavementWidth": 4,
+    "rightOfWayWidth": 6,
+    "villageNo": null
+  },
+  {
+    "seq": 97,
+    "routeCode": "บร ถ. 21-097",
+    "name": "ถนนสุขาภิบาล 1303",
+    "lengthKm": 0.18,
+    "surfaceType": "ASPHALT",
+    "pavementWidth": 4,
+    "rightOfWayWidth": 6,
+    "villageNo": null
+  },
+  {
+    "seq": 98,
+    "routeCode": "บร ถ. 21-098",
+    "name": "ถนนสุขาภิบาล 1304",
+    "lengthKm": 0.177,
+    "surfaceType": "ASPHALT",
+    "pavementWidth": 4,
+    "rightOfWayWidth": 4,
+    "villageNo": null
+  },
+  {
+    "seq": 99,
+    "routeCode": "บร ถ. 21-099",
+    "name": "ถนนสุขาภิบาล 1502",
+    "lengthKm": 0.141,
+    "surfaceType": "ASPHALT",
+    "pavementWidth": 4,
+    "rightOfWayWidth": 6,
+    "villageNo": null
+  },
+  {
+    "seq": 100,
+    "routeCode": "บร ถ. 21-100",
+    "name": "ถนนสุขาภิบาล 1702",
+    "lengthKm": 0.344,
+    "surfaceType": "ASPHALT",
+    "pavementWidth": 4,
+    "rightOfWayWidth": 6,
+    "villageNo": null
+  },
+  {
+    "seq": 101,
+    "routeCode": "บร ถ. 21-101",
+    "name": "ถนนสุขาภิบาล 1703",
+    "lengthKm": 0.144,
+    "surfaceType": "ASPHALT",
+    "pavementWidth": 5,
+    "rightOfWayWidth": 8,
+    "villageNo": null
+  },
+  {
+    "seq": 102,
+    "routeCode": "บร ถ. 21-102",
+    "name": "ถนนสุขาภิบาล 1704",
+    "lengthKm": 0.422,
+    "surfaceType": "ASPHALT",
+    "pavementWidth": 5,
+    "rightOfWayWidth": 6,
+    "villageNo": null
+  },
+  {
+    "seq": 103,
+    "routeCode": "บร ถ. 21-103",
+    "name": "ถนนสุขาภิบาล 1702 เชื่อมคลองชลประทาน",
+    "lengthKm": 0.098,
+    "surfaceType": "ASPHALT",
+    "pavementWidth": 5,
+    "rightOfWayWidth": 7,
+    "villageNo": null
+  },
+  {
+    "seq": 104,
+    "routeCode": "บร ถ. 21-104",
+    "name": "ถนนหลังวัดใต้",
+    "lengthKm": 0.3,
+    "surfaceType": "ASPHALT",
+    "pavementWidth": 5,
+    "rightOfWayWidth": 8,
+    "villageNo": null
+  },
+  {
+    "seq": 105,
+    "routeCode": "บร ถ. 21-105",
+    "name": "ซอยกลางตลาดสด",
+    "lengthKm": 0.139,
+    "surfaceType": "ASPHALT",
+    "pavementWidth": 6,
+    "rightOfWayWidth": 6,
+    "villageNo": null
+  },
+  {
+    "seq": 106,
+    "routeCode": "บร ถ. 21-106",
+    "name": "ถนนสุขาภิบาล 2601",
+    "lengthKm": 0.306,
+    "surfaceType": "LATERITE",
+    "pavementWidth": 5,
+    "rightOfWayWidth": 9,
+    "villageNo": null
+  },
+  {
+    "seq": 107,
+    "routeCode": "บร ถ. 21-107",
+    "name": "ถนนเลียบคลองหลังวัดหมู่ 4",
+    "lengthKm": 0.397,
+    "surfaceType": "CONCRETE",
+    "pavementWidth": 5,
+    "rightOfWayWidth": 7,
+    "villageNo": null
+  },
+  {
+    "seq": 108,
+    "routeCode": "บร ถ. 21-108",
+    "name": "ถนนหลังโรงเรียนอนุบาลโนนดินแดงไปบ้านทรัพย์สมบูรณ์",
+    "lengthKm": 0.446,
+    "surfaceType": "LATERITE",
+    "pavementWidth": 5,
+    "rightOfWayWidth": 7,
+    "villageNo": null
+  },
+  {
+    "seq": 109,
+    "routeCode": "บร ถ. 21-109",
+    "name": "ถนนข้างวัดเหนือไปบ้านโคกขี้เหล็ก",
+    "lengthKm": 0.417,
+    "surfaceType": "ASPHALT",
+    "pavementWidth": 5,
+    "rightOfWayWidth": 7,
+    "villageNo": null
+  },
+  {
+    "seq": 110,
+    "routeCode": "บร ถ. 21-110",
+    "name": "ถนนคันคลองชลประทานคลองมะนาว",
+    "lengthKm": 1.067,
+    "surfaceType": "ASPHALT",
+    "pavementWidth": 5,
+    "rightOfWayWidth": 6,
+    "villageNo": null
+  },
+  {
+    "seq": 111,
+    "routeCode": "บร ถ. 21-111",
+    "name": "ถนนสุขาภิบาล 4/1",
+    "lengthKm": 0.104,
+    "surfaceType": "CONCRETE",
+    "pavementWidth": 3,
+    "rightOfWayWidth": 3,
+    "villageNo": null
+  },
+  {
+    "seq": 112,
+    "routeCode": "บร ถ. 21-112",
+    "name": "ถนนสุขาภิบาล 4/2",
+    "lengthKm": 0.125,
+    "surfaceType": "CONCRETE",
+    "pavementWidth": 3,
+    "rightOfWayWidth": 3,
+    "villageNo": null
+  },
+  {
+    "seq": 113,
+    "routeCode": "บร ถ. 21-113",
+    "name": "ถนนสุขาภิบาล 24 ไปโรงเรียนร่มเกล้า ซอย 1",
+    "lengthKm": 0.24,
+    "surfaceType": "CONCRETE",
+    "pavementWidth": 5,
+    "rightOfWayWidth": 5,
+    "villageNo": null
+  }
+]
