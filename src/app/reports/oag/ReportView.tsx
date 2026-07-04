@@ -61,6 +61,8 @@ type VehicleWithLogs = {
   brand: string;
   model: string;
   department: string | null;
+  assetNumber: string | null;
+  acquiredPrice: number | null;
   fuelLogs: FuelLog[];
   tripLogs: TripLog[];
   maintenanceLogs: MaintenanceLog[];
@@ -186,10 +188,8 @@ export default function ReportView({
   };
 
   // 10-year Straight-line Depreciation for Government Assets (Useful life: 10 years, salvage value: 1 THB)
-  const getDepreciation = (registeredDate: Date | string, type: string) => {
-    const cost = type.includes("ตู้") ? 1200000 : 
-                 type.includes("กระบะ") ? 800000 : 
-                 type.includes("เก๋ง") ? 600000 : 750000;
+  const getDepreciation = (registeredDate: Date | string, acquiredPrice: number | null) => {
+    const cost = acquiredPrice || 0;
     const regDate = new Date(registeredDate);
     const now = new Date();
     let ageYears = now.getFullYear() - regDate.getFullYear();
@@ -199,9 +199,15 @@ export default function ReportView({
     ageYears = Math.max(0, ageYears);
     
     const usefulLife = 10;
-    const annualDepreciation = (cost - 1) / usefulLife;
-    const accumulatedDepreciation = Math.min(usefulLife, ageYears) * annualDepreciation;
-    const netBookValue = cost - accumulatedDepreciation;
+    let annualDepreciation = 0;
+    let accumulatedDepreciation = 0;
+    let netBookValue = 0;
+
+    if (cost > 0) {
+      annualDepreciation = (cost - 1) / usefulLife;
+      accumulatedDepreciation = Math.min(usefulLife, ageYears) * annualDepreciation;
+      netBookValue = cost - accumulatedDepreciation;
+    }
     
     return {
       cost,
@@ -212,15 +218,21 @@ export default function ReportView({
   };
 
   // Detailed datasets mapped for tables
+  const availableVehicles = useMemo(() => {
+    return vehicles.filter(v => selectedDept === "ALL" ? true : (v.department || "กอง") === selectedDept);
+  }, [vehicles, selectedDept]);
+
   const vehiclesAssetData = useMemo(() => {
-    return reportData.map(v => {
-      const dep = getDepreciation(v.registeredDate, v.vehicleType);
-      return {
-        ...v,
-        dep
-      };
-    });
-  }, [reportData]);
+    return availableVehicles
+      .filter((v) => (selectedVehicle === "ALL" ? true : v.id === selectedVehicle))
+      .map(v => {
+        const dep = getDepreciation(v.registeredDate, v.acquiredPrice);
+        return {
+          ...v,
+          dep
+        };
+      });
+  }, [availableVehicles, selectedVehicle]);
 
   const fuelLogsData = useMemo(() => {
     const logs: any[] = [];
@@ -265,8 +277,6 @@ export default function ReportView({
   const handlePrint = () => {
     window.print();
   };
-
-  const availableVehicles = vehicles.filter(v => selectedDept === "ALL" ? true : (v.department || "กอง") === selectedDept);
 
   return (
     <>
@@ -607,7 +617,7 @@ export default function ReportView({
 
         {/* -------------------- PART 1 -------------------- */}
         {(activeTab === 'all' || activeTab === 'part1') && (
-          <div className="a4-paper-preview">
+          <div className={`a4-paper-preview ${activeTab === 'all' ? 'print-section-break' : ''}`}>
             {/* Header */}
             <div className="text-center mb-6 flex flex-col items-center">
 
@@ -623,25 +633,27 @@ export default function ReportView({
                 <thead>
                   <tr className="bg-slate-50 text-slate-700">
                     <th className="w-12 text-center py-3">ลำดับ</th>
+                    <th className="text-center py-3">เลขครุภัณฑ์</th>
                     <th className="text-center py-3">ทะเบียนรถ</th>
                     <th className="text-center py-3">ประเภทรถ</th>
                     <th className="text-center py-3">ยี่ห้อ / รุ่น</th>
-                    <th className="text-center py-3">วันที่จดทะเบียน</th>
-                    <th className="text-center py-3">อายุการใช้งาน (ปี)</th>
-                    <th className="text-right py-3">ราคาทุนทรัพย์สิน (บาท)</th>
-                    <th className="text-right py-3">ค่าเสื่อมราคาสะสม (บาท)</th>
-                    <th className="text-right py-3">มูลค่าสุทธิตามบัญชี (บาท)</th>
+                    <th className="text-center py-3">วันที่ได้มา</th>
+                    <th className="text-center py-3">อายุ (ปี)</th>
+                    <th className="text-right py-3">ราคาทุน (บาท)</th>
+                    <th className="text-right py-3">ค่าเสื่อมสะสม (บาท)</th>
+                    <th className="text-right py-3">มูลค่าสุทธิ (บาท)</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-100">
                   {vehiclesAssetData.length === 0 ? (
                     <tr>
-                      <td colSpan={9} className="text-center py-10 text-slate-400">ไม่พบรายการข้อมูลทรัพย์สินตามเงื่อนไข</td>
+                      <td colSpan={10} className="text-center py-10 text-slate-400">ไม่พบรายการข้อมูลทรัพย์สินตามเงื่อนไข</td>
                     </tr>
                   ) : (
                     vehiclesAssetData.map((v, i) => (
                       <tr key={v.id} className="hover:bg-slate-50/50">
                         <td className="text-center py-3">{i + 1}</td>
+                        <td className="text-center text-xs text-slate-500 font-mono">{v.assetNumber || "-"}</td>
                         <td className="text-center font-bold text-slate-800">{v.licensePlate}</td>
                         <td className="text-center">{v.vehicleType}</td>
                         <td className="text-center">{v.brand} {v.model}</td>
@@ -657,7 +669,7 @@ export default function ReportView({
                 {vehiclesAssetData.length > 0 && (
                   <tfoot>
                     <tr className="bg-slate-50/50 font-bold border-t border-slate-200 print-total-row">
-                      <td colSpan={6} className="text-center py-3 text-slate-800">รวมทั้งสิ้น</td>
+                      <td colSpan={7} className="text-center py-3 text-slate-800">รวมทั้งสิ้น</td>
                       <td className="text-right py-3 font-extrabold">
                         {vehiclesAssetData.reduce((sum, v) => sum + v.dep.cost, 0).toLocaleString("th-TH", { minimumFractionDigits: 2 })}
                       </td>
