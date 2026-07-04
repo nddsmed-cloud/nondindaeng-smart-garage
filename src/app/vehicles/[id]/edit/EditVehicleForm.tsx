@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { updateVehicle } from "../../vehicle-actions";
 import { getBangkokDateString } from "../../../../lib/date-formatter";
+import ThaiDateInput from "../../../../components/ui/ThaiDateInput";
 import Link from "next/link";
 
 type Vehicle = {
@@ -71,8 +72,7 @@ export default function EditVehicleForm({ vehicle }: { vehicle: Vehicle }) {
             <div className="form-grid">
               <div className="form-group">
                 <label className="form-label">วันที่จดทะเบียน *</label>
-                <input
-                  type="date"
+                <ThaiDateInput
                   name="registeredDate"
                   required
                   defaultValue={formattedDate}

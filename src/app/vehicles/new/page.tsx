@@ -3,6 +3,7 @@
 
 import { useState } from "react";
 import { submitVehicleRequest } from "../actions";
+import ThaiDateInput from "../../../components/ui/ThaiDateInput";
 
 export default function NewVehicleRequestPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -62,7 +63,7 @@ export default function NewVehicleRequestPage() {
           </div>
           <div>
             <label className="block text-sm font-medium text-slate-700 mb-1">วันที่เดินทาง</label>
-            <input type="date" name="travelDate" required className="w-full px-4 py-2 border rounded-md" />
+            <ThaiDateInput name="travelDate" required className="w-full px-4 py-2 border rounded-md" />
           </div>
         </div>
 

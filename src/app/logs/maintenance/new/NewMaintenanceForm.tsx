@@ -11,6 +11,7 @@ type Vehicle = {
   model: string;
 };
 import { getBangkokDateString } from "../../../../lib/date-formatter";
+import ThaiDateInput from "../../../../components/ui/ThaiDateInput";
 
 export default function NewMaintenanceForm({ vehicles }: { vehicles: Vehicle[] }) {
   const [loading, setLoading] = useState(false);
@@ -68,7 +69,7 @@ export default function NewMaintenanceForm({ vehicles }: { vehicles: Vehicle[] }
 
               <div className="form-group">
                 <label className="form-label">วันที่ซ่อมบำรุง</label>
-                <input type="date" name="maintenanceDate" required className="form-input" defaultValue={getBangkokDateString()} />
+                <ThaiDateInput name="maintenanceDate" required className="form-input" defaultValue={getBangkokDateString()} />
               </div>
 
               <div className="form-group">

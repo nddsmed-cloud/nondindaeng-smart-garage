@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { createRequest, getVehiclesByDepartment } from "../actions";
 import Link from "next/link";
+import ThaiDateInput from "../../../components/ui/ThaiDateInput";
 
 const departments = [
   "สำนักปลัด", "กองคลัง", "กองช่าง", "กองการศึกษา",
@@ -128,7 +129,7 @@ export default function NewRequestPage() {
               </div>
               <div className="form-group">
                 <label className="form-label">วันที่เดินทาง *</label>
-                <input type="date" name="travelDate" required className="form-input" />
+                <ThaiDateInput name="travelDate" required className="form-input" />
               </div>
               <div className="form-group">
                 <label className="form-label">ปลายทาง *</label>

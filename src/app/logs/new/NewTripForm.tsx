@@ -1,9 +1,10 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { createTripLog, getLatestMileage } from "../actions";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import ThaiDateInput from "../../../components/ui/ThaiDateInput";
 
 type Vehicle = { id: string; licensePlate: string; brand: string; model: string; status: string };
 
@@ -150,13 +151,12 @@ export default function NewTripLogPage({
               </div>
               <div className="form-group">
                 <label className="form-label">วันที่เดินทาง (ล็อกค่าอัตโนมัติ) *</label>
-                <input 
-                  type="date" 
+                <ThaiDateInput 
                   name="travelDate" 
                   required 
-                  value={lockedDate}
+                  defaultValue={lockedDate}
                   readOnly
-                  className="form-input bg-slate-100 text-slate-500 cursor-not-allowed" 
+                  className="form-input" 
                 />
               </div>
             </div>

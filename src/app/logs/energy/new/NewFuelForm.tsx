@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { createFuelLog, getLatestMileage } from "../../actions";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import ThaiDateInput from "../../../../components/ui/ThaiDateInput";
 
 type Vehicle = { id: string; licensePlate: string; brand: string; model: string };
 
@@ -70,7 +71,6 @@ export default function NewFuelForm({ vehicles, redirectUri }: { vehicles: Vehic
         <form action={handleSubmit}>
           {/* Hidden Flags */}
           <input type="hidden" name="isLiff" value={isLiff ? "true" : "false"} />
-          <input type="hidden" name="fuelDate" value={lockedDate} />
           {redirectUri && <input type="hidden" name="redirectUri" value={redirectUri} />}
 
           <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
@@ -131,6 +131,18 @@ export default function NewFuelForm({ vehicles, redirectUri }: { vehicles: Vehic
                   style={{ fontSize: "16px", padding: "14px", borderColor: "var(--blue)" }}
                 />
               </div>
+            </div>
+
+            {/* วันที่ */}
+            <div className="form-group">
+              <label className="form-label">วันที่เติมเชื้อเพลิง (ล็อกค่าอัตโนมัติ) *</label>
+              <ThaiDateInput 
+                name="fuelDate" 
+                required 
+                defaultValue={lockedDate}
+                readOnly
+                className="form-input" 
+              />
             </div>
 
             {/* ค่าน้ำมัน */}

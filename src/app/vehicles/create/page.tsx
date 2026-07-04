@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { createVehicle } from "../vehicle-actions";
 import Link from "next/link";
+import ThaiDateInput from "../../../components/ui/ThaiDateInput";
 
 export default function CreateVehiclePage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -26,7 +27,7 @@ export default function CreateVehiclePage() {
             <div className="form-grid">
               <div className="form-group">
                 <label className="form-label">วันที่จดทะเบียน *</label>
-                <input type="date" name="registeredDate" required className="form-input" />
+                <ThaiDateInput name="registeredDate" required className="form-input" />
               </div>
               <div className="form-group">
                 <label className="form-label">เลขทะเบียน *</label>
