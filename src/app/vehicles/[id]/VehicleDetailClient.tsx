@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 
 type Vehicle = any;
 type TripLog = any;
@@ -10,10 +11,12 @@ export default function VehicleDetailClient({
   vehicle,
   tripLogs,
   fuelLogs,
+  role,
 }: {
   vehicle: Vehicle;
   tripLogs: TripLog[];
   fuelLogs: FuelLog[];
+  role: string;
 }) {
   const [activeTab, setActiveTab] = useState<"info" | "fuel" | "trips">("info");
 
@@ -35,12 +38,24 @@ export default function VehicleDetailClient({
           <p className="text-slate-600 font-medium">{vehicle.model} — {vehicle.bodyType}</p>
         </div>
         
-        <div className="flex flex-col items-end gap-2">
-          <div className="flex items-center gap-2">
-            <span className="w-3 h-3 rounded-full bg-emerald-500 animate-pulse"></span>
-            <span className="font-semibold text-emerald-700 bg-emerald-50 px-3 py-1 rounded-md border border-emerald-200 text-sm">
-              {vehicle.status}
-            </span>
+        <div className="flex flex-col md:flex-row items-center gap-3">
+          <div className="flex flex-col items-end gap-2">
+            <div className="flex items-center gap-2">
+              <span className="w-3 h-3 rounded-full bg-emerald-500 animate-pulse"></span>
+              <span className="font-semibold text-emerald-700 bg-emerald-50 px-3 py-1 rounded-md border border-emerald-200 text-sm">
+                {vehicle.status}
+              </span>
+            </div>
+          </div>
+          <div className="flex gap-2">
+            {role === "ADMIN" && (
+              <Link href={`/vehicles/${vehicle.id}/edit`} className="btn btn-warning text-sm py-1.5 px-3">
+                ✏️ แก้ไขข้อมูลรถ
+              </Link>
+            )}
+            <Link href="/vehicles" className="btn btn-ghost text-sm py-1.5 px-3">
+              ← กลับ
+            </Link>
           </div>
         </div>
       </div>
@@ -88,6 +103,8 @@ export default function VehicleDetailClient({
                 <p className="text-sm text-slate-600"><strong>ประเภท:</strong> {vehicle.vehicleType}</p>
                 <p className="text-sm text-slate-600"><strong>ลักษณะรถ:</strong> {vehicle.bodyType}</p>
                 <p className="text-sm text-slate-600"><strong>สีตัวถัง:</strong> {vehicle.color}</p>
+                <p className="text-sm text-slate-600"><strong>หมายเลขครุภัณฑ์:</strong> {vehicle.assetNumber || "-"}</p>
+                <p className="text-sm text-slate-600"><strong>ราคาที่ได้มา:</strong> {vehicle.acquiredPrice ? `${vehicle.acquiredPrice.toLocaleString("th-TH")} บาท` : "-"}</p>
               </div>
 
               <div className="space-y-3 bg-slate-50 p-4 rounded-lg">

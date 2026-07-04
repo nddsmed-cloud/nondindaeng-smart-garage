@@ -56,6 +56,14 @@ export default function CreateVehiclePage() {
                   <option value="กองยุทธศาสตร์และงบประมาณ">กองยุทธศาสตร์และงบประมาณ</option>
                 </select>
               </div>
+              <div className="form-group">
+                <label className="form-label">หมายเลขครุภัณฑ์</label>
+                <input type="text" name="assetNumber" placeholder="เช่น 123-45-6789" className="form-input" />
+              </div>
+              <div className="form-group">
+                <label className="form-label">ราคาที่ได้มา (บาท)</label>
+                <input type="number" name="acquiredPrice" placeholder="เช่น 750000" step="any" defaultValue={0} className="form-input" />
+              </div>
             </div>
           </div>
 

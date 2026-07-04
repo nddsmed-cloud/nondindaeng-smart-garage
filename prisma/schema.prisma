@@ -48,6 +48,8 @@ model Vehicle {
   status          String   @default("พร้อมใช้งาน")
   department      String?  @default("")
   standardConsumptionRate Float @default(13.0) @map("standard_consumption_rate")
+  assetNumber     String?  @default("") @map("asset_number")
+  acquiredPrice   Float?   @default(0) @map("acquired_price")
 
   tripLogs        TripLog[]
   fuelLogs        FuelLog[]
@@ -99,6 +101,10 @@ model TripLog {
   status        String   @default("กำลังเดินทาง")
   userId        String?  @map("user_id")
 
+  // เพิ่มการเชื่อมโยงกับถนน (GIS)
+  roadId        String?  @map("road_id")
+  road          InfraAsset? @relation(fields: [roadId], references: [id])
+
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
 
@@ -128,6 +134,7 @@ model FuelLog {
   note          String   @default("")
   userId        String?  @map("user_id")
   department    String?  @default("")
+  status        String   @default("รออนุมัติ")
 
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
@@ -166,4 +173,88 @@ model GroupAccess {
   updatedAt      DateTime @updatedAt
 
   @@map("group_access")
+}
+
+// ─────────────────────────────────────────────────────────────
+// GIS กองช่าง — โมดูลทะเบียนถนนและสิ่งติดตั้ง
+// ─────────────────────────────────────────────────────────────
+
+enum FixtureType {
+  STREETLIGHT   // เสาไฟฟ้าแสงสว่าง
+  TRAFFIC_SIGN  // ป้ายจราจร
+  CCTV          // กล้องวงจรปิด
+  OTHER         // อื่นๆ
+}
+
+enum FixtureStatus {
+  NORMAL        // ปกติ
+  UNDER_REPAIR  // อยู่ระหว่างซ่อม
+  DAMAGED       // ชำรุด
+}
+
+enum SurfaceType {
+  ASPHALT   // ลาดยาง
+  CONCRETE  // คอนกรีต (ค.ส.ล.)
+  LATERITE  // ลูกรัง
+  GRAVEL    // หินคลุก
+  EARTH     // ดิน
+}
+
+enum LandDocType {
+  TITLE_DEED          // มีเอกสารสิทธิ์ที่ดิน (โฉนด/น.ส.3)
+  TT4_DEDICATION      // หนังสืออุทิศที่ดิน (ทถ.4)
+  TT5_CERTIFICATION   // หนังสือรับรองที่ดินสาธารณประโยชน์ (ทถ.5)
+}
+
+// ถนนแต่ละสาย
+model InfraAsset {
+  id           String            @id @default(cuid())
+  name         String
+  path         Json              @default("[]") // array ของ {lat, lng}
+  createdAt    DateTime          @default(now())
+  updatedAt    DateTime          @updatedAt
+
+  registration RoadRegistration?
+  fixtures     RoadFixture[]
+  tripLogs     TripLog[]
+
+  @@map("infra_assets")
+}
+
+// ทถ.3 — รายละเอียดเชิงกายภาพของถนน
+model RoadRegistration {
+  id               String       @id @default(cuid())
+  assetId          String       @unique @map("asset_id")
+  asset            InfraAsset   @relation(fields: [assetId], references: [id], onDelete: Cascade)
+  routeCode        String?      @map("route_code")
+  lengthKm         Float?       @map("length_km")
+  surfaceType      SurfaceType? @map("surface_type")
+  pavementWidth    Float?       @map("pavement_width")
+  rightOfWayWidth  Float?       @map("right_of_way_width")
+  shoulderWidth    Float?       @map("shoulder_width")
+  sidewalkWidth    Float?       @map("sidewalk_width")
+  drainageDetail   String?      @map("drainage_detail")
+  landDocumentType LandDocType? @map("land_document_type")
+  status           String       @default("APPROVED")
+  createdAt        DateTime     @default(now())
+  updatedAt        DateTime     @updatedAt
+
+  @@map("road_registrations")
+}
+
+// สิ่งติดตั้งบนถนน (เสาไฟ / ป้ายจราจร / กล้อง CCTV)
+model RoadFixture {
+  id        String        @id @default(cuid())
+  assetId   String        @map("asset_id")
+  asset     InfraAsset    @relation(fields: [assetId], references: [id], onDelete: Cascade)
+  type      FixtureType
+  detail    String?       // เช่น "LED 40W", "ป้ายหยุด"
+  lat       Float
+  lng       Float
+  status    FixtureStatus @default(NORMAL)
+  note      String?
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @updatedAt
+
+  @@map("road_fixtures")
 }

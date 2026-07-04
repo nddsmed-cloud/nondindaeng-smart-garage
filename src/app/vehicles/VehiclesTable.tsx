@@ -108,7 +108,7 @@ export default function VehiclesTable({ vehicles, role }: { vehicles: Vehicle[],
                     <div style={{ display: "flex", gap: 6, justifyContent: "flex-end" }}>
                       {role === "ADMIN" && (
                         <>
-                          <a href={`/vehicles/${vehicle.id}`} className="btn btn-warning btn-sm">✏️ แก้ไข</a>
+                          <a href={`/vehicles/${vehicle.id}/edit`} className="btn btn-warning btn-sm">✏️ แก้ไข</a>
                           <button
                             onClick={() => handleDelete(vehicle.id, vehicle.licensePlate)}
                             disabled={deletingId === vehicle.id}

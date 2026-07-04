@@ -1,9 +1,13 @@
 import { prisma } from "../../../lib/prisma";
 import { notFound } from "next/navigation";
 import VehicleDetailClient from "./VehicleDetailClient";
+import { auth } from "../../../auth";
 
 export default async function VehiclePage(props: { params: Promise<{ id: string }> }) {
   const params = await props.params;
+  const session = await auth();
+  const role = session?.user?.role || "DRIVER";
+
   // 1. Fetch vehicle data from database
   const vehicle = await prisma.vehicle.findUnique({
     where: { id: params.id },
@@ -23,6 +27,7 @@ export default async function VehiclePage(props: { params: Promise<{ id: string 
       vehicle={vehicle}
       tripLogs={vehicle.tripLogs}
       fuelLogs={vehicle.fuelLogs}
+      role={role}
     />
   );
 }

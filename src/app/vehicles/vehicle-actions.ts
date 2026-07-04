@@ -28,6 +28,8 @@ export async function createVehicle(formData: FormData) {
       totalWeight: parseInt(formData.get("totalWeight") as string) || 0,
       status: formData.get("status") as string || "พร้อมใช้งาน",
       department: (formData.get("department") as string) || session?.user?.department || "",
+      assetNumber: (formData.get("assetNumber") as string) || "",
+      acquiredPrice: parseFloat(formData.get("acquiredPrice") as string) || 0,
     };
 
     await prisma.vehicle.create({ data });
@@ -63,6 +65,8 @@ export async function updateVehicle(id: string, formData: FormData) {
       totalWeight: parseInt(formData.get("totalWeight") as string) || 0,
       status: formData.get("status") as string,
       department: formData.get("department") as string,
+      assetNumber: (formData.get("assetNumber") as string) || "",
+      acquiredPrice: parseFloat(formData.get("acquiredPrice") as string) || 0,
     };
 
     // Remove department if it's not provided (e.g., if the form doesn't have it)
