@@ -7,12 +7,10 @@ export function formatThaiDate(dateString: string | Date | undefined | null): st
   try {
     const date = new Date(dateString);
     if (isNaN(date.getTime())) return String(dateString);
-    return date.toLocaleDateString("th-TH", {
-      timeZone: "Asia/Bangkok",
-      year: "numeric",
-      month: "short",
-      day: "numeric",
-    });
+    const day = date.toLocaleString("th-TH", { day: "numeric", timeZone: "Asia/Bangkok" });
+    const month = date.toLocaleString("th-TH", { month: "short", timeZone: "Asia/Bangkok" });
+    const year = date.toLocaleString("th-TH", { year: "numeric", timeZone: "Asia/Bangkok" });
+    return `${day} ${month} พ.ศ. ${year}`;
   } catch (e) {
     return String(dateString);
   }
@@ -23,14 +21,11 @@ export function formatThaiDateTime(dateString: string | Date | undefined | null)
   try {
     const date = new Date(dateString);
     if (isNaN(date.getTime())) return String(dateString);
-    return date.toLocaleString("th-TH", {
-      timeZone: "Asia/Bangkok",
-      year: "numeric",
-      month: "short",
-      day: "numeric",
-      hour: "2-digit",
-      minute: "2-digit",
-    }) + " น.";
+    const day = date.toLocaleString("th-TH", { day: "numeric", timeZone: "Asia/Bangkok" });
+    const month = date.toLocaleString("th-TH", { month: "short", timeZone: "Asia/Bangkok" });
+    const year = date.toLocaleString("th-TH", { year: "numeric", timeZone: "Asia/Bangkok" });
+    const time = date.toLocaleString("th-TH", { hour: "2-digit", minute: "2-digit", timeZone: "Asia/Bangkok" });
+    return `${day} ${month} พ.ศ. ${year} ${time} น.`;
   } catch (e) {
     return String(dateString);
   }
