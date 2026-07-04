@@ -50,12 +50,13 @@ export default function NewTripLogPage({
     };
     checkLiff();
  
-    // 2. Lock current date to Server/Device Time (Anti-fraud for OAG)
-    const today = new Date();
-    // Offset for local timezone correctly
-    const localDateString = new Date(today.getTime() - (today.getTimezoneOffset() * 60000))
-      .toISOString().split("T")[0];
-    setLockedDate(localDateString);
+    // 2. Lock current date to Asia/Bangkok Time (Anti-fraud for OAG)
+    const bangkokTime = new Date().toLocaleString("en-US", { timeZone: "Asia/Bangkok" });
+    const d = new Date(bangkokTime);
+    const yyyy = d.getFullYear();
+    const mm = String(d.getMonth() + 1).padStart(2, '0');
+    const dd = String(d.getDate()).padStart(2, '0');
+    setLockedDate(`${yyyy}-${mm}-${dd}`);
   }, []);
  
   const ready = vehicles.filter((v) => v.status === "พร้อมใช้งาน");

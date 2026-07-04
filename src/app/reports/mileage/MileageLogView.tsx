@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useMemo } from "react";
+import { formatThaiDate } from "../../../lib/date-formatter";
 import Link from "next/link";
 
 type Vehicle = any; // We can type this properly later, it includes fuelLogs and tripLogs
@@ -108,7 +109,7 @@ export default function MileageLogView({ vehicles, role, department }: { vehicle
                 ) : (
                   logs.map((log) => (
                     <tr key={`${log.type}-${log.id}`}>
-                      <td>{log.date}</td>
+                      <td>{formatThaiDate(log.date)}</td>
                       <td>
                         <span style={{
                           display: "inline-block",

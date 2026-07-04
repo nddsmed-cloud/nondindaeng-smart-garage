@@ -4,6 +4,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { formatThaiDate } from "../../../lib/date-formatter";
 import { useRouter } from "next/navigation";
 
 type Road = {
@@ -155,7 +156,7 @@ export default function RoadsTable({ roads }: { roads: Road[] }) {
                     <td style={{ padding: "12px 16px" }}>
                       <div style={{ fontWeight: 600, color: "var(--text-primary)" }}>{road.name}</div>
                       <div style={{ fontSize: 11, color: "var(--text-muted)", marginTop: 2 }}>
-                        เพิ่มเมื่อ {new Date(road.createdAt).toLocaleDateString("th-TH")}
+                        เพิ่มเมื่อ {formatThaiDate(road.createdAt)}
                       </div>
                     </td>
                     <td style={{ padding: "12px 16px", color: "var(--text-muted)", fontFamily: "monospace" }}>

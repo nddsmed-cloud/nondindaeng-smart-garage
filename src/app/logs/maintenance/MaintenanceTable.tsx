@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { deleteMaintenanceLog } from "./actions";
+import { formatThaiDate } from "../../../lib/date-formatter";
 
 type MaintenanceLog = {
   id: string;
@@ -74,7 +75,7 @@ export default function MaintenanceTable({ logs, role }: { logs: MaintenanceLog[
             ) : (
               filtered.map((log) => (
                 <tr key={log.id}>
-                  <td>{log.maintenanceDate}</td>
+                  <td>{formatThaiDate(log.maintenanceDate)}</td>
                   <td>
                     <div className="td-primary">{log.vehicle.licensePlate}</div>
                     <div style={{ fontSize: 11, color: "var(--text-muted)", marginTop: 2 }}>{log.department}</div>

@@ -34,11 +34,13 @@ export default function NewFuelForm({ vehicles, redirectUri }: { vehicles: Vehic
     };
     checkLiff();
 
-    // 2. Lock current date to Server/Device Time
-    const today = new Date();
-    const localDateString = new Date(today.getTime() - (today.getTimezoneOffset() * 60000))
-      .toISOString().split("T")[0];
-    setLockedDate(localDateString);
+    // 2. Lock current date to Asia/Bangkok Time
+    const bangkokTime = new Date().toLocaleString("en-US", { timeZone: "Asia/Bangkok" });
+    const d = new Date(bangkokTime);
+    const yyyy = d.getFullYear();
+    const mm = String(d.getMonth() + 1).padStart(2, '0');
+    const dd = String(d.getDate()).padStart(2, '0');
+    setLockedDate(`${yyyy}-${mm}-${dd}`);
   }, []);
 
   const handleSubmit = async (formData: FormData) => {

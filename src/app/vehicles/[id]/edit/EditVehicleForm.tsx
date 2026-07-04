@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { updateVehicle } from "../../vehicle-actions";
+import { getBangkokDateString } from "../../../../lib/date-formatter";
 import Link from "next/link";
 
 type Vehicle = {
@@ -32,7 +33,7 @@ export default function EditVehicleForm({ vehicle }: { vehicle: Vehicle }) {
   const [error, setError] = useState<string | null>(null);
 
   const formattedDate = vehicle.registeredDate
-    ? new Date(vehicle.registeredDate).toISOString().split("T")[0]
+    ? getBangkokDateString(vehicle.registeredDate)
     : "";
 
   const handleAction = async (formData: FormData) => {

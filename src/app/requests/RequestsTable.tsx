@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { approveRequest, rejectRequest, deleteRequest } from "./actions";
 import Link from "next/link";
+import { formatThaiDate } from "../../lib/date-formatter";
 
 type Request = {
   id: string;
@@ -106,7 +107,7 @@ export default function RequestsTable({ requests, role }: { requests: Request[];
                     <div style={{ fontSize: 11, color: "var(--text-muted)", marginTop: 2 }}>{req.department}</div>
                   </td>
                   <td>{req.vehicleType}</td>
-                  <td>{req.travelDate}</td>
+                  <td>{formatThaiDate(req.travelDate)}</td>
                   <td>{req.destination || "—"}</td>
                   <td style={{ maxWidth: 200, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
                     {req.purpose}

@@ -2,6 +2,7 @@
 // src/app/admin/users/UsersTable.tsx
 import { useState } from "react";
 import Link from "next/link";
+import { formatThaiDate } from "../../../lib/date-formatter";
 import { toggleUserActive, deleteUser } from "./actions";
 import {
   ROLE_LABELS, ROLE_COLORS, type UserRole,
@@ -83,7 +84,7 @@ export default function UsersTable({ users, currentUserId }: { users: User[]; cu
                     {user.isActive ? "ใช้งานอยู่" : "ปิดใช้งาน"}
                   </span>
                 </td>
-                <td>{new Date(user.createdAt).toLocaleDateString("th-TH")}</td>
+                <td>{formatThaiDate(user.createdAt)}</td>
                 <td>
                   <div style={{ display: "flex", gap: 6, justifyContent: "flex-end" }}>
                     {/* ไม่สามารถ disable/ลบตัวเองได้ */}

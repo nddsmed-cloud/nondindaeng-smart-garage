@@ -1,6 +1,7 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import React, { useState, useMemo } from "react";
+import { formatThaiDate } from "../../../lib/date-formatter";
 
 type FuelLog = {
   id: string;
@@ -657,7 +658,7 @@ export default function ReportView({
                         <td className="text-center font-bold text-slate-800">{v.licensePlate}</td>
                         <td className="text-center">{v.vehicleType}</td>
                         <td className="text-center">{v.brand} {v.model}</td>
-                        <td className="text-center">{new Date(v.registeredDate).toLocaleDateString("th-TH")}</td>
+                        <td className="text-center">{formatThaiDate(v.registeredDate)}</td>
                         <td className="text-center">{v.dep.ageYears} ปี</td>
                         <td className="text-right font-medium">{v.dep.cost.toLocaleString("th-TH", { minimumFractionDigits: 2 })}</td>
                         <td className="text-right text-slate-500 font-medium">{v.dep.accumulatedDepreciation.toLocaleString("th-TH", { minimumFractionDigits: 2 })}</td>
@@ -748,7 +749,7 @@ export default function ReportView({
                       return (
                         <tr key={l.id} className="hover:bg-slate-50/50">
                           <td className="text-center py-3">{i + 1}</td>
-                          <td className="text-center">{new Date(l.fuelDate).toLocaleDateString("th-TH")}</td>
+                          <td className="text-center">{formatThaiDate(l.fuelDate)}</td>
                           <td className="text-center font-semibold text-slate-800">{l.licensePlate}</td>
                           <td className="text-right">{l.startMileage.toLocaleString()}</td>
                           <td className="text-right">{l.endMileage.toLocaleString()}</td>
@@ -849,7 +850,7 @@ export default function ReportView({
                     maintenanceLogsData.map((l, i) => (
                       <tr key={l.id} className="hover:bg-slate-50/50">
                         <td className="text-center py-3">{i + 1}</td>
-                        <td className="text-center">{new Date(l.maintenanceDate).toLocaleDateString("th-TH")}</td>
+                        <td className="text-center">{formatThaiDate(l.maintenanceDate)}</td>
                         <td className="text-center font-semibold text-slate-800">{l.licensePlate}</td>
                         <td className="text-right">{l.mileage.toLocaleString()}</td>
                         <td className="text-left max-w-md text-xs py-3 whitespace-pre-wrap">{l.details}</td>
@@ -932,7 +933,7 @@ export default function ReportView({
                     tripLogsData.map((l, i) => (
                       <tr key={l.id} className="hover:bg-slate-50/50">
                         <td className="text-center py-3">{i + 1}</td>
-                        <td className="text-center">{new Date(l.travelDate).toLocaleDateString("th-TH")}</td>
+                        <td className="text-center">{formatThaiDate(l.travelDate)}</td>
                         <td className="text-center font-semibold text-slate-800">{l.licensePlate}</td>
                         <td className="text-center text-xs">{l.driverName}</td>
                         <td className="text-left max-w-[150px] truncate text-xs" title={l.destination}>{l.destination}</td>

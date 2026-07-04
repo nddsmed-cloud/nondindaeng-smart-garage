@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
+import { formatThaiDate, formatThaiDateTime, getBangkokDateString } from "../../../lib/date-formatter";
 import { 
   Check, 
   X, 
@@ -206,7 +207,7 @@ export default function ApprovalsClient({
     } else if (preset === "today") {
       setSelectedStatus("ทั้งหมด");
       setSelectedDept("ทั้งหมด");
-      const todayStr = new Date().toISOString().split("T")[0];
+      const todayStr = getBangkokDateString();
       setSelectedDate(todayStr);
     } else if (preset === "myDept") {
       setSelectedStatus("ทั้งหมด");
@@ -709,7 +710,7 @@ export default function ApprovalsClient({
                           </div>
                           <div className="flex items-center gap-1.5">
                             <Calendar size={14} className="text-slate-400" />
-                            <span><strong>เดินทาง:</strong> {req.travelDate}</span>
+                            <span><strong>เดินทาง:</strong> {formatThaiDate(req.travelDate)}</span>
                           </div>
                           {req.destination && (
                             <div className="flex items-center gap-1.5 sm:col-span-2">
@@ -806,7 +807,7 @@ export default function ApprovalsClient({
                           </div>
                           <div className="flex items-center gap-1.5">
                             <Calendar size={14} className="text-slate-400" />
-                            <span>วันที่เติม: {log.fuelDate}</span>
+                            <span>วันที่เติม: {formatThaiDate(log.fuelDate)}</span>
                           </div>
                           <div className="flex items-center gap-1.5">
                             <MapPin size={14} className="text-slate-400" />
@@ -900,7 +901,7 @@ export default function ApprovalsClient({
                         </div>
                         <div className="flex items-center gap-1">
                           <Calendar size={13} className="text-slate-400" />
-                          <span><strong>เดินทางวันที่:</strong> {req.travelDate}</span>
+                          <span><strong>เดินทางวันที่:</strong> {formatThaiDate(req.travelDate)}</span>
                         </div>
                         <div><strong>ความต้องการรถ:</strong> {req.vehicleType}</div>
                         <div className="bg-white p-2 rounded border text-slate-500 italic">
@@ -1040,7 +1041,7 @@ export default function ApprovalsClient({
                           <div className="relative">
                             <span className="absolute -left-[21px] top-0.5 w-2.5 h-2.5 rounded-full bg-emerald-500 border border-white"></span>
                             <div className="font-bold text-slate-800 text-[10px]">สร้างคำขอใช้รถยนต์</div>
-                            <div className="text-[9px] text-slate-400">สร้างเมื่อ: {new Date(req.createdAt).toLocaleString("th-TH")}</div>
+                            <div className="text-[9px] text-slate-400">สร้างเมื่อ: {formatThaiDateTime(req.createdAt)}</div>
                           </div>
                           <div className="relative">
                             <span className={`absolute -left-[21px] top-0.5 w-2.5 h-2.5 rounded-full border border-white ${
@@ -1055,7 +1056,7 @@ export default function ApprovalsClient({
                                 req.status === "อนุมัติแล้ว" ? "bg-emerald-500" : "bg-red-500"
                               }`}></span>
                               <div className="font-bold text-slate-800 text-[10px]">สรุปผลการพิจารณา</div>
-                              <div className="text-[9px] text-slate-400">เมื่อ: {new Date(req.updatedAt).toLocaleString("th-TH")}</div>
+                              <div className="text-[9px] text-slate-400">เมื่อ: {formatThaiDateTime(req.updatedAt)}</div>
                             </div>
                           )}
                         </div>
@@ -1078,7 +1079,7 @@ export default function ApprovalsClient({
                         <div><strong>หน่วยงานผู้ขอ:</strong> กอง{log.department || "-"}</div>
                         <div className="flex items-center gap-1">
                           <Calendar size={13} className="text-slate-400" />
-                          <span><strong>วันที่เติมน้ำมัน:</strong> {log.fuelDate}</span>
+                          <span><strong>วันที่เติมน้ำมัน:</strong> {formatThaiDate(log.fuelDate)}</span>
                         </div>
                         <div className="flex items-center gap-1">
                           <MapPin size={13} className="text-slate-400" />
@@ -1186,7 +1187,7 @@ export default function ApprovalsClient({
                           <div className="relative">
                             <span className="absolute -left-[21px] top-0.5 w-2.5 h-2.5 rounded-full bg-emerald-500 border border-white"></span>
                             <div className="font-bold text-slate-800 text-[10px]">บันทึกข้อมูลการเติมเชื้อเพลิง</div>
-                            <div className="text-[9px] text-slate-400">เมื่อ: {new Date(log.createdAt).toLocaleString("th-TH")}</div>
+                            <div className="text-[9px] text-slate-400">เมื่อ: {formatThaiDateTime(log.createdAt)}</div>
                           </div>
                           <div className="relative">
                             <span className={`absolute -left-[21px] top-0.5 w-2.5 h-2.5 rounded-full border border-white ${
@@ -1201,7 +1202,7 @@ export default function ApprovalsClient({
                                 log.status === "อนุมัติแล้ว" ? "bg-emerald-500" : "bg-red-500"
                               }`}></span>
                               <div className="font-bold text-slate-800 text-[10px]">สรุปผลการอนุมัติเติมเชื้อเพลิง</div>
-                              <div className="text-[9px] text-slate-400">เมื่อ: {new Date(log.updatedAt).toLocaleString("th-TH")}</div>
+                              <div className="text-[9px] text-slate-400">เมื่อ: {formatThaiDateTime(log.updatedAt)}</div>
                             </div>
                           )}
                         </div>

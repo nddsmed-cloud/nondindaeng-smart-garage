@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { deleteFuelLog } from "../actions";
+import { formatThaiDate } from "../../../lib/date-formatter";
 
 type FuelLog = {
   id: string;
@@ -94,7 +95,7 @@ export default function FuelLogsTable({ logs, role }: { logs: FuelLog[], role: s
                         {log.vehicle.brand} {log.department ? `(${log.department})` : ""}
                       </div>
                     </td>
-                    <td>{log.fuelDate}</td>
+                    <td>{formatThaiDate(log.fuelDate)}</td>
                     <td style={{ textAlign: "center", fontSize: 13 }}>
                       <div style={{ color: "var(--text-muted)", marginBottom: 2 }}>{log.startMileage.toLocaleString()}</div>
                       <div>{log.endMileage.toLocaleString()}</div>

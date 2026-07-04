@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { deleteTripLog, completeTripLog } from "./actions";
+import { formatThaiDate } from "../../lib/date-formatter";
 
 type TripLog = {
   id: string;
@@ -106,7 +107,7 @@ export default function TripLogsTable({ trips, role }: { trips: TripLog[], role:
                     <div className="td-primary">{trip.vehicle.licensePlate}</div>
                     <div style={{ fontSize: 11, color: "var(--text-muted)", marginTop: 2 }}>{trip.vehicle.brand} {trip.vehicle.model}</div>
                   </td>
-                  <td>{trip.travelDate}</td>
+                  <td>{formatThaiDate(trip.travelDate)}</td>
                   <td style={{ maxWidth: 160, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{trip.destination}</td>
                   <td>{trip.startMileage.toLocaleString()}</td>
                   <td>{trip.endMileage > 0 ? trip.endMileage.toLocaleString() : "—"}</td>

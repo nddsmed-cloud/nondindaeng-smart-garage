@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { formatThaiDate } from "../../../lib/date-formatter";
 
 type Vehicle = any;
 type TripLog = any;
@@ -99,7 +100,7 @@ export default function VehicleDetailClient({
               
               <div className="space-y-3 bg-slate-50 p-4 rounded-lg">
                 <h4 className="font-semibold text-blue-700 text-sm">ข้อมูลทั่วไป</h4>
-                <p className="text-sm text-slate-600"><strong>วันจดทะเบียน:</strong> {new Date(vehicle.registeredDate).toLocaleDateString("th-TH")}</p>
+                <p className="text-sm text-slate-600"><strong>วันจดทะเบียน:</strong> {formatThaiDate(vehicle.registeredDate)}</p>
                 <p className="text-sm text-slate-600"><strong>ประเภท:</strong> {vehicle.vehicleType}</p>
                 <p className="text-sm text-slate-600"><strong>ลักษณะรถ:</strong> {vehicle.bodyType}</p>
                 <p className="text-sm text-slate-600"><strong>สีตัวถัง:</strong> {vehicle.color}</p>
@@ -147,7 +148,7 @@ export default function VehicleDetailClient({
                   ) : (
                     tripLogs.map((trip) => (
                       <tr key={trip.id} className="hover:bg-slate-50">
-                        <td className="p-3">{trip.travelDate}</td>
+                        <td className="p-3">{formatThaiDate(trip.travelDate)}</td>
                         <td className="p-3 font-medium text-slate-800">{trip.driverName}</td>
                         <td className="p-3">{trip.destination}</td>
                         <td className="p-3">{trip.distance} กม.</td>
@@ -186,7 +187,7 @@ export default function VehicleDetailClient({
                   ) : (
                     fuelLogs.map((log) => (
                       <tr key={log.id} className="hover:bg-slate-50">
-                        <td className="p-3">{log.fuelDate}</td>
+                        <td className="p-3">{formatThaiDate(log.fuelDate)}</td>
                         <td className="p-3">{log.liters.toFixed(2)}</td>
                         <td className="p-3">{log.pricePerLiter.toFixed(2)}</td>
                         <td className="p-3 text-amber-700 font-semibold">{log.totalCost.toLocaleString()}.-</td>
