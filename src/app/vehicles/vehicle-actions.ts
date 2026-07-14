@@ -30,6 +30,9 @@ export async function createVehicle(formData: FormData) {
       department: (formData.get("department") as string) || session?.user?.department || "",
       assetNumber: (formData.get("assetNumber") as string) || "",
       acquiredPrice: parseFloat(formData.get("acquiredPrice") as string) || 0,
+      imageUrl: (formData.get("imageUrl") as string) || null,
+      notes: (formData.get("notes") as string) || "",
+      gisLink: (formData.get("gisLink") as string) || "",
     };
 
     await prisma.vehicle.create({ data });
@@ -67,6 +70,9 @@ export async function updateVehicle(id: string, formData: FormData) {
       department: formData.get("department") as string,
       assetNumber: (formData.get("assetNumber") as string) || "",
       acquiredPrice: parseFloat(formData.get("acquiredPrice") as string) || 0,
+      imageUrl: (formData.get("imageUrl") as string) || null,
+      notes: (formData.get("notes") as string) || "",
+      gisLink: (formData.get("gisLink") as string) || "",
     };
 
     // Remove department if it's not provided (e.g., if the form doesn't have it)

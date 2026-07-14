@@ -1,149 +1,254 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { createVehicle } from "../vehicle-actions";
 import Link from "next/link";
 import ThaiDateInput from "../../../components/ui/ThaiDateInput";
 
 export default function CreateVehiclePage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      if (file.size > 5 * 1024 * 1024) {
+        alert("ไฟล์ภาพมีขนาดใหญ่เกินไป (สูงสุด 5MB)");
+        return;
+      }
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImagePreview(reader.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const removeImage = () => {
+    setImagePreview(null);
+    if (fileInputRef.current) {
+      fileInputRef.current.value = "";
+    }
+  };
 
   return (
-    <>
-      <div className="page-header">
+    <div className="max-w-5xl mx-auto pb-24">
+      {/* Page Header */}
+      <div className="mb-8 border-b border-slate-200 pb-6 flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-          <h1 className="page-title">เพิ่มรถยนต์ใหม่</h1>
-          <p className="page-subtitle">กรอกข้อมูลทะเบียนรถยนต์ส่วนกลาง (คส.1)</p>
+          <h1 className="text-3xl font-bold text-slate-800">เพิ่มรถยนต์ใหม่</h1>
+          <p className="text-slate-500 mt-1">กรอกข้อมูลเพื่อขึ้นทะเบียนรถยนต์ส่วนกลาง (คส.1)</p>
         </div>
-        <Link href="/vehicles" className="btn btn-ghost">← กลับ</Link>
+        <Link href="/vehicles" className="bg-slate-100 hover:bg-slate-200 text-slate-700 px-4 py-2 rounded-lg font-medium transition-colors flex items-center gap-2">
+          <span>←</span> กลับหน้ารายการรถ
+        </Link>
       </div>
 
-      <div className="card">
-        <form action={async (f) => { setIsSubmitting(true); await createVehicle(f); }} className="space-y-6">
+      <form action={async (f) => { setIsSubmitting(true); await createVehicle(f); }} className="space-y-8">
+        
+        {/* Hidden Input for Base64 Image */}
+        <input type="hidden" name="imageUrl" value={imagePreview || ""} />
 
-          {/* ข้อมูลทะเบียน */}
-          <div className="form-section">
-            <div className="form-section-title">ข้อมูลทะเบียนรถ</div>
-            <div className="form-grid">
-              <div className="form-group">
-                <label className="form-label">วันที่จดทะเบียน *</label>
-                <ThaiDateInput name="registeredDate" required className="form-input" />
-              </div>
-              <div className="form-group">
-                <label className="form-label">เลขทะเบียน *</label>
-                <input type="text" name="licensePlate" required placeholder="เช่น กค 1234" className="form-input" />
-              </div>
-              <div className="form-group">
-                <label className="form-label">จังหวัด *</label>
-                <input type="text" name="province" required placeholder="เช่น กรุงเทพมหานคร" className="form-input" />
-              </div>
-              <div className="form-group">
-                <label className="form-label">สถานะ</label>
-                <select name="status" className="form-select">
-                  <option value="พร้อมใช้งาน">พร้อมใช้งาน</option>
-                  <option value="ส่งซ่อม">ส่งซ่อม</option>
-                  <option value="ยกเลิกใช้งาน">ยกเลิกใช้งาน</option>
-                </select>
-              </div>
-              <div className="form-group">
-                <label className="form-label">สังกัด (กอง/หน่วยงาน)</label>
-                <select name="department" className="form-select" required defaultValue="กองช่าง">
-                  <option value="สำนักปลัดเทศบาล">สำนักปลัดเทศบาล</option>
-                  <option value="กองคลัง">กองคลัง</option>
-                  <option value="กองช่าง">กองช่าง</option>
-                  <option value="กองสาธารณสุขและสิ่งแวดล้อม">กองสาธารณสุขและสิ่งแวดล้อม</option>
-                  <option value="กองการศึกษา">กองการศึกษา</option>
-                  <option value="กองสวัสดิการสังคม">กองสวัสดิการสังคม</option>
-                  <option value="กองยุทธศาสตร์และงบประมาณ">กองยุทธศาสตร์และงบประมาณ</option>
-                </select>
-              </div>
-              <div className="form-group">
-                <label className="form-label">หมายเลขครุภัณฑ์</label>
-                <input type="text" name="assetNumber" placeholder="เช่น 123-45-6789" className="form-input" />
-              </div>
-              <div className="form-group">
-                <label className="form-label">ราคาที่ได้มา (บาท)</label>
-                <input type="number" name="acquiredPrice" placeholder="เช่น 750000" step="any" defaultValue={0} className="form-input" />
-              </div>
+        {/* 1. ข้อมูลพื้นฐาน */}
+        <div className="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+          <div className="bg-slate-50 px-6 py-4 border-b border-slate-200">
+            <h2 className="text-lg font-bold text-slate-800 flex items-center gap-2">
+              <span className="text-blue-500">🚙</span> ข้อมูลพื้นฐาน
+            </h2>
+          </div>
+          <div className="p-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div>
+              <label className="block text-sm font-semibold text-slate-700 mb-1">ทะเบียนรถ <span className="text-red-500">*</span></label>
+              <input type="text" name="licensePlate" required placeholder="เช่น กค 1234" className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none" />
+            </div>
+            <div>
+              <label className="block text-sm font-semibold text-slate-700 mb-1">จังหวัด <span className="text-red-500">*</span></label>
+              <input type="text" name="province" required placeholder="เช่น บุรีรัมย์" className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none" />
+            </div>
+            <div>
+              <label className="block text-sm font-semibold text-slate-700 mb-1">ยี่ห้อ <span className="text-red-500">*</span></label>
+              <input type="text" name="brand" required placeholder="เช่น Toyota" className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none" />
+            </div>
+            <div>
+              <label className="block text-sm font-semibold text-slate-700 mb-1">รุ่น <span className="text-red-500">*</span></label>
+              <input type="text" name="model" required placeholder="เช่น Hilux Revo" className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none" />
+            </div>
+            <div>
+              <label className="block text-sm font-semibold text-slate-700 mb-1">ประเภทรถ <span className="text-red-500">*</span></label>
+              <input type="text" name="vehicleType" required placeholder="เช่น รถบรรทุกขนาดเล็ก" className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none" />
+            </div>
+            <div>
+              <label className="block text-sm font-semibold text-slate-700 mb-1">สีรถ <span className="text-red-500">*</span></label>
+              <input type="text" name="color" required placeholder="เช่น ขาว" className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none" />
+            </div>
+            <div>
+              <label className="block text-sm font-semibold text-slate-700 mb-1">ปีจดทะเบียน <span className="text-red-500">*</span></label>
+              <ThaiDateInput name="registeredDate" required className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none" />
+            </div>
+            <div>
+              <label className="block text-sm font-semibold text-slate-700 mb-1">ความจุเครื่องยนต์ (CC)</label>
+              <input type="number" name="engineCapacity" placeholder="เช่น 2400" className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none" />
+            </div>
+            <div>
+              <label className="block text-sm font-semibold text-slate-700 mb-1">เชื้อเพลิง <span className="text-red-500">*</span></label>
+              <select name="fuelType" className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none bg-white">
+                <option value="ดีเซล">ดีเซล</option>
+                <option value="เบนซิน">เบนซิน</option>
+                <option value="แก๊ส NGV">แก๊ส NGV</option>
+                <option value="ไฮบริด">ไฮบริด</option>
+                <option value="ไฟฟ้า">ไฟฟ้า (EV)</option>
+              </select>
+            </div>
+            <div>
+              <label className="block text-sm font-semibold text-slate-700 mb-1">มูลค่าทรัพย์สิน / ราคาที่ได้มา (บาท)</label>
+              <input type="number" name="acquiredPrice" step="any" placeholder="เช่น 850000" className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none" />
+            </div>
+            <div className="col-span-1 md:col-span-2 lg:col-span-1 grid grid-cols-2 gap-4">
+              {/* Optional hidden fields for backwards compatibility that aren't prominent in the new UI */}
+              <input type="hidden" name="bodyType" value="รถยนต์ส่วนบุคคล" />
+              <input type="hidden" name="chassisNumber" value="N/A" />
+              <input type="hidden" name="engineNumber" value="N/A" />
             </div>
           </div>
+        </div>
 
-          {/* ข้อมูลรถ */}
-          <div className="form-section">
-            <div className="form-section-title">ข้อมูลรถยนต์</div>
-            <div className="form-grid">
-              <div className="form-group">
-                <label className="form-label">ประเภทรถ *</label>
-                <input type="text" name="vehicleType" required placeholder="เช่น รถยนต์นั่งส่วนบุคคล" className="form-input" />
-              </div>
-              <div className="form-group">
-                <label className="form-label">ลักษณะรถ *</label>
-                <input type="text" name="bodyType" required placeholder="เช่น นั่งสองตอนท้ายบรรทุก" className="form-input" />
-              </div>
-              <div className="form-group">
-                <label className="form-label">ยี่ห้อ *</label>
-                <input type="text" name="brand" required placeholder="เช่น Toyota" className="form-input" />
-              </div>
-              <div className="form-group">
-                <label className="form-label">รุ่น *</label>
-                <input type="text" name="model" required placeholder="เช่น Hilux Revo" className="form-input" />
-              </div>
-              <div className="form-group">
-                <label className="form-label">สีรถ *</label>
-                <input type="text" name="color" required placeholder="เช่น ขาว" className="form-input" />
-              </div>
-              <div className="form-group">
-                <label className="form-label">ชนิดเชื้อเพลิง *</label>
-                <select name="fuelType" className="form-select">
-                  <option value="ดีเซล">ดีเซล</option>
-                  <option value="เบนซิน">เบนซิน</option>
-                  <option value="แก๊ส NGV">แก๊ส NGV</option>
-                  <option value="ไฮบริด">ไฮบริด</option>
-                  <option value="ไฟฟ้า">ไฟฟ้า</option>
-                </select>
-              </div>
+        {/* 2. ข้อมูลทางราชการ (คส.1) */}
+        <div className="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+          <div className="bg-slate-50 px-6 py-4 border-b border-slate-200">
+            <h2 className="text-lg font-bold text-slate-800 flex items-center gap-2">
+              <span className="text-teal-500">🏛️</span> ข้อมูลทางราชการ (คส.1)
+            </h2>
+          </div>
+          <div className="p-6 grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+              <label className="block text-sm font-semibold text-slate-700 mb-1">หมายเลขครุภัณฑ์</label>
+              <input type="text" name="assetNumber" placeholder="เช่น 123-45-6789" className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent outline-none" />
+            </div>
+            <div>
+              <label className="block text-sm font-semibold text-slate-700 mb-1">หน่วยงานรับผิดชอบ</label>
+              <select name="department" className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent outline-none bg-white">
+                <option value="กองช่าง">กองช่าง</option>
+                <option value="สำนักปลัดเทศบาล">สำนักปลัดเทศบาล</option>
+                <option value="กองคลัง">กองคลัง</option>
+                <option value="กองสาธารณสุขและสิ่งแวดล้อม">กองสาธารณสุขและสิ่งแวดล้อม</option>
+                <option value="กองการศึกษา">กองการศึกษา</option>
+                <option value="กองสวัสดิการสังคม">กองสวัสดิการสังคม</option>
+              </select>
+            </div>
+            <div>
+              <label className="block text-sm font-semibold text-slate-700 mb-1">วันที่รับเข้าระบบ</label>
+              <input type="date" disabled defaultValue={new Date().toISOString().split('T')[0]} className="w-full px-4 py-2 border border-slate-200 bg-slate-50 text-slate-500 rounded-lg outline-none cursor-not-allowed" />
+              <p className="text-xs text-slate-400 mt-1">* ระบบจะบันทึกวันที่ปัจจุบันอัตโนมัติเมื่อสร้างข้อมูล</p>
+            </div>
+            <div>
+              <label className="block text-sm font-semibold text-slate-700 mb-1">สถานะการใช้งาน</label>
+              <select name="status" className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent outline-none bg-white">
+                <option value="พร้อมใช้งาน">พร้อมใช้งาน</option>
+                <option value="ส่งซ่อม">ส่งซ่อม</option>
+                <option value="ยกเลิกใช้งาน">ยกเลิกใช้งาน</option>
+              </select>
             </div>
           </div>
+        </div>
 
-          {/* ข้อมูลเทคนิค */}
-          <div className="form-section">
-            <div className="form-section-title">ข้อมูลทางเทคนิค</div>
-            <div className="form-grid">
-              <div className="form-group">
-                <label className="form-label">เลขตัวถัง *</label>
-                <input type="text" name="chassisNumber" required className="form-input" />
+        {/* 3. ภาพประกอบ */}
+        <div className="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+          <div className="bg-slate-50 px-6 py-4 border-b border-slate-200">
+            <h2 className="text-lg font-bold text-slate-800 flex items-center gap-2">
+              <span className="text-purple-500">📷</span> ภาพประกอบ
+            </h2>
+          </div>
+          <div className="p-6">
+            <div className="flex flex-col md:flex-row gap-8 items-start">
+              
+              {/* Upload Zone */}
+              <div className="w-full md:w-1/2">
+                <div 
+                  className="border-2 border-dashed border-slate-300 rounded-xl p-8 text-center bg-slate-50 hover:bg-slate-100 transition-colors cursor-pointer"
+                  onClick={() => fileInputRef.current?.click()}
+                >
+                  <div className="text-4xl mb-3">🖼️</div>
+                  <h3 className="font-bold text-slate-700 mb-1">คลิกเพื่ออัปโหลดภาพตัวรถ</h3>
+                  <p className="text-sm text-slate-500">รองรับไฟล์ .jpg, .png, .webp (สูงสุด 5MB)</p>
+                  <input 
+                    type="file" 
+                    accept=".jpg,.jpeg,.png,.webp" 
+                    className="hidden" 
+                    ref={fileInputRef}
+                    onChange={handleImageChange}
+                  />
+                  <button type="button" className="mt-4 px-4 py-2 bg-white border border-slate-300 rounded-lg text-sm font-medium text-slate-700 hover:bg-slate-50 shadow-sm transition-all">
+                    เลือกไฟล์รูปภาพ
+                  </button>
+                </div>
               </div>
-              <div className="form-group">
-                <label className="form-label">เลขเครื่องยนต์ *</label>
-                <input type="text" name="engineNumber" required className="form-input" />
+
+              {/* Preview Zone */}
+              <div className="w-full md:w-1/2 flex flex-col items-center">
+                <h3 className="font-semibold text-slate-700 mb-3 self-start">ภาพตัวอย่าง (Preview)</h3>
+                {imagePreview ? (
+                  <div className="relative w-full max-w-sm rounded-xl overflow-hidden shadow-md border border-slate-200 group">
+                    <img src={imagePreview} alt="Preview" className="w-full h-48 object-cover" />
+                    <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-3">
+                      <button type="button" onClick={() => fileInputRef.current?.click()} className="p-2 bg-white rounded-full text-slate-700 hover:scale-110 transition-transform shadow-lg" title="เปลี่ยนภาพ">
+                        🔄
+                      </button>
+                      <button type="button" onClick={removeImage} className="p-2 bg-rose-500 rounded-full text-white hover:scale-110 transition-transform shadow-lg" title="ลบภาพ">
+                        🗑️
+                      </button>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="w-full max-w-sm h-48 rounded-xl border border-slate-200 bg-slate-100 flex items-center justify-center text-slate-400">
+                    ยังไม่มีรูปภาพ
+                  </div>
+                )}
               </div>
-              <div className="form-group">
-                <label className="form-label">ความจุเครื่องยนต์ (CC)</label>
-                <input type="number" name="engineCapacity" defaultValue={0} className="form-input" />
-              </div>
-              <div className="form-group">
-                <label className="form-label">น้ำหนักรถ (กก.)</label>
-                <input type="number" name="emptyWeight" defaultValue={0} className="form-input" />
-              </div>
-              <div className="form-group">
-                <label className="form-label">น้ำหนักบรรทุก (กก.)</label>
-                <input type="number" name="payloadWeight" defaultValue={0} className="form-input" />
-              </div>
-              <div className="form-group">
-                <label className="form-label">น้ำหนักรวม (กก.)</label>
-                <input type="number" name="totalWeight" defaultValue={0} className="form-input" />
-              </div>
+
             </div>
           </div>
+        </div>
 
-          <div className="form-actions">
-            <Link href="/vehicles" className="btn btn-ghost">ยกเลิก</Link>
-            <button type="submit" disabled={isSubmitting} className="btn btn-primary">
-              {isSubmitting ? "⏳ กำลังบันทึก..." : "💾 บันทึกข้อมูลรถยนต์"}
+        {/* 4. ข้อมูลเพิ่มเติม */}
+        <div className="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+          <div className="bg-slate-50 px-6 py-4 border-b border-slate-200">
+            <h2 className="text-lg font-bold text-slate-800 flex items-center gap-2">
+              <span className="text-amber-500">📋</span> ข้อมูลเพิ่มเติม
+            </h2>
+          </div>
+          <div className="p-6 space-y-6">
+            <div>
+              <label className="block text-sm font-semibold text-slate-700 mb-1">ลิงก์ GIS / ระบบติดตาม (Tracking System URL)</label>
+              <div className="relative">
+                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">🔗</span>
+                <input type="url" name="gisLink" placeholder="https://..." className="w-full pl-10 pr-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-transparent outline-none" />
+              </div>
+            </div>
+            <div>
+              <label className="block text-sm font-semibold text-slate-700 mb-1">หมายเหตุ / ประวัติการใช้งาน</label>
+              <textarea name="notes" rows={4} placeholder="ระบุข้อมูลเพิ่มเติม ประวัติการรับรถ หรือบันทึกพิเศษ..." className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-transparent outline-none resize-none"></textarea>
+            </div>
+          </div>
+        </div>
+
+        {/* 5. ปุ่มดำเนินการ (Sticky Footer) */}
+        <div className="fixed bottom-0 left-0 right-0 bg-white/90 backdrop-blur-md border-t border-slate-200 p-4 shadow-[0_-10px_30px_rgba(0,0,0,0.05)] z-50">
+          <div className="max-w-5xl mx-auto flex items-center justify-end gap-4">
+            <Link href="/vehicles" className="px-6 py-3 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold rounded-xl transition-colors">
+              ยกเลิก
+            </Link>
+            <button type="submit" disabled={isSubmitting} className="px-8 py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl shadow-lg shadow-emerald-600/30 transition-all disabled:opacity-70 flex items-center gap-2">
+              {isSubmitting ? (
+                <><span>⏳</span> กำลังบันทึก...</>
+              ) : (
+                <><span>💾</span> บันทึกข้อมูลรถยนต์</>
+              )}
             </button>
           </div>
-        </form>
-      </div>
-    </>
+        </div>
+        
+      </form>
+    </div>
   );
 }

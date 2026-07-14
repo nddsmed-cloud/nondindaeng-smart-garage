@@ -50,6 +50,11 @@ model Vehicle {
   standardConsumptionRate Float @default(13.0) @map("standard_consumption_rate")
   assetNumber     String?  @default("") @map("asset_number")
   acquiredPrice   Float?   @default(0) @map("acquired_price")
+  
+  // รูปภาพและข้อมูลเพิ่มเติม (อัปเดตใหม่)
+  imageUrl        String?  @map("image_url")
+  notes           String?  @default("")
+  gisLink         String?  @default("") @map("gis_link")
 
   tripLogs        TripLog[]
   fuelLogs        FuelLog[]
