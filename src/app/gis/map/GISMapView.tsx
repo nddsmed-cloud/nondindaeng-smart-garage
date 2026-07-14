@@ -56,6 +56,24 @@ const SURFACE_LABELS: Record<string, string> = {
   EARTH: "ดิน",
 };
 
+const DETAIL_OPTIONS: Record<string, { group: string; items: string[] }[]> = {
+  STREETLIGHT: [
+    { group: "โคมไฟถนน LED", items: ["โคมไฟถนน LED 60 W (มอก.)", "โคมไฟถนน LED 90 W", "โคมไฟถนน LED 120 W", "โคมไฟถนน LED 150 W"] },
+    { group: "โคมไฟถนน Solar Cell", items: ["โคมไฟ Solar Cell 60-100 W All-in-One", "โคมไฟ Solar Cell 120-200 W Split Type"] },
+    { group: "โคมไฟฟลัดไลท์", items: ["โคมไฟฟลัดไลท์ LED 50 W", "โคมไฟฟลัดไลท์ LED 100 W", "โคมไฟฟลัดไลท์ LED 200 W", "โคมไฟฟลัดไลท์ LED 400 W"] },
+    { group: "หลอดไฟและอื่นๆ", items: ["หลอดไฟ LED Bulb 20 W", "หลอดไฟ LED Tube T8 18 W", "หลอดไฟ LED Tube T8 9 W", "Photo Switch 3A/6A/10A", "ตู้ควบคุมไฟถนน"] },
+  ],
+  TRAFFIC_SIGN: [
+    { group: "ป้ายเตือน/บังคับ", items: ["ป้ายหยุด", "ป้ายให้ทาง", "ป้ายห้ามเข้า", "ป้ายจำกัดความเร็ว 30/50/80 กม./ชม.", "ป้ายเตือนทางโค้ง/ทางแยก"] },
+    { group: "อุปกรณ์จราจร", items: ["กระจกโค้งจราจร", "หมุดถนนสะท้อนแสง", "แผงกั้นจราจร", "เสาล้มลุก"] },
+  ],
+  CCTV: [
+    { group: "กล้องวงจรปิด", items: ["กล้อง IP Camera 2 MP", "กล้อง IP Camera 4 MP", "กล้อง IP Camera 8 MP", "กล้อง PTZ 2 MP/4 MP"] },
+    { group: "อุปกรณ์เครือข่าย", items: ["เครื่องบันทึก NVR", "PoE Switch"] },
+  ],
+  OTHER: [],
+};
+
 export default function GISMapView({ roads }: { roads: Road[] }) {
   const router = useRouter();
   const mapRef = useRef<HTMLDivElement>(null);
@@ -115,9 +133,10 @@ export default function GISMapView({ roads }: { roads: Road[] }) {
       );
       mapInstanceRef.current = map;
 
-      L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-        attribution: "© <a href='https://www.openstreetmap.org/copyright'>OpenStreetMap</a>",
-        maxZoom: 19,
+      // Google Satellite (Hybrid) with Thai labels
+      L.tileLayer("https://mt1.google.com/vt/lyrs=y&hl=th&x={x}&y={y}&z={z}", {
+        attribution: "© Google",
+        maxZoom: 20,
       }).addTo(map);
 
       const allBounds: [number, number][] = [];
@@ -214,6 +233,29 @@ export default function GISMapView({ roads }: { roads: Road[] }) {
     }
   };
 
+  const handleGetLocation = () => {
+    if (!navigator.geolocation) {
+      setMessage({ type: "err", text: "เบราว์เซอร์ของคุณไม่รองรับการดึงพิกัด (GPS)" });
+      return;
+    }
+    setMessage({ type: "ok", text: "กำลังดึงพิกัด GPS..." });
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        setPickedLocation({
+          lat: parseFloat(position.coords.latitude.toFixed(6)),
+          lng: parseFloat(position.coords.longitude.toFixed(6)),
+        });
+        setMessage({ type: "ok", text: "ดึงพิกัดสำเร็จ" });
+        if (!showModal) setShowModal(true); // Open modal if not open
+      },
+      (error) => {
+        console.error("Geolocation error:", error);
+        setMessage({ type: "err", text: "ไม่สามารถดึงพิกัดได้ กรุณาเปิด GPS และอนุญาตการเข้าถึงตำแหน่ง" });
+      },
+      { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
+    );
+  };
+
   // Lists for dropdown
   const FIXTURE_TYPES = [
     { value: "STREETLIGHT", label: "💡 เสาไฟฟ้าแสงสว่าง" },
@@ -245,13 +287,22 @@ export default function GISMapView({ roads }: { roads: Road[] }) {
             <div style={{ fontSize: 13, fontWeight: 700, color: "var(--text-primary)" }}>
               📊 สรุปแผนที่
             </div>
-            <button
-              onClick={() => setPickMode(!pickMode)}
-              className="btn btn-success"
-              style={{ fontSize: 11, padding: "4px 8px" }}
-            >
-              {pickMode ? "ยกเลิกปักหมุด" : "+ ปักหมุด"}
-            </button>
+            <div style={{ display: "flex", gap: 8 }}>
+              <button
+                onClick={handleGetLocation}
+                className="btn btn-primary"
+                style={{ fontSize: 11, padding: "4px 8px", background: "#3b82f6", color: "#fff", border: "none" }}
+              >
+                📍 ดึงพิกัด (GPS)
+              </button>
+              <button
+                onClick={() => setPickMode(!pickMode)}
+                className="btn btn-success"
+                style={{ fontSize: 11, padding: "4px 8px" }}
+              >
+                {pickMode ? "ยกเลิกปักหมุด" : "+ ปักหมุด"}
+              </button>
+            </div>
           </div>
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8 }}>
             {[
@@ -392,6 +443,9 @@ export default function GISMapView({ roads }: { roads: Road[] }) {
             width: "100%", maxWidth: 450, boxShadow: "0 10px 25px rgba(0,0,0,0.2)"
           }}>
             <h3 style={{ margin: "0 0 16px", fontSize: 18 }}>📍 เพิ่มสิ่งติดตั้งใหม่</h3>
+            <div style={{ marginBottom: 16, fontSize: 13, color: "var(--blue)", background: "var(--blue-soft)", padding: 8, borderRadius: 6 }}>
+              พิกัด: {pickedLocation.lat}, {pickedLocation.lng}
+            </div>
             <form onSubmit={handleSubmit}>
               <div style={{ marginBottom: 12 }}>
                 <label style={{ display: "block", fontSize: 13, marginBottom: 4, fontWeight: 600 }}>ถนนที่เกี่ยวข้อง *</label>
@@ -408,7 +462,20 @@ export default function GISMapView({ roads }: { roads: Road[] }) {
               </div>
               <div style={{ marginBottom: 12 }}>
                 <label style={{ display: "block", fontSize: 13, marginBottom: 4, fontWeight: 600 }}>รายละเอียด</label>
-                <input className="form-input" placeholder="เช่น LED 40W" value={form.detail} onChange={e => setForm({...form, detail: e.target.value})} />
+                {DETAIL_OPTIONS[form.type]?.length > 0 ? (
+                  <select className="form-input" value={form.detail} onChange={e => setForm({...form, detail: e.target.value})}>
+                    <option value="">-- เลือกรายการ --</option>
+                    {DETAIL_OPTIONS[form.type].map((group) => (
+                      <optgroup key={group.group} label={group.group}>
+                        {group.items.map((item) => (
+                          <option key={item} value={item}>{item}</option>
+                        ))}
+                      </optgroup>
+                    ))}
+                  </select>
+                ) : (
+                  <input className="form-input" placeholder="ระบุรายละเอียด..." value={form.detail} onChange={e => setForm({...form, detail: e.target.value})} />
+                )}
               </div>
               <div style={{ marginBottom: 12 }}>
                 <label style={{ display: "block", fontSize: 13, marginBottom: 4, fontWeight: 600 }}>สถานะ</label>

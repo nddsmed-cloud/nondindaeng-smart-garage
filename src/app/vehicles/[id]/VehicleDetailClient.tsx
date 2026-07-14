@@ -49,6 +49,11 @@ export default function VehicleDetailClient({
             </div>
           </div>
           <div className="flex gap-2">
+            {role === "ADMIN" || role === "MANAGER" || role === "OFFICER" ? (
+              <Link href={`/vehicles/${vehicle.id}/maintenance-docs`} className="btn bg-indigo-600 text-white text-sm py-1.5 px-3 hover:bg-indigo-700">
+                🛠️ ออกเอกสารซ่อมบำรุง
+              </Link>
+            ) : null}
             {role === "ADMIN" && (
               <Link href={`/vehicles/${vehicle.id}/edit`} className="btn btn-warning text-sm py-1.5 px-3">
                 ✏️ แก้ไขข้อมูลรถ

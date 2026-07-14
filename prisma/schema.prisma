@@ -55,6 +55,7 @@ model Vehicle {
   fuelLogs        FuelLog[]
   maintenanceLogs MaintenanceLog[]
   vehicleRequests VehicleRequest[]
+  maintenanceDocs MaintenanceDocument[]
 
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
@@ -160,6 +161,34 @@ model MaintenanceLog {
   updatedAt       DateTime @updatedAt
 
   @@map("maintenance_logs")
+}
+
+// ตารางบันทึกการออกเอกสารซ่อมบำรุง (ว 2600)
+model MaintenanceDocument {
+  id              String   @id @default(uuid())
+  vehicleId       String   @map("vehicle_id")
+  vehicle         Vehicle  @relation(fields: [vehicleId], references: [id])
+  
+  documentDate    DateTime @default(now()) @map("document_date")
+  mileage         Int
+  symptoms        String   // อาการที่พบ
+  partsReplaced   String   @map("parts_replaced") // อะไหล่ที่ต้องเปลี่ยน
+  estimatedCost   Float    @map("estimated_cost") // ประมาณการค่าใช้จ่าย
+  garageName      String   @map("garage_name") // ชื่ออู่ซ่อม
+  garageReason    String   @map("garage_reason") // เหตุผลที่เลือกอู่นี้
+  
+  // คณะกรรมการ
+  committee1      String   // ประธาน
+  committee2      String   // กรรมการ
+  committee3      String   // กรรมการ
+  
+  inspectorName   String   @map("inspector_name") // ผู้ตรวจสอบสภาพรถ (ช่าง)
+  reporterName    String   @map("reporter_name") // ผู้แจ้งซ่อม (พนักงานขับรถ)
+
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@map("maintenance_documents")
 }
 
 // ตารางจัดการสิทธิ์ LINE กลุ่ม (LIFF)
