@@ -94,39 +94,153 @@ export default function VehicleDetailClient({
         {/* พื้นที่แสดงเนื้อหาตามแถบที่เลือก (Tab Panels) */}
         <div className="p-2">
           
-          {/* TAB 1: รายการจดทะเบียน */}
+          {/* TAB 1: รายการจดทะเบียน (PRO DESIGN) */}
           {activeTab === "info" && (
-            <div className="animate-in fade-in duration-300">
-              <h3 className="text-lg font-bold text-teal-800 mb-4 pb-2 border-b flex items-center gap-2">
-                <span>📑</span> รายละเอียดทางทะเบียนและวิศวกรรม
-              </h3>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="animate-in fade-in duration-500">
+              <div className="flex flex-col lg:flex-row gap-8">
                 
-                <div className="space-y-3 bg-slate-50 p-5 rounded-xl border border-slate-100">
-                  <h4 className="font-bold text-teal-700 text-sm border-b pb-2">ข้อมูลทั่วไป</h4>
-                  <p className="text-sm text-slate-600 flex justify-between"><strong>วันจดทะเบียน:</strong> <span>{formatThaiDate(vehicle.registeredDate)}</span></p>
-                  <p className="text-sm text-slate-600 flex justify-between"><strong>ประเภท:</strong> <span>{vehicle.vehicleType}</span></p>
-                  <p className="text-sm text-slate-600 flex justify-between"><strong>ลักษณะรถ:</strong> <span>{vehicle.bodyType}</span></p>
-                  <p className="text-sm text-slate-600 flex justify-between"><strong>สีตัวถัง:</strong> <span>{vehicle.color}</span></p>
-                  <p className="text-sm text-slate-600 flex justify-between"><strong>หมายเลขครุภัณฑ์:</strong> <span>{vehicle.assetNumber || "-"}</span></p>
-                  <p className="text-sm text-slate-600 flex justify-between"><strong>ราคาที่ได้มา:</strong> <span>{vehicle.acquiredPrice ? `${vehicle.acquiredPrice.toLocaleString("th-TH")} ฿` : "-"}</span></p>
+                {/* Left: Image & Main ID */}
+                <div className="w-full lg:w-1/3 space-y-4">
+                  {/* Image Card */}
+                  <div className="relative aspect-video lg:aspect-[4/3] rounded-2xl overflow-hidden shadow-md group bg-slate-200">
+                    <img 
+                      src={`https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?auto=format&fit=crop&q=80&w=800`} 
+                      alt="Vehicle Photo" 
+                      className="object-cover w-full h-full group-hover:scale-105 transition-transform duration-700" 
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-slate-900/90 via-slate-900/20 to-transparent"></div>
+                    <div className="absolute top-4 right-4">
+                      <span className="bg-black/40 backdrop-blur-md text-white text-[10px] uppercase tracking-wider px-2 py-1 rounded-full border border-white/20 shadow-sm">
+                        📸 ภาพถ่ายล่าสุด
+                      </span>
+                    </div>
+                    <div className="absolute bottom-5 left-5 right-5">
+                      <div className="flex items-center gap-2 mb-2">
+                        <span className="bg-blue-600/90 text-white text-xs font-bold px-2.5 py-1 rounded-md backdrop-blur-sm shadow-sm">
+                          {vehicle.vehicleType}
+                        </span>
+                        <span className="bg-slate-700/80 text-slate-200 text-xs font-medium px-2.5 py-1 rounded-md backdrop-blur-sm border border-slate-600">
+                          สี{vehicle.color}
+                        </span>
+                      </div>
+                      <h3 className="text-3xl font-black text-white tracking-wide drop-shadow-md">
+                        {vehicle.licensePlate}
+                      </h3>
+                      <p className="text-slate-300 text-sm font-medium mt-1 drop-shadow">{vehicle.province}</p>
+                    </div>
+                  </div>
+                  
+                  {/* Acquisition Info */}
+                  <div className="bg-gradient-to-br from-slate-800 to-slate-900 rounded-xl p-5 shadow-lg border border-slate-700 flex justify-between items-center text-white">
+                    <div>
+                      <p className="text-[10px] text-slate-400 uppercase tracking-widest font-bold mb-1">มูลค่าทรัพย์สิน (ได้มา)</p>
+                      <p className="text-xl font-black text-emerald-400">
+                        {vehicle.acquiredPrice ? `฿${vehicle.acquiredPrice.toLocaleString("th-TH")}` : "N/A"}
+                      </p>
+                    </div>
+                    <div className="text-right">
+                      <p className="text-[10px] text-slate-400 uppercase tracking-widest font-bold mb-1">วันจดทะเบียน</p>
+                      <p className="text-sm font-semibold text-slate-200">{formatThaiDate(vehicle.registeredDate)}</p>
+                    </div>
+                  </div>
                 </div>
 
-                <div className="space-y-3 bg-slate-50 p-5 rounded-xl border border-slate-100">
-                  <h4 className="font-bold text-amber-700 text-sm border-b pb-2">เลขตัวถัง & เครื่องยนต์</h4>
-                  <p className="text-sm text-slate-600 flex justify-between items-center"><strong>เลขตัวรถ:</strong> <span className="font-mono bg-white px-2 py-0.5 rounded border">{vehicle.chassisNumber}</span></p>
-                  <p className="text-sm text-slate-600 flex justify-between items-center"><strong>เลขเครื่องยนต์:</strong> <span className="font-mono bg-white px-2 py-0.5 rounded border">{vehicle.engineNumber}</span></p>
-                  <p className="text-sm text-slate-600 flex justify-between"><strong>ประเภทเชื้อเพลิง:</strong> <span>{vehicle.fuelType}</span></p>
-                  <p className="text-sm text-slate-600 flex justify-between"><strong>ขนาดเครื่องยนต์:</strong> <span>{vehicle.engineCapacity?.toLocaleString()} ซีซี</span></p>
-                </div>
+                {/* Right: Stats & Details (Game-like UI) */}
+                <div className="w-full lg:w-2/3 space-y-8 py-2">
+                  
+                  {/* Core Specs */}
+                  <div>
+                    <h4 className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-4 flex items-center gap-3">
+                      <span className="w-8 h-px bg-slate-300"></span>
+                      Core Specifications
+                    </h4>
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                      
+                      <div className="bg-white p-4 rounded-2xl border border-slate-100 shadow-sm hover:shadow-md transition-shadow flex flex-col items-center justify-center text-center relative overflow-hidden group">
+                        <div className="absolute inset-0 bg-gradient-to-br from-blue-50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                        <span className="text-3xl mb-2 relative z-10">🚀</span>
+                        <span className="text-xs text-slate-500 font-semibold relative z-10">ความจุเครื่องยนต์</span>
+                        <span className="text-xl font-black text-slate-800 relative z-10 tracking-tight mt-1">{vehicle.engineCapacity?.toLocaleString()} <span className="text-xs font-bold text-slate-400">CC</span></span>
+                      </div>
+                      
+                      <div className="bg-white p-4 rounded-2xl border border-slate-100 shadow-sm hover:shadow-md transition-shadow flex flex-col items-center justify-center text-center relative overflow-hidden group">
+                        <div className="absolute inset-0 bg-gradient-to-br from-indigo-50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                        <span className="text-3xl mb-2 relative z-10">⚖️</span>
+                        <span className="text-xs text-slate-500 font-semibold relative z-10">น้ำหนักรวม</span>
+                        <span className="text-xl font-black text-slate-800 relative z-10 tracking-tight mt-1">{vehicle.totalWeight?.toLocaleString()} <span className="text-xs font-bold text-slate-400">KG</span></span>
+                      </div>
 
-                <div className="space-y-3 bg-slate-50 p-5 rounded-xl border border-slate-100">
-                  <h4 className="font-bold text-indigo-700 text-sm border-b pb-2">พิกัดน้ำหนัก (กก.)</h4>
-                  <p className="text-sm text-slate-600 flex justify-between"><strong>น้ำหนักรถเปล่า:</strong> <span>{vehicle.emptyWeight?.toLocaleString()} กก.</span></p>
-                  <p className="text-sm text-slate-600 flex justify-between"><strong>น้ำหนักบรรทุก:</strong> <span>{vehicle.payloadWeight?.toLocaleString()} กก.</span></p>
-                  <p className="text-sm text-slate-600 flex justify-between"><strong>น้ำหนักรวมประจำรถ:</strong> <span>{vehicle.totalWeight?.toLocaleString()} กก.</span></p>
-                </div>
+                      <div className="bg-white p-4 rounded-2xl border border-slate-100 shadow-sm hover:shadow-md transition-shadow flex flex-col items-center justify-center text-center relative overflow-hidden group">
+                        <div className="absolute inset-0 bg-gradient-to-br from-amber-50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                        <span className="text-3xl mb-2 relative z-10">⛽</span>
+                        <span className="text-xs text-slate-500 font-semibold relative z-10">เชื้อเพลิง</span>
+                        <span className="text-lg font-black text-slate-800 relative z-10 tracking-tight mt-1">{vehicle.fuelType}</span>
+                      </div>
 
+                      <div className="bg-white p-4 rounded-2xl border border-slate-100 shadow-sm hover:shadow-md transition-shadow flex flex-col items-center justify-center text-center relative overflow-hidden group">
+                        <div className="absolute inset-0 bg-gradient-to-br from-emerald-50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                        <span className="text-3xl mb-2 relative z-10">🏷️</span>
+                        <span className="text-xs text-slate-500 font-semibold relative z-10">เลขครุภัณฑ์</span>
+                        <span className="text-sm font-bold text-slate-800 relative z-10 tracking-tight mt-1 break-all">{vehicle.assetNumber || "-"}</span>
+                      </div>
+
+                    </div>
+                  </div>
+
+                  {/* Detailed Engineering Data */}
+                  <div>
+                    <h4 className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-4 flex items-center gap-3">
+                      <span className="w-8 h-px bg-slate-300"></span>
+                      Engineering Data
+                    </h4>
+                    <div className="bg-slate-50/80 rounded-3xl p-6 border border-slate-200/60 shadow-sm">
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-y-5 gap-x-8">
+                        
+                        <div className="flex justify-between items-end border-b border-slate-200/80 border-dashed pb-2">
+                          <span className="text-slate-500 text-sm font-medium">เลขตัวรถ (Chassis)</span>
+                          <span className="font-mono font-bold text-slate-700 bg-white px-2 py-0.5 rounded shadow-sm border border-slate-100">{vehicle.chassisNumber}</span>
+                        </div>
+                        
+                        <div className="flex justify-between items-end border-b border-slate-200/80 border-dashed pb-2">
+                          <span className="text-slate-500 text-sm font-medium">เลขเครื่องยนต์ (Engine)</span>
+                          <span className="font-mono font-bold text-slate-700 bg-white px-2 py-0.5 rounded shadow-sm border border-slate-100">{vehicle.engineNumber}</span>
+                        </div>
+
+                        <div className="flex justify-between items-end border-b border-slate-200/80 border-dashed pb-2">
+                          <span className="text-slate-500 text-sm font-medium">ลักษณะรถ (Body Type)</span>
+                          <span className="font-bold text-slate-800">{vehicle.bodyType}</span>
+                        </div>
+
+                        <div className="flex justify-between items-end border-b border-slate-200/80 border-dashed pb-2">
+                          <span className="text-slate-500 text-sm font-medium">ยี่ห้อ (Brand)</span>
+                          <span className="font-bold text-slate-800">{vehicle.brand}</span>
+                        </div>
+                        
+                        <div className="flex justify-between items-end border-b border-slate-200/80 border-dashed pb-2 md:col-span-2 mt-2">
+                          <span className="text-slate-500 text-sm font-medium">น้ำหนัก: รถเปล่า / บรรทุก / รวม</span>
+                          <span className="font-bold text-slate-800 tracking-wide">
+                            {vehicle.emptyWeight?.toLocaleString()} <span className="text-slate-400 font-normal">/</span> {vehicle.payloadWeight?.toLocaleString()} <span className="text-slate-400 font-normal">/</span> {vehicle.totalWeight?.toLocaleString()} <span className="text-xs text-slate-500">กก.</span>
+                          </span>
+                        </div>
+                        
+                        {/* Fake Game-like Stat bar for visual flair */}
+                        <div className="md:col-span-2 pt-2">
+                          <div className="flex justify-between text-xs mb-1.5">
+                            <span className="text-slate-500 font-bold uppercase tracking-wider">Payload Ratio</span>
+                            <span className="text-blue-600 font-black">{Math.round((vehicle.payloadWeight / vehicle.totalWeight) * 100) || 0}%</span>
+                          </div>
+                          <div className="w-full bg-slate-200/80 rounded-full h-2 overflow-hidden shadow-inner">
+                            <div className="bg-gradient-to-r from-blue-500 to-indigo-500 h-2 rounded-full relative" style={{ width: `${Math.round((vehicle.payloadWeight / vehicle.totalWeight) * 100) || 0}%` }}>
+                              <div className="absolute inset-0 bg-white/20 w-full h-full animate-pulse"></div>
+                            </div>
+                          </div>
+                        </div>
+
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
               </div>
             </div>
           )}
