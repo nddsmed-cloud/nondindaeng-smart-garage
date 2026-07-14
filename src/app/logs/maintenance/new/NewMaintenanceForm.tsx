@@ -16,6 +16,7 @@ import ThaiDateInput from "../../../../components/ui/ThaiDateInput";
 export default function NewMaintenanceForm({ vehicles }: { vehicles: Vehicle[] }) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [selectedVehicle, setSelectedVehicle] = useState("");
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -57,7 +58,7 @@ export default function NewMaintenanceForm({ vehicles }: { vehicles: Vehicle[] }
             <div className="form-grid">
               <div className="form-group span-2">
                 <label className="form-label">รถยนต์ที่ซ่อมบำรุง</label>
-                <select name="vehicleId" required className="form-select">
+                <select name="vehicleId" required className="form-select" value={selectedVehicle} onChange={(e) => setSelectedVehicle(e.target.value)}>
                   <option value="">-- เลือกรถยนต์ --</option>
                   {vehicles.map((v) => (
                     <option key={v.id} value={v.id}>
@@ -110,9 +111,17 @@ export default function NewMaintenanceForm({ vehicles }: { vehicles: Vehicle[] }
             </div>
           </div>
 
-          <div className="form-actions mt-6">
-            <Link href="/logs/maintenance" className="btn btn-ghost">ยกเลิก</Link>
-            <button type="submit" disabled={loading} className="btn btn-primary">
+          <div className="form-actions mt-6 flex flex-wrap gap-2 items-center justify-between">
+            <div>
+              <Link href="/logs/maintenance" className="btn btn-ghost">ยกเลิก</Link>
+            </div>
+            <div className="flex gap-2">
+              {selectedVehicle && (
+                <Link href={`/vehicles/${selectedVehicle}/maintenance-docs`} className="btn bg-indigo-600 text-white hover:bg-indigo-700">
+                  📄 สร้างเอกสารเบิกซ่อม (ว 2600)
+                </Link>
+              )}
+              <button type="submit" disabled={loading} className="btn btn-primary">
               {loading ? (
                 <span className="flex items-center gap-2">
                   <svg className="animate-spin h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
@@ -125,6 +134,7 @@ export default function NewMaintenanceForm({ vehicles }: { vehicles: Vehicle[] }
                 "บันทึกประวัติการซ่อม"
               )}
             </button>
+            </div>
           </div>
         </form>
       </div>
