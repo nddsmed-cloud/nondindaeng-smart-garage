@@ -34,11 +34,11 @@ export default function VehiclesTable({ vehicles, role }: { vehicles: Vehicle[],
 
   const statusBadge = (status: string) => {
     const map: Record<string, string> = {
-      "พร้อมใช้งาน": "bg-emerald-100 text-emerald-800 border-emerald-200",
-      "ส่งซ่อม": "bg-amber-100 text-amber-800 border-amber-200",
-      "ยกเลิกใช้งาน": "bg-rose-100 text-rose-800 border-rose-200",
+      "พร้อมใช้งาน": "bg-emerald-100 text-emerald-800 border-emerald-200 group-hover:bg-emerald-500 group-hover:text-white group-hover:border-emerald-600 transition-colors duration-300",
+      "ส่งซ่อม": "bg-amber-100 text-amber-800 border-amber-200 group-hover:bg-amber-500 group-hover:text-white group-hover:border-amber-600 transition-colors duration-300",
+      "ยกเลิกใช้งาน": "bg-rose-100 text-rose-800 border-rose-200 group-hover:bg-rose-500 group-hover:text-white group-hover:border-rose-600 transition-colors duration-300",
     };
-    return map[status] || "bg-blue-100 text-blue-800 border-blue-200";
+    return map[status] || "bg-blue-100 text-blue-800 border-blue-200 group-hover:bg-blue-500 group-hover:text-white transition-colors duration-300";
   };
 
   const handleDelete = async (id: string, plate: string) => {
@@ -88,7 +88,7 @@ export default function VehiclesTable({ vehicles, role }: { vehicles: Vehicle[],
             const regYear = vehicle.registeredDate ? new Date(vehicle.registeredDate).getFullYear() + 543 : "-";
 
             return (
-              <div key={vehicle.id} className="bg-white rounded-2xl shadow-md border border-slate-200 overflow-hidden hover:shadow-xl transition-all duration-300 flex flex-col group relative">
+              <div key={vehicle.id} className="bg-white rounded-3xl shadow-sm border border-slate-100 overflow-hidden hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 flex flex-col group relative">
                 
                 {/* 1. Image Section */}
                 <div className="relative h-48 bg-slate-100 overflow-hidden">
