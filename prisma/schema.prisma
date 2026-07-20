@@ -292,3 +292,62 @@ model RoadFixture {
 
   @@map("road_fixtures")
 }
+
+// Vehicle Maintenance module
+model MaintenanceVehicle {
+  id            Int       @id @default(autoincrement())
+  plateNumber   String    @unique
+  vehicleType   String
+  brand         String
+  model         String
+  yearAcquired  Int
+  status        VehicleStatus @default(ACTIVE)
+  insuranceExp  DateTime?
+  taxExp        DateTime?
+  maintenances  MaintenanceRecord[]
+  createdAt     DateTime @default(now())
+}
+
+model MaintenanceRecord {
+  id              Int       @id @default(autoincrement())
+  vehicleId       Int
+  vehicle         MaintenanceVehicle   @relation(fields: [vehicleId], references: [id])
+  reportedById    Int
+  symptom         String
+  status          MaintenanceStatus @default(REPORTED)
+  cost            Decimal?  @db.Decimal(10,2)
+  serviceProvider String?
+  comparison      ComparisonScore?
+  documentUrl     String?
+  approvedById    Int?
+  approvedAt      DateTime?
+  createdAt       DateTime @default(now())
+  completedAt     DateTime?
+}
+
+model ComparisonScore {
+  id                Int      @id @default(autoincrement())
+  maintenanceId     Int      @unique
+  maintenance       MaintenanceRecord @relation(fields: [maintenanceId], references: [id])
+  workTypeScore     Int
+  vehicleAgeScore   Int
+  partsQualityScore Int
+  warrantyScore     Int
+  safetyScore       Int
+  recommendedOption String
+}
+
+enum VehicleStatus {
+  ACTIVE
+  MAINTENANCE
+  RETIRED
+}
+
+enum MaintenanceStatus {
+  REPORTED
+  COMPARISON_DONE
+  APPROVED
+  IN_PROGRESS
+  COMPLETED
+  REJECTED
+}
