@@ -6,10 +6,14 @@ echo ╔════════════════════════
 echo ║   Push โค้ด e-office กองช่าง ขึ้น GitHub + Vercel   ║
 echo ╚══════════════════════════════════════════════════════╝
 echo.
-echo [1/3] ตรวจสอบสถานะ git...
+echo [1/4] ตรวจสอบสถานะ git...
 git status --short
 echo.
-echo [2/3] Push commit ขึ้น GitHub (main branch)...
+echo [2/4] เพิ่มไฟล์ที่แก้ไขทั้งหมด...
+git add -A
+git commit -m "feat: redesign public report page UI"
+echo.
+echo [3/4] Push commit ขึ้น GitHub (main branch)...
 git push origin main
 if %ERRORLEVEL% neq 0 (
     echo.
@@ -21,7 +25,7 @@ if %ERRORLEVEL% neq 0 (
 echo.
 echo ✅ Push สำเร็จ!
 echo.
-echo [3/3] Vercel จะ deploy อัตโนมัติ ติดตามได้ที่:
+echo [4/4] Vercel จะ deploy อัตโนมัติ ติดตามได้ที่:
 echo     https://vercel.com/erp-nondindaeng/6-ndd-smart-garage
 echo.
 echo 🌐 Production URL:
