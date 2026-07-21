@@ -13,8 +13,11 @@ type Module = "vehicle" | "gis";
 type NavLink = { href: string; icon: string; label: string; roles: UserRole[] };
 
 const vehicleNavItems: NavLink[] = [
-  { href: "/dashboard", icon: "🏠", label: "แดชบอร์ด", roles: ["ADMIN", "MANAGER"] },
-  { href: "/dashboard/approvals", icon: "✅", label: "อนุมัติคำขอ (คส.1)", roles: ["ADMIN", "MANAGER"] },
+  // ── แดชบอร์ด ──
+  { href: "/dashboard", icon: "🏠", label: "แดชบอร์ด e-Office", roles: ["ADMIN", "MANAGER", "OFFICER", "OFFICER_GIS"] },
+
+  // ── ยานพาหนะ ──
+  { href: "/dashboard/approvals", icon: "✅", label: "อนุมัติคำขอใช้รถ", roles: ["ADMIN", "MANAGER"] },
   { href: "/vehicles", icon: "🚗", label: "ทะเบียนรถยนต์", roles: ["ADMIN", "MANAGER", "OFFICER"] },
   { href: "/requests", icon: "📝", label: "คำขออนุญาตใช้รถ", roles: ["ADMIN", "MANAGER", "OFFICER"] },
   { href: "/logs", icon: "🗺", label: "บันทึกการเดินทาง", roles: ["ADMIN", "MANAGER", "OFFICER", "DRIVER"] },
@@ -22,15 +25,25 @@ const vehicleNavItems: NavLink[] = [
   { href: "/logs/maintenance", icon: "🔧", label: "แบบ ๖ ซ่อมบำรุง", roles: ["ADMIN", "MANAGER", "OFFICER"] },
   { href: "/reports/mileage", icon: "📖", label: "สมุดบันทึกประวัติรถ", roles: ["ADMIN", "MANAGER", "OFFICER", "DRIVER"] },
   { href: "/reports/oag", icon: "📊", label: "รายงานพัสดุ สตง.", roles: ["ADMIN", "OFFICER"] },
+
+  // ── e-Office (บริการประชาชน) ──
+  { href: "/dashboard/permits", icon: "🏗️", label: "ใบอนุญาตก่อสร้าง", roles: ["ADMIN", "MANAGER", "OFFICER"] },
+  { href: "/dashboard/complaints", icon: "📣", label: "เรื่องร้องเรียน", roles: ["ADMIN", "MANAGER", "OFFICER", "OFFICER_GIS"] },
+  { href: "/saraban", icon: "📬", label: "สารบรรณ", roles: ["ADMIN", "MANAGER", "OFFICER"] },
+
+  // ── จัดการระบบ ──
   { href: "/admin/users", icon: "👥", label: "จัดการผู้ใช้งาน", roles: ["ADMIN"] },
   { href: "/admin/groups", icon: "💬", label: "จัดการกลุ่ม LINE", roles: ["ADMIN"] },
 ];
 
 const gisNavItems: NavLink[] = [
-  { href: "/gis", icon: "📊", label: "GIS Overview", roles: ["ADMIN", "MANAGER", "OFFICER", "OFFICER_GIS", "DRIVER"] },
-  { href: "/gis/roads/new", icon: "➕", label: "เพิ่มถนนใหม่", roles: ["ADMIN", "MANAGER", "OFFICER", "OFFICER_GIS", "DRIVER"] },
+  { href: "/gis", icon: "📊", label: "ภาพรวม GIS", roles: ["ADMIN", "MANAGER", "OFFICER", "OFFICER_GIS", "DRIVER"] },
   { href: "/gis/roads", icon: "🛣️", label: "ทะเบียนถนน ทถ.3", roles: ["ADMIN", "MANAGER", "OFFICER", "OFFICER_GIS", "DRIVER"] },
-  { href: "/gis/map", icon: "📍", label: "แผนที่ GIS + Fixture", roles: ["ADMIN", "MANAGER", "OFFICER", "OFFICER_GIS", "DRIVER"] },
+  { href: "/gis/map", icon: "📍", label: "แผนที่ GIS + สิ่งติดตั้ง", roles: ["ADMIN", "MANAGER", "OFFICER", "OFFICER_GIS", "DRIVER"] },
+  // เมนูแก้ไข — เฉพาะเจ้าหน้าที่ขึ้นไป
+  { href: "/gis/roads/new", icon: "➕", label: "เพิ่มถนนใหม่", roles: ["ADMIN", "MANAGER", "OFFICER", "OFFICER_GIS"] },
+  // e-Office ใน GIS module
+  { href: "/dashboard/complaints", icon: "📣", label: "เรื่องร้องเรียน", roles: ["ADMIN", "MANAGER", "OFFICER", "OFFICER_GIS"] },
 ];
 
 // ตรวจว่า path ปัจจุบันอยู่ใน module ไหน

@@ -351,3 +351,51 @@ enum MaintenanceStatus {
   COMPLETED
   REJECTED
 }
+
+// ─────────────────────────────────────────────────────────────
+// ระบบสารบรรณ — ทะเบียนหนังสือรับ / หนังสือส่ง
+// ─────────────────────────────────────────────────────────────
+
+enum DocDirection {
+  IN    // หนังสือรับ
+  OUT   // หนังสือส่ง
+}
+
+enum DocUrgency {
+  NORMAL  // ปกติ
+  URGENT  // ด่วน
+  VERY_URGENT // ด่วนมาก
+}
+
+model Saraban {
+  id            String        @id @default(cuid())
+
+  // เลขที่หนังสือ
+  docNumber     String        @unique @map("doc_number")  // เช่น กช.0001/2568
+  docDate       String        @map("doc_date")            // วันที่หนังสือ (พ.ศ.)
+  direction     DocDirection                               // IN / OUT
+
+  // รายละเอียด
+  subject       String                                     // เรื่อง
+  fromOrg       String        @map("from_org")            // จาก (หน่วยงานต้นทาง)
+  toOrg         String        @default("") @map("to_org") // ถึง (หน่วยงานปลายทาง)
+  urgency       DocUrgency    @default(NORMAL)
+  detail        String        @default("")                 // รายละเอียดเพิ่มเติม
+
+  // การดำเนินการ
+  status        String        @default("pending")         // pending | inprogress | completed
+  assignedTo    String        @default("") @map("assigned_to") // ชื่อผู้รับผิดชอบ
+  dueDate       String?       @map("due_date")
+  completedNote String        @default("") @map("completed_note")
+
+  // เอกสารแนบ
+  attachmentUrl String?       @map("attachment_url")
+
+  // บันทึกโดย
+  createdBy     String        @default("") @map("created_by")
+
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+
+  @@map("saraban")
+}
