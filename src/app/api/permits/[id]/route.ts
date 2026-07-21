@@ -7,8 +7,9 @@ import { auth } from '../../../../auth';
 
 export async function PATCH(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
+  const { id } = await params;
   const session = await auth();
   if (!session?.user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
@@ -40,7 +41,7 @@ export async function PATCH(
   const { data, error } = await supabase
     .from('building_permits')
     .update(updateData)
-    .eq('id', params.id)
+    .eq('id', id)
     .select()
     .single();
 
@@ -50,8 +51,9 @@ export async function PATCH(
 
 export async function GET(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
+  const { id } = await params;
   const session = await auth();
   if (!session?.user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
@@ -59,7 +61,7 @@ export async function GET(
   const { data, error } = await supabase
     .from('building_permits')
     .select('*')
-    .eq('id', params.id)
+    .eq('id', id)
     .single();
 
   if (error || !data) return NextResponse.json({ error: 'Not found' }, { status: 404 });
