@@ -16,7 +16,8 @@ model User {
   name       String
   username   String   @unique
   password   String?
-  role       String   @default("OFFICER") // ADMIN | MANAGER | OFFICER | DRIVER
+  // RBAC Roles: ADMIN_OFFICER | INSPECTOR_ENGINEER | DIRECTOR | EXECUTIVE | DRIVER | ADMIN
+  role       String   @default("ADMIN_OFFICER") 
   department String   @default("")
   isActive   Boolean  @default(true) @map("is_active")
   lineUserId String?  @unique @map("line_user_id")
@@ -398,4 +399,98 @@ model Saraban {
   updatedAt     DateTime      @updatedAt
 
   @@map("saraban")
+}
+
+// ─────────────────────────────────────────────────────────────
+// ระบบ e-Permit — ขออนุญาตก่อสร้างออนไลน์
+// ─────────────────────────────────────────────────────────────
+
+enum PermitStatus {
+  PENDING
+  REVIEWING
+  APPROVED
+  REJECTED
+}
+
+model BuildingPermit {
+  id              String        @id @default(cuid())
+  permitNumber    String?       @unique @map("permit_number")
+  
+  // ผู้ยื่นขอ
+  applicantName   String        @map("applicant_name")
+  applicantPhone  String        @map("applicant_phone")
+  applicantLineId String?       @map("applicant_line_id")
+  
+  // รายละเอียดการขอ
+  buildingType    String        @map("building_type") // อ.1, อ.6, ขุดดิน ฯลฯ
+  address         String
+  lat             Float?
+  lng             Float?
+  documentUrl     String?       @map("document_url") // URL ไฟล์แนบ PDF/AutoCAD
+  
+  status          PermitStatus  @default(PENDING)
+  officerComment  String?       @map("officer_comment") // หมายเหตุจากเจ้าหน้าที่
+  
+  approvedById    String?       @map("approved_by_id") // ID เจ้าหน้าที่ที่อนุมัติ
+  
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+
+  @@map("building_permits")
+}
+
+// ─────────────────────────────────────────────────────────────
+// ระบบ e-Service — รับแจ้งซ่อมและสั่งการช่าง
+// ─────────────────────────────────────────────────────────────
+
+enum RepairStatus {
+  PENDING
+  IN_PROGRESS
+  COMPLETED
+}
+
+model RepairRequest {
+  id              String        @id @default(cuid())
+  requestCode     String?       @unique @map("request_code")
+  
+  // ผู้แจ้ง
+  reporterName    String        @map("reporter_name")
+  reporterPhone   String        @map("reporter_phone")
+  reporterLineId  String?       @map("reporter_line_id")
+  
+  // รายละเอียดการแจ้งซ่อม
+  category        String        // ไฟฟ้า, ถนน, ท่อระบายน้ำ ฯลฯ
+  description     String
+  location        String
+  lat             Float?
+  lng             Float?
+  geom            Unsupported("geometry(Point, 4326)")?
+  imageBeforeUrl  String?       @map("image_before_url")
+  
+  status          RepairStatus  @default(PENDING)
+  
+  // การสั่งงาน
+  workOrder       WorkOrder?
+
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+
+  @@map("repair_requests")
+}
+
+model WorkOrder {
+  id              String        @id @default(cuid())
+  
+  repairRequestId String        @unique @map("repair_request_id")
+  repairRequest   RepairRequest @relation(fields: [repairRequestId], references: [id], onDelete: Cascade)
+  
+  technicianName  String?       @map("technician_name")
+  assignedAt      DateTime      @default(now()) @map("assigned_at")
+  
+  imageAfterUrl   String?       @map("image_after_url")
+  geom            Unsupported("geometry(Point, 4326)")?
+  note            String?       // บันทึกของช่าง
+  completedAt     DateTime?     @map("completed_at")
+
+  @@map("work_orders")
 }

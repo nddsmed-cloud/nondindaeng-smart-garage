@@ -132,6 +132,24 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     }),
   ],
   callbacks: {
+    authorized({ request, auth }) {
+      const { pathname } = request.nextUrl;
+      const role = auth?.user?.role as string | undefined;
+
+      // Public pages
+      if (pathname === '/e-permit' || pathname === '/e-service') return true;
+
+      // Dashboard RBAC
+      if (pathname.startsWith('/e-permit/dashboard') || pathname.startsWith('/e-service/dashboard')) {
+        return !!role && ['ADMIN_OFFICER', 'INSPECTOR_ENGINEER', 'DIRECTOR', 'EXECUTIVE', 'ADMIN'].includes(role);
+      }
+      // Technician RBAC
+      if (pathname.startsWith('/e-service/technician')) {
+        return !!role && ['INSPECTOR_ENGINEER', 'DIRECTOR', 'ADMIN'].includes(role);
+      }
+
+      return !!auth;
+    },
     jwt({ token, user }) {
       if (user) {
         token.role = user.role;

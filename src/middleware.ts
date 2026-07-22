@@ -9,5 +9,7 @@ export const config = {
     '/logs/:path*',
     '/requests/:path*',
     '/gis/:path*',
+    '/e-permit/:path*',
+    '/e-service/:path*',
   ],
 };
